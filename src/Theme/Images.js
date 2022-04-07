@@ -6,5 +6,8 @@
 export default function () {
   return {
     logo: require('@/Assets/Images/TOM.png'),
+    logoWhite: require('@/Assets/Images/LogoWhite.png'),
+    logoGreen: require('@/Assets/Images/LogoGreen.png'),
+    BackgroundImage: require('@/Assets/Images/PexelsFauxels.jpg'),
   }
 }

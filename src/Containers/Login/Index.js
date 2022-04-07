@@ -6,19 +6,52 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PhoneInput from 'react-native-phone-number-input'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import { navigate } from '@/Navigators/utils'
+import OTPInputView from '@twotalltotems/react-native-otp-input';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import { useNavigation } from '@react-navigation/native'
 
 const IndexLoginContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
 
+  const navigation = useNavigation();
+
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [numValidated, setNumValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [otp, setOtp] = useState(false);
 
   const submitPhoneNumber = () => {
-    console.log(phoneNumber)
+    if(phoneNumber.length < 12 || phoneNumber.length > 13){
+      showMessage({message: "Please enter a valid phone number", backgroundColor: "red", duration: 3000})
+    }else{
+      showMessage({message: "We have sent you an OTP.", backgroundColor: "green", duration: 3000})
+      setLoading(true);
+      setTimeout(()=> {
+        setLoading(false);
+        setNumValidated(true)
+      }, 3000)
+    }
+  }
+
+  const handleLogin = () => {
+    if(otp.length !== 6){
+      showMessage({message: "Please enter a valid OTP", backgroundColor: "red", duration: 3000});
+      return false;
+    }
+    setLoading(true);
+    setTimeout(()=> {
+      setLoading(false);
+      navigation.reset({
+        index: 0,
+        routes:[{name: "MainHome"}]
+      });
+    },3000)
   }
 
   return (
@@ -97,17 +130,48 @@ const IndexLoginContainer = () => {
                 }}
               />
 
+
+            {
+              numValidated
+              &&(
+                <>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    color: Colors.textColor,
+                    fontWeight: '700',
+                    marginTop: 63,
+                    marginStart: 29,
+                  }}
+                >
+                  OTP VERIFICATION
+                </Text>
+                <View style={{alignSelf: "center"}}>
+                  <OTPInputView
+                    pinCount={6}
+                    style={styleSheet.otpView}
+                    codeInputFieldStyle={styleSheet.underlineStyleBase}
+                    onCodeFilled={value => {
+                      setOtp(value);
+                    }}
+                  />
+                </View>
+                </>
+              )
+            }
+
               <View
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginTop: 100,
+                  marginTop: numValidated ? 0 : 100,
                 }}
               >
                 <PrimaryButttonComponent
-                  label="Enter Phone Number"
+                  loading={loading}
+                  label="Login"
                   style={{ width: 250 }}
-                  onPress={() => submitPhoneNumber()}
+                  onPress={() => numValidated ? handleLogin() : submitPhoneNumber()}
                 />
 
                 <View style={{ marginTop: 2, flexDirection: 'row' }}>
@@ -151,5 +215,20 @@ const styleSheet = StyleSheet.create({
     backgroundColor: 'rgba(241, 241, 241, 0.8)',
     marginStart: 29,
     marginEnd: 29,
+  },
+  otpView: {
+    alignSelf: "center",
+    width: '80%',
+    height: 80,
+    color: 'black',
+    marginTop: -10
+  },
+  underlineStyleBase: {
+    width: 40,
+    height: 45,
+    borderWidth: 0,
+    borderWidth: 1,
+    color: 'black',
+    borderColor: '#000',
   },
 })

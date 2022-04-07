@@ -9,6 +9,7 @@ import {
 } from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
+import IndexHomeContainer from '@/Containers/MainHome/Index'
 
 const Stack = createStackNavigator()
 
@@ -43,7 +44,7 @@ const ApplicationNavigator = () => {
 
           <Stack.Screen
             name="MainHome"
-            component={IndexRegisterContainer}
+            component={IndexHomeContainer}
             options={{
               animationEnabled: false,
             }}

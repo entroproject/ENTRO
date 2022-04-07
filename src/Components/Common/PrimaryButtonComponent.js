@@ -63,7 +63,10 @@ function PrimaryButttonComponent({
           ]}
         >
         
-          <Text
+          {
+            loading
+            ?<ActivityIndicator size={30} color="#fff" />
+            :<Text
             style={[
                 Fonts.bodyBold,
               Fonts.textCenter,
@@ -73,6 +76,7 @@ function PrimaryButttonComponent({
           >
             {label || 'Submit'}
           </Text>
+          }
         
         </LinearGradient>
       </TouchableOpacity>

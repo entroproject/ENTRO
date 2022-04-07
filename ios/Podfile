@@ -12,6 +12,8 @@ target 'ENTRO' do
     :hermes_enabled => true
   )
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   target 'ENTROTests' do
     inherit! :complete
     # Pods for testing

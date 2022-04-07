@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react'
 import { store, persistor } from '@/Store'
 import { ApplicationNavigator } from './Navigators';
 import './Translations'
+import FlashMessage from "react-native-flash-message";
 
 const App = () => (
   <Provider store={store}>
@@ -17,6 +18,7 @@ const App = () => (
      */}
     <PersistGate loading={null} persistor={persistor}>
       <ApplicationNavigator />
+      <FlashMessage position="top" />
     </PersistGate>
   </Provider>
 )

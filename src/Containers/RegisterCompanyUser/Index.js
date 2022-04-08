@@ -5,7 +5,6 @@ import {
   Text,
   ImageBackground,
   Image,
-  TouchableOpacity,
   ScrollView,
   TextInput,
 } from 'react-native'
@@ -15,6 +14,7 @@ import { regexStr } from '@/Assets/Constants'
 import { navigate } from '@/Navigators/utils'
 import DropShadow from 'react-native-drop-shadow'
 import ImagePicker from 'react-native-image-crop-picker'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const IndexRegisterCompanyUserContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -178,9 +178,9 @@ const IndexRegisterCompanyUserContainer = () => {
                     Layout.center,
                     {
                       backgroundColor: '#184461',
-                      width: 31,
-                      height: 31,
-                      borderRadius: 15,
+                      width: 35,
+                      height: 35,
+                      borderRadius: 15.5,
                     },
                   ]}
                 >

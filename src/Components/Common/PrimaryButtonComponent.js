@@ -62,21 +62,27 @@ function PrimaryButttonComponent({
            
           ]}
         >
+
+       
         
-          {
-            loading
-            ?<ActivityIndicator size={30} color="#fff" />
-            :<Text
-            style={[
-                Fonts.bodyBold,
-              Fonts.textCenter,
-              { color: Colors.white },
-              labelStyle,
-            ]}
-          >
-            {label || 'Submit'}
-          </Text>
-          }
+        <Text
+        style={[
+          Fonts.bodyBold,
+          Fonts.textCenter,
+          { color: Colors.pureWhite, marginLeft: 5},
+          labelStyle,
+        ]}
+      >
+        {label || 'Submit'}
+      </Text>
+
+      {loading ? (
+        <ActivityIndicator
+        size={30}
+          color={Colors.pureWhite}
+          style={Gutters.tinyRMargin}
+        />
+      ) : null}
         
         </LinearGradient>
       </TouchableOpacity>

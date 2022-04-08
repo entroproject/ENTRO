@@ -18,6 +18,7 @@ export const Colors = {
   primary: '#E14032',
   success: '#28a745',
   error: '#dc3545',
+  deepRed:'#FF2511',
   textColor:'#184461',
   mediumGray: '#D1D1D1',
   greenGradient:['#184461', '#45969A', '#74EBD5'],

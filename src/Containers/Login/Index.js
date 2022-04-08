@@ -6,59 +6,78 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  ActivityIndicator
+  Dimensions,
+  ActivityIndicator,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PhoneInput from 'react-native-phone-number-input'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import { navigate } from '@/Navigators/utils'
-import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import OTPInputView from '@twotalltotems/react-native-otp-input'
+import { showMessage, hideMessage } from 'react-native-flash-message'
 import { useNavigation } from '@react-navigation/native'
 
 const IndexLoginContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
 
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   const [phoneNumber, setPhoneNumber] = useState('')
-  const [numValidated, setNumValidated] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [otp, setOtp] = useState(false);
+  const [numValidated, setNumValidated] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [otp, setOtp] = useState(false)
 
   const submitPhoneNumber = () => {
-    if(phoneNumber.length < 12 || phoneNumber.length > 13){
-      showMessage({message: "Please enter a valid phone number", backgroundColor: "red", duration: 3000})
-    }else{
-      showMessage({message: "We have sent you an OTP.", backgroundColor: "green", duration: 3000})
-      setLoading(true);
-      setTimeout(()=> {
-        setLoading(false);
+    if (phoneNumber.length < 13 || phoneNumber.length > 14) {
+      showMessage({
+        message: 'Please enter a valid phone number',
+        backgroundColor: 'red',
+        duration: 3000,
+      })
+    } else {
+      showMessage({
+        message: 'We have sent you an OTP.',
+        backgroundColor: 'green',
+        duration: 3000,
+      })
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
         setNumValidated(true)
       }, 3000)
     }
   }
 
   const handleLogin = () => {
-    if(otp.length !== 6){
-      showMessage({message: "Please enter a valid OTP", backgroundColor: "red", duration: 3000});
-      return false;
+    if (otp.length !== 6) {
+      showMessage({
+        message: 'Please enter a valid OTP',
+        backgroundColor: 'red',
+        duration: 3000,
+      })
+      return false
     }
-    setLoading(true);
-    setTimeout(()=> {
-      setLoading(false);
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
       navigation.reset({
         index: 0,
-        routes:[{name: "MainHome"}]
-      });
-    },3000)
+        routes: [{ name: 'MainHome' }],
+      })
+    }, 3000)
   }
 
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
         source={Images.BackgroundImage}
-        style={{ width: '100%', height: '100%' }}
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
+        }}
       >
         <Image
           source={Images.logoGreen}
@@ -130,35 +149,31 @@ const IndexLoginContainer = () => {
                 }}
               />
 
-
-            {
-              numValidated
-              &&(
+              {numValidated && (
                 <>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: Colors.textColor,
-                    fontWeight: '700',
-                    marginTop: 63,
-                    marginStart: 29,
-                  }}
-                >
-                  OTP VERIFICATION
-                </Text>
-                <View style={{alignSelf: "center"}}>
-                  <OTPInputView
-                    pinCount={6}
-                    style={styleSheet.otpView}
-                    codeInputFieldStyle={styleSheet.underlineStyleBase}
-                    onCodeFilled={value => {
-                      setOtp(value);
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: Colors.textColor,
+                      fontWeight: '700',
+                      marginTop: 40,
+                      marginStart: 29,
                     }}
-                  />
-                </View>
+                  >
+                    OTP VERIFICATION
+                  </Text>
+                  <View style={{ alignSelf: 'center' }}>
+                    <OTPInputView
+                      pinCount={6}
+                      style={styleSheet.otpView}
+                      codeInputFieldStyle={styleSheet.underlineStyleBase}
+                      onCodeFilled={value => {
+                        setOtp(value)
+                      }}
+                    />
+                  </View>
                 </>
-              )
-            }
+              )}
 
               <View
                 style={{
@@ -168,10 +183,12 @@ const IndexLoginContainer = () => {
                 }}
               >
                 <PrimaryButttonComponent
-                  loading={loading}
                   label="Login"
+                  loading={loading}
                   style={{ width: 250 }}
-                  onPress={() => numValidated ? handleLogin() : submitPhoneNumber()}
+                  onPress={() =>
+                    numValidated ? handleLogin() : submitPhoneNumber()
+                  }
                 />
 
                 <View style={{ marginTop: 2, flexDirection: 'row' }}>
@@ -217,18 +234,19 @@ const styleSheet = StyleSheet.create({
     marginEnd: 29,
   },
   otpView: {
-    alignSelf: "center",
+    alignSelf: 'center',
     width: '80%',
     height: 80,
     color: 'black',
-    marginTop: -10
+    marginTop: -10,
   },
   underlineStyleBase: {
-    width: 40,
-    height: 45,
-    borderWidth: 0,
+    width: 36,
+    height: 44,
     borderWidth: 1,
+    borderRadius: 5,
     color: 'black',
     borderColor: '#000',
+    margin: 3,
   },
 })

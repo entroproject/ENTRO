@@ -9,5 +9,6 @@ export default function () {
     logoWhite: require('@/Assets/Images/LogoWhite.png'),
     logoGreen: require('@/Assets/Images/LogoGreen.png'),
     BackgroundImage: require('@/Assets/Images/PexelsFauxels.jpg'),
+    profilepic: require('@/Assets/Images/User.png')
   }
 }

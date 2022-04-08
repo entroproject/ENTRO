@@ -58,25 +58,31 @@ function PrimaryButttonComponent({
             Layout.buttonBorderRadius,
             Gutters.smallVPadding,
             Gutters.mediumHPadding,
-            { height: 46 },
+            { height: 40 },
            
           ]}
         >
+
+       
         
-          {
-            loading
-            ?<ActivityIndicator size={30} color="#fff" />
-            :<Text
-            style={[
-                Fonts.bodyBold,
-              Fonts.textCenter,
-              { color: Colors.white },
-              labelStyle,
-            ]}
-          >
-            {label || 'Submit'}
-          </Text>
-          }
+        <Text
+        style={[
+          Fonts.bodyBold,
+          Fonts.textCenter,
+          { color: Colors.pureWhite, marginLeft: 5},
+          labelStyle,
+        ]}
+      >
+        {label || 'Submit'}
+      </Text>
+
+      {loading ? (
+        <ActivityIndicator
+        size={30}
+          color={Colors.pureWhite}
+          style={Gutters.tinyRMargin}
+        />
+      ) : null}
         
         </LinearGradient>
       </TouchableOpacity>

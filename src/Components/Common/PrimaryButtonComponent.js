@@ -58,7 +58,7 @@ function PrimaryButttonComponent({
             Layout.buttonBorderRadius,
             Gutters.smallVPadding,
             Gutters.mediumHPadding,
-            { height: 46 },
+            { height: 40 },
            
           ]}
         >

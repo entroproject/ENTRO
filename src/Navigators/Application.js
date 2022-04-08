@@ -6,9 +6,13 @@ import {
   StartupContainer,
   IndexRegisterContainer,
   IndexLoginContainer,
+  IndexHomeContainer,
+  IndexRegisterCompanyUserContainer,
 } from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
+
+
 
 const Stack = createStackNavigator()
 
@@ -43,11 +47,19 @@ const ApplicationNavigator = () => {
 
           <Stack.Screen
             name="MainHome"
-            component={IndexRegisterContainer}
+            component={IndexHomeContainer}
             options={{
               animationEnabled: false,
             }}
           />
+
+          <Stack.Screen
+          name="RegisterCompanyUser"
+          component={IndexRegisterCompanyUserContainer}
+          options={{
+            animationEnabled: false,
+          }}
+        />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

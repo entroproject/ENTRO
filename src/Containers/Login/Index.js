@@ -121,7 +121,7 @@ const IndexLoginContainer = () => {
                     Don't have an account?{' '}
                   </Text>
 
-                  <TouchableOpacity onPress={() => navigate('Register')}>
+                  <TouchableOpacity onPress={() => navigate('RegisterCompanyUser')}>
                     <Text
                       style={{
                         color: '#237A0C',

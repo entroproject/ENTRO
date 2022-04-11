@@ -11,6 +11,7 @@ import {
 } from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
+import TabNavigation from './TabNavigation'
 
 
 
@@ -27,9 +28,17 @@ const ApplicationNavigator = () => {
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-          {/* <Stack.Screen name="Startup" component={StartupContainer} />
+           {/* <Stack.Screen name="Startup" component={StartupContainer} /> */}
 
           <Stack.Screen
+            name="MainNav"
+            component={TabNavigation}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+
+          {/*Stack.Screen
             name="Login"
             component={IndexLoginContainer}
             options={{

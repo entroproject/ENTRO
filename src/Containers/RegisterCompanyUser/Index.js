@@ -14,6 +14,7 @@ import { regexStr } from '@/Assets/Constants'
 import { navigate } from '@/Navigators/utils'
 import DropShadow from 'react-native-drop-shadow'
 import ImagePicker from 'react-native-image-crop-picker'
+import { showMessage, hideMessage } from 'react-native-flash-message'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const IndexRegisterCompanyUserContainer = () => {
@@ -24,6 +25,7 @@ const IndexRegisterCompanyUserContainer = () => {
   const [companyName, setCompanyName] = useState('')
   const [carPlateNum, setCarPlateNum] = useState('')
   const [hasError, setHasError] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [isValidFullName, setIsValidFullName] = useState(true)
   const [isValidEmailAddress, setIsValidEmailAddress] = useState(true)
   const [isValidCompanyName, setIsValidCompanyName] = useState(true)
@@ -36,29 +38,51 @@ const IndexRegisterCompanyUserContainer = () => {
   })
 
   const validate = type => {
-    let errorCtr = 0
+  
 
     if (type === 'fullName') {
+      setIsValidFullName(!regexStr.name.test(fullName))
+
       if (regexStr.name.test(fullName)) {
-        setIsValidFullName(!regexStr.name.test(fullName))
-        if (regexStr.name.test(fullName)) errorCtr += 1
-      } else {
-        setIsValidFullName(fullName !== '')
-        if (fullName === '') errorCtr += 1
+        showMessage({
+          message: 'All fields are required for registration!',
+          backgroundColor: 'red',
+          duration: 3000,
+        })
+      }else if(fullName === ''){
+        showMessage({
+          message: 'All fields are required for registration!',
+          backgroundColor: 'red',
+          duration: 3000,
+        })
       }
     } else if (type === 'emailAddress') {
       setIsValidEmailAddress(regexStr.email.test(emailAddress))
-      if (!regexStr.email.test(emailAddress)) errorCtr += 1
+      if (!regexStr.email.test(emailAddress)) {
+        showMessage({
+          message: 'All fields are required for registration!',
+          backgroundColor: 'red',
+          duration: 3000,
+        })
+      }
     } else if (type === 'companyName') {
       setIsValidCompanyName(companyName !== '')
-      if (companyName === '') errorCtr += 1
+      if (companyName === '') {
+        showMessage({
+          message: 'All fields are required for registration!',
+          backgroundColor: 'red',
+          duration: 3000,
+        })
+      }
     } else if (type === 'carPlateNum') {
       setIsValidCarPlateNum(carPlateNum !== '')
-      if (carPlateNum === '') errorCtr += 1
-    }
-
-    if (errorCtr > 0) {
-      setHasError(true)
+      if (carPlateNum === '') {
+        showMessage({
+          message: 'All fields are required for registration!',
+          backgroundColor: 'red',
+          duration: 3000,
+        })
+      }
     }
   }
 
@@ -74,15 +98,18 @@ const IndexRegisterCompanyUserContainer = () => {
   }
 
   const SubmitForm = () => {
-    if (
-      fullName === '' ||
-      emailAddress === '' ||
-      companyName === '' ||
-      carPlateNum === ''
-    ) {
-      setHasError(true)
+    if (fullName === '' || emailAddress === '' || companyName === '' || carPlateNum === '') {
+      setLoading(true)
+      setTimeout(() => {
+        validate();
+        setLoading(false);
+      }, 2000)
     } else {
-      navigate('MainHome')
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+        navigate('TutorialSlide')
+      }, 1000)
     }
   }
 
@@ -428,44 +455,8 @@ const IndexRegisterCompanyUserContainer = () => {
                 </DropShadow>
                 {/**car plate number ends here */}
 
-                {hasError &&
-                (!isValidFullName ||
-                  !isValidEmailAddress ||
-                  !isValidCompanyName ||
-                  !isValidcarPlateNum) ? (
-                  <View
-                    style={[
-                      Layout.justifyContentCenter,
-                      Layout.selfCenter,
-                      {
-                        width: 280,
-                        borderRadius: MetricsSizes.small,
-                        backgroundColor: Colors.deepRed,
-                      },
-                    ]}
-                  >
-                    {!isValidFullName ||
-                    !isValidEmailAddress ||
-                    !isValidCompanyName ||
-                    !isValidcarPlateNum ? (
-                      <Text
-                        style={[
-                          Fonts.textCenter,
-                          {
-                            fontSize: 14,
-                            fontWeight: '500',
-                            color: Colors.white,
-                            padding: MetricsSizes.tiny,
-                          },
-                        ]}
-                      >
-                        • All fields are required!
-                      </Text>
-                    ) : null}
-                  </View>
-                ) : null}
-
                 <PrimaryButttonComponent
+                  loading={loading}
                   label="Submit"
                   style={{ width: 270, height: 40, marginTop: 20 }}
                   onPress={() => {

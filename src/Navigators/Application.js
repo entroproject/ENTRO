@@ -8,12 +8,14 @@ import {
   IndexLoginContainer,
   IndexHomeContainer,
   IndexRegisterCompanyUserContainer,
+  IndexUserProfileContainer,
+  IndexEditUserContainer,
+  IndexTutorialSlideContainer,
+  IndexVirtualAccessContainer,
 } from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
 import TabNavigation from './TabNavigation'
-
-
 
 const Stack = createStackNavigator()
 
@@ -54,7 +56,6 @@ const ApplicationNavigator = () => {
             }}
           /> */}
 
-
           <Stack.Screen
             name="MainHome"
             component={IndexHomeContainer}
@@ -64,12 +65,44 @@ const ApplicationNavigator = () => {
           />
 
           <Stack.Screen
-          name="RegisterCompanyUser"
-          component={IndexRegisterCompanyUserContainer}
+            name="RegisterCompanyUser"
+            component={IndexRegisterCompanyUserContainer}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="UserProfile"
+            component={IndexUserProfileContainer}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="EditUserProfile"
+            component={IndexEditUserContainer}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+
+          <Stack.Screen
+          name="TutorialSlide"
+          component={IndexTutorialSlideContainer}
           options={{
             animationEnabled: false,
           }}
         />
+
+        <Stack.Screen
+        name="VirtualAccessCard"
+        component={IndexVirtualAccessContainer}
+        options={{
+          animationEnabled: false,
+        }}
+      />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

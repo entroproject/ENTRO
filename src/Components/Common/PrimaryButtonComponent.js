@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient'
 import {
   TouchableOpacity,
   View,
   ActivityIndicator,
   Keyboard,
   Text,
-} from 'react-native';
+} from 'react-native'
 
 import { useTheme } from '@/Hooks'
 import Icon from 'react-native-dynamic-vector-icons'
@@ -23,7 +23,7 @@ function PrimaryButttonComponent({
   iconType,
   disabled,
 }) {
-  const { Fonts, Gutters, Layout, Colors } = useTheme();
+  const { Fonts, Gutters, Layout, Colors } = useTheme()
   return (
     <View style={[Gutters.tinyBMargin, style]}>
       <TouchableOpacity
@@ -33,8 +33,8 @@ function PrimaryButttonComponent({
             ? null
             : !loading
             ? () => {
-                onPress();
-                Keyboard.dismiss();
+                onPress()
+                Keyboard.dismiss()
               }
             : null
         }
@@ -61,7 +61,6 @@ function PrimaryButttonComponent({
             Gutters.smallVPadding,
             Gutters.mediumHPadding,
             { height: 40 },
-           
           ]}
         >   
         
@@ -93,11 +92,11 @@ function PrimaryButttonComponent({
         <Text>{" "}</Text><Icon type={iconType || 'Ionicons'} name={iconRight} size={20} color="#fff"/>
         </>
       }
-        
+ 
         </LinearGradient>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 PrimaryButttonComponent.propTypes = {
@@ -107,13 +106,13 @@ PrimaryButttonComponent.propTypes = {
   labelStyle: PropTypes.object,
   disabled: PropTypes.bool,
   loading: PropTypes.bool,
-};
+}
 
 PrimaryButttonComponent.defaultProps = {
   loading: false,
   disabled: false,
   style: {},
   labelStyle: {},
-};
+}
 
-export default PrimaryButttonComponent;
+export default PrimaryButttonComponent

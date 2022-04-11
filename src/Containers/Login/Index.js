@@ -62,7 +62,7 @@ const IndexLoginContainer = () => {
       setLoading(false)
       navigation.reset({
         index: 0,
-        routes: [{ name: 'MainHome' }],
+        routes: [{ name: 'MainNav' }],
       })
     }, 3000)
   }

@@ -7,7 +7,7 @@ import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import Icon from 'react-native-dynamic-vector-icons'
 
 
-const IndexHomeContainer = () => {
+const IndexHomeContainer = ({navigation}) => {
   const { Fonts, Gutters, Layout } = useTheme()
 
   return (
@@ -52,7 +52,9 @@ const IndexHomeContainer = () => {
         flexWrap: "wrap",
         justifyContent: "space-between"
       }}>
-        <TouchableOpacity style={{
+        <TouchableOpacity 
+        onPress={()=> navigation.navigate("UserProfile")}
+        style={{
           width: "33%",
           marginBottom: 20,
           justifyContent: "center",

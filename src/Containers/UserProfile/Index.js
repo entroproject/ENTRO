@@ -14,11 +14,11 @@ const [loading, setLoading] = useState(false)
 
 const IndexUserProfileContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
-  const [cardPickedIndex, setcardPickedIndex] = useState([])
+  const [cardPickedIndex, setcardPickedIndex] = useState(0)
 
   const VirtualCard = [
     {
-      id: '0',
+      id: 0,
       companyName: 'SURIA KLCC',
       cardIcon: Images.KlccLogo,
       cardExpries: '24 -01-2022  21:00: 00 pm',
@@ -27,7 +27,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
     },
 
     {
-      id: '1',
+      id: 1,
       companyName: 'PLAZA 33',
       cardIcon: Images.Plaza33Logo,
       cardExpries: '22 -01-2022  22:00: 00 pm',
@@ -35,7 +35,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
       selectedCard: Images.defaultCardIcon,
     },
     {
-      id: '2',
+      id: 2,
       companyName: 'SURIA KLCC',
       cardIcon: Images.KlccLogo,
       cardExpries: '24 -01-2022  21:00: 00 pm',
@@ -46,24 +46,11 @@ const IndexUserProfileContainer = ({ navigation }) => {
 
  
   const handCardSelected = (item, index) => {
-    if (cardPickedIndex.indexOf(index) > -1) {
-      let newArray = cardPickedIndex.filter(indexObject => {
-        if (indexObject != index || indexObject == index) {
-          return false
-        }
-        return true
-      })
-      setcardPickedIndex(newArray)
-    } else {
-      setcardPickedIndex([...cardPickedIndex, index])
-    }
-
+    setcardPickedIndex(index);
     navigation.navigate('VirtualAccessCard', {
       itemCardName: item.companyName,
       itemCompanyLogo: item.cardIcon,
     })
-    console.log(index)
-    console.log(item)
   }
 
   return (
@@ -350,10 +337,10 @@ const IndexUserProfileContainer = ({ navigation }) => {
                             marginBottom: 3,
                           }}
                         >
-                          Host Number: <Text>{item.hostNumber}</Text>
+                          Host Number: <Text>{item.hostNumber} hello {item.id}</Text>
                         </Text>
 
-                        {cardPickedIndex.indexOf(index) > -1 ? (
+                        { item.id === cardPickedIndex ? (
                           <Image
                             source={item.selectedCard}
                             style={{ width: 20, height: 20, margin: 3 }}

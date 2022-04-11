@@ -32,15 +32,7 @@ const ApplicationNavigator = () => {
 
            {/* <Stack.Screen name="Startup" component={StartupContainer} /> */}
 
-          <Stack.Screen
-            name="MainNav"
-            component={TabNavigation}
-            options={{
-              animationEnabled: false,
-            }}
-          />
-
-          {/*Stack.Screen
+           <Stack.Screen
             name="Login"
             component={IndexLoginContainer}
             options={{
@@ -54,7 +46,15 @@ const ApplicationNavigator = () => {
             options={{
               animationEnabled: false,
             }}
-          /> */}
+          />
+
+          <Stack.Screen
+            name="MainNav"
+            component={TabNavigation}
+            options={{
+              animationEnabled: false,
+            }}
+          />
 
           <Stack.Screen
             name="MainHome"

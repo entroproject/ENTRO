@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
-import {IndexHomeContainer} from '@/Containers';
+import {IndexEditUserContainer, IndexHomeContainer, IndexUserProfileContainer, IndexVirtualAccessContainer} from '@/Containers';
 import Icon from 'react-native-dynamic-vector-icons'
 import Svg, {Path} from 'react-native-svg';
 import {

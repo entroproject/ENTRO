@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { useTheme } from '@/Hooks'
+import Icon from 'react-native-dynamic-vector-icons'
 
 function PrimaryButttonComponent({
   onPress,
@@ -19,6 +20,7 @@ function PrimaryButttonComponent({
   style,
   labelStyle,
   iconRight,
+  iconType,
   disabled,
 }) {
   const { Fonts, Gutters, Layout, Colors } = useTheme();
@@ -61,20 +63,9 @@ function PrimaryButttonComponent({
             { height: 40 },
            
           ]}
-        >
-
-       
+        >   
         
-        <Text
-        style={[
-          Fonts.bodyBold,
-          Fonts.textCenter,
-          { color: Colors.pureWhite, marginLeft: 5},
-          labelStyle,
-        ]}
-      >
-        {label || 'Submit'}
-      </Text>
+        
 
       {loading ? (
         <ActivityIndicator
@@ -82,7 +73,26 @@ function PrimaryButttonComponent({
           color={Colors.pureWhite}
           style={Gutters.tinyRMargin}
         />
-      ) : null}
+      ) : 
+        <Text
+          style={[
+            Fonts.bodyBold,
+            Fonts.textCenter,
+            { color: Colors.pureWhite, marginLeft: 5},
+            labelStyle,
+          ]}
+        >
+          {label || 'Submit'}
+      </Text>
+      }
+
+      {
+        iconRight
+        &&
+        <>
+        <Text>{" "}</Text><Icon type={iconType || 'Ionicons'} name={iconRight} size={20} color="#fff"/>
+        </>
+      }
         
         </LinearGradient>
       </TouchableOpacity>

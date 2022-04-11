@@ -149,8 +149,9 @@ const IndexLoginContainer = () => {
                 }}
               />
 
-              {numValidated && (
-                <>
+                <View style={{
+                  display: numValidated ? "flex" : "none"
+                }}>
                   <Text
                     style={{
                       fontSize: 13,
@@ -172,8 +173,7 @@ const IndexLoginContainer = () => {
                       }}
                     />
                   </View>
-                </>
-              )}
+                </View>
 
               <View
                 style={{

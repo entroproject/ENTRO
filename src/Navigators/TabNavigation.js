@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { View, Image, TouchableOpacity } from 'react-native'
 import {
@@ -170,7 +171,7 @@ const TabNavigation = () => {
 
       <Tab.Screen
         name="Business Card"
-        component={IndexHomeContainer}
+        component={IndexBusinessCardContainer}
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (

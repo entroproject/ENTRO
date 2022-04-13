@@ -68,7 +68,6 @@ const IndexUserProfileContainer = ({ navigation }) => {
             color: Colors.white,
             fontWeight: '700',
             marginLeft: 18,
-
             flex: 2,
           }}
         >

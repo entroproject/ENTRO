@@ -1,443 +1,634 @@
 import React from 'react'
-import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native'
 import { useTheme } from '@/Hooks'
 import woman from '../../Assets/Images/woman.jpg'
 import grocery from '../../Assets/Images/grocery.jpg'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import Icon from 'react-native-dynamic-vector-icons'
+import DropShadow from 'react-native-drop-shadow'
 
-
-const IndexHomeContainer = ({navigation}) => {
-  const { Fonts, Gutters, Layout } = useTheme()
+const IndexHomeContainer = ({ navigation }) => {
+  const { Fonts, Gutters, Layout, Images } = useTheme()
 
   return (
-    <ScrollView style={{flex: 1}}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
       {/* header start */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <Text style={styles.headerTitle}>Home</Text>
-          <Image source={woman} style={styles.profileImage} />
+          <Image source={Images.userImageDisplay} style={styles.profileImage} />
         </View>
       </View>
       {/* header end */}
       {/* card start */}
-      <View style={styles.cardWrap}>
-        <View style={styles.cardContent}>
-          <Text style={{color: "#184461", textAlign: "center", fontSize: 17}}>🤩 Welcome</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            marginVertical: 10,
-            color: "#184461",
-            textAlign: "center"
-          }}>Vilyn Tan Cho</Text>
-          {/* divider start */}
-          <View style={{width: "80%", height: 1, backgroundColor: "#000", alignSelf: "center", marginVertical: 20}} />
-          {/* divider end */}
-          <PrimaryButttonComponent
-            label='Register Visitors here'
-            iconRight={'user-plus'}
-            iconType={'FontAwesome'}
-            onPress={()=>{}}
-          />
+
+      <DropShadow
+        style={{
+          shadowColor: '#D3D3D3',
+          shadowOffset: {
+            width: 0,
+            height: 5,
+          },
+          shadowOpacity: 1,
+          shadowRadius: 3,
+        }}
+      >
+        <View style={styles.cardWrap}>
+          <View style={styles.cardContent}>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ color: '#184461', fontSize: 20 }}>
+                <Text style={{ fontSize: 30 }}>🤩</Text> Welcome
+              </Text>
+            </View>
+
+            <Text
+              style={{
+                fontSize: 23,
+                fontWeight: 'bold',
+                marginVertical: 8,
+                color: '#184461',
+                textAlign: 'center',
+              }}
+            >
+              Vilyn Tan Cho
+            </Text>
+            {/* divider start */}
+            <View
+              style={{
+                width: '80%',
+                height: 1,
+                backgroundColor: '#000',
+                alignSelf: 'center',
+                marginVertical: 8,
+              }}
+            />
+            {/* divider end */}
+
+            <Text style={{ color: '#184461', fontSize: 12, marginBottom: 10 }}>
+              {' '}
+              Click the button below to register your visitor
+            </Text>
+            <PrimaryButttonComponent
+              label="Register Visitors"
+              iconRight={'user-plus'}
+              iconType={'FontAwesome'}
+              onPress={() => {}}
+            />
+          </View>
+          <View style={styles.cardBottom}></View>
         </View>
-        <View style={styles.cardBottom}></View>
-      </View>
+      </DropShadow>
+
       {/* card end */}
       {/* menu start */}
-      <View style={{
-        marginHorizontal: 20,
-        marginTop: 20,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between"
-      }}>
-        <TouchableOpacity 
-        onPress={()=> navigation.navigate("UserProfile")}
+      <View
         style={{
-          width: "33%",
-          marginBottom: 20,
-          justifyContent: "center",
-          alignItems: "center"
+          marginHorizontal: 20,
+          marginTop: 20,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.navigate('UserProfile')}
+          style={{
+            width: '33%',
+            marginBottom: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <DropShadow
+            style={{
+              shadowColor: '#4A4E69',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                padding: 5,
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 25,
+              }}
+            >
+              <Image source={Images.userProfileImg} width={28} height={28} />
+            </View>
+          </DropShadow>
 
-        }}>
-         <View
-           style={{
-          backgroundColor: "#184461",
-          padding: 5,
-          width: 50,
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 50,
-        }}
-        >
-           <Icon type='AntDesign' name='user' color='#fff' size={30} />
-         </View>
-          <Text style={{
-            color: "#000",
-            fontWeight: "bold",
-            marginTop: 10
-          }}>Profile</Text>
+          <Text
+            style={{
+              color: '#000',
+              marginTop: 10,
+            }}
+          >
+            Profile
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{
-          width: "33%",
-          marginBottom: 20,
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-         <View
-           style={{
-          backgroundColor: "#184461",
-          padding: 5,
-          width: 50,
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 50,
-        }}
-        >
-           <Icon type='Feather' name='users' color='#fff' size={30} />
-         </View>
-          <Text style={{
-            color: "#000",
-            fontWeight: "bold",
-            marginTop: 10
-          }}>Visitors</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{
-          width: "33%",
-          marginBottom: 20,
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-         <View
-           style={{
-          backgroundColor: "#184461",
-          padding: 5,
-          width: 50,
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 50,
-        }}
-        >
-           <Icon type='MaterialCommunityIcons' name='alarm-light' color='#fff' size={30} />
-         </View>
-          <Text style={{
-            color: "#000",
-            fontWeight: "bold",
-            marginTop: 10
-          }}>Emergency</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{
-          width: "33%",
-          marginBottom: 20,
-          justifyContent: "center",
-          alignItems: "center"
 
-        }}>
-         <View
-           style={{
-          backgroundColor: "#184461",
-          padding: 5,
-          width: 50,
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 50,
-        }}
+        <TouchableOpacity
+        onPress={() => navigation.navigate('VistorsRecord')}
+          style={{
+            width: '33%',
+            marginBottom: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-           <Icon type='FontAwesome5' name='credit-card' color='#fff' size={30} />
-         </View>
-          <Text style={{
-            color: "#000",
-            fontWeight: "bold",
-            marginTop: 10
-          }}>Access Pass</Text>
+          <DropShadow
+            style={{
+              shadowColor: '#4A4E69',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                padding: 5,
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 25,
+              }}
+            >
+              <Image source={Images.visitorImg} width={28} height={28} />
+            </View>
+          </DropShadow>
+
+          <Text
+            style={{
+              color: '#000',
+              marginTop: 10,
+            }}
+          >
+            Visitors
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity 
-         onPress={()=> navigation.navigate("BusinessCard")}
-        style={{
-          width: "33%",
-          marginBottom: 20,
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-         <View
-           style={{
-          backgroundColor: "#184461",
-          padding: 5,
-          width: 50,
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 50,
-        }}
+
+        <TouchableOpacity
+        onPress={() => navigation.navigate('CommunityContact')}
+          style={{
+            width: '33%',
+            marginBottom: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-           <Icon type='FontAwesome5' name='id-card' color='#fff' size={30} />
-         </View>
-          <Text style={{
-            color: "#000",
-            fontWeight: "bold",
-            marginTop: 10
-          }}>Business Card</Text>
+          <DropShadow
+            style={{
+              shadowColor: '#4A4E69',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                padding: 5,
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 25,
+              }}
+            >
+              <Image source={Images.alarmWhiteImg} width={28} height={28} />
+            </View>
+          </DropShadow>
+
+          <Text
+            style={{
+              color: '#000',
+              marginTop: 10,
+            }}
+          >
+            Emergency
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{
-          width: "33%",
-          marginBottom: 20,
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-         <View
-           style={{
-          backgroundColor: "#184461",
-          padding: 5,
-          width: 50,
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 50,
-        }}
+
+        <TouchableOpacity
+          style={{
+            width: '33%',
+            marginBottom: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-           <Icon type='Ionicons' name='chatbubbles-outline' color='#fff' size={30} />
-         </View>
-          <Text style={{
-            color: "#000",
-            fontWeight: "bold",
-            marginTop: 10
-          }}>FAQ</Text>
+          <DropShadow
+            style={{
+              shadowColor: '#4A4E69',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                padding: 5,
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 25,
+              }}
+            >
+              <Image source={Images.accessKeyImg} width={28} height={28} />
+            </View>
+          </DropShadow>
+
+          <Text
+            style={{
+              color: '#000',
+              marginTop: 10,
+            }}
+          >
+            Access Card
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            width: '33%',
+            marginBottom: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <DropShadow
+            style={{
+              shadowColor: '#4A4E69',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                padding: 5,
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 25,
+              }}
+            >
+              <Image source={Images.businessCardImg} width={28} height={28} />
+            </View>
+          </DropShadow>
+
+          <Text
+            style={{
+              color: '#000',
+              marginTop: 10,
+            }}
+          >
+            Business Card
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            width: '33%',
+            marginBottom: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <DropShadow
+            style={{
+              shadowColor: '#4A4E69',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                padding: 5,
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 25,
+              }}
+            >
+              <Image source={Images.faqWhiteImg} width={28} height={28} />
+            </View>
+          </DropShadow>
+
+          <Text
+            style={{
+              color: '#000',
+              marginTop: 10,
+            }}
+          >
+            FAQ
+          </Text>
         </TouchableOpacity>
       </View>
       {/* menu end */}
 
-
       {/* announcement start */}
-      <Text style={{
-          fontWeight: "bold",
+      <Text
+        style={{
+          fontWeight: 'bold',
           fontSize: 20,
-          color: "#184461",
-          marginHorizontal: 10
-        }}>
-          Announcement
-        </Text>
-      <View style={{
-        marginHorizontal: 20,
-        marginTop: 20
-      }}>
-
+          color: '#184461',
+          marginHorizontal: 10,
+        }}
+      >
+        Announcement
+      </Text>
+      <View
+        style={{
+          marginHorizontal: 20,
+          marginTop: 20,
+        }}
+      >
         <View>
-          <TouchableOpacity style={{
-            flexDirection: "row",
-            backgroundColor: "#184461",
-            paddingLeft: 10,
-            marginBottom: 10,
-            borderRadius: 10,
-            shadowColor: "#000",
-            shadowOffset: {
-              height: 2,
-            },
-            shadowOpacity: 0.4,
-            shadowRadius: 3,
-            elevation: 5,
-            overflow: "hidden"
-          }}>
-            <Image source={grocery} style={{
-              width: 100,
-              height: 80
-            }} />
-            <View  style={{
-              paddingVertical: 5,
-              paddingHorizontal: 10,
-              backgroundColor: "#fff",
-              width: "70%"
-            }}>
-              <Text style={{
-                color: "#184461",
-                fontWeight: "bold",
-                marginBottom: 5
-              }}>Join for grocery shopping</Text>
-              <View style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginBottom: 5
-              }}>
-                <Text style={{
-                  color: "#184461"
-                }}>19 Aug 2021</Text>
-                <Text style={{
-                  color: "#184461"
-                }}>10 : 00 am</Text>
-              </View>
-              <View style={{
-                flexDirection: "row",
-                alignItems: "center"
-              }}>
-                <Icon type='Ionicons' name='location' color='blue' size={20} />
-                <Text>3.5 Miles</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={{
-            flexDirection: "row",
-            backgroundColor: "#184461",
-            paddingLeft: 10,
-            marginBottom: 10,
-            borderRadius: 10,
-            shadowColor: "#000",
-            shadowOffset: {
-              height: 2,
-            },
-            shadowOpacity: 0.4,
-            shadowRadius: 3,
-            elevation: 5,
-            overflow: "hidden"
-          }}>
-            <Image source={grocery} style={{
-              width: 100,
-              height: 80
-            }} />
-            <View  style={{
-              paddingVertical: 5,
-              paddingHorizontal: 10,
-              backgroundColor: "#fff",
-              width: "70%"
-            }}>
-              <Text style={{
-                color: "#184461",
-                fontWeight: "bold",
-                marginBottom: 5
-              }}>Join for grocery shopping</Text>
-              <View style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginBottom: 5
-              }}>
-                <Text style={{
-                  color: "#184461"
-                }}>19 Aug 2021</Text>
-                <Text style={{
-                  color: "#184461"
-                }}>10 : 00 am</Text>
-              </View>
-              <View style={{
-                flexDirection: "row",
-                alignItems: "center"
-              }}>
-                <Icon type='Ionicons' name='location' color='blue' size={20} />
-                <Text>3.5 Miles</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={{
-            flexDirection: "row",
-            backgroundColor: "#184461",
-            paddingLeft: 10,
-            marginBottom: 10,
-            borderRadius: 10,
-            shadowColor: "#000",
-            shadowOffset: {
-              height: 2,
-            },
-            shadowOpacity: 0.4,
-            shadowRadius: 3,
-            elevation: 5,
-            overflow: "hidden"
-          }}>
-            <Image source={grocery} style={{
-              width: 100,
-              height: 80
-            }} />
-            <View  style={{
-              paddingVertical: 5,
-              paddingHorizontal: 10,
-              backgroundColor: "#fff",
-              width: "70%"
-            }}>
-              <Text style={{
-                color: "#184461",
-                fontWeight: "bold",
-                marginBottom: 5
-              }}>Join for grocery shopping</Text>
-              <View style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginBottom: 5
-              }}>
-                <Text style={{
-                  color: "#184461"
-                }}>19 Aug 2021</Text>
-                <Text style={{
-                  color: "#184461"
-                }}>10 : 00 am</Text>
-              </View>
-              <View style={{
-                flexDirection: "row",
-                alignItems: "center"
-              }}>
-                <Icon type='Ionicons' name='location' color='blue' size={20} />
-                <Text>3.5 Miles</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
+          <View
+            style={{
+              width: 320,
+              backgroundColor: 'white',
+              borderRadius: 15,
+              elevation: 10,
+              shadowColor: '#000',
+              shadowRadius: 10,
+              shadowOpacity: 0.6,
+              elevation: 8,
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              marginBottom: 10,
+            }}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <View
+                style={{
+                  width: 10,
+                  backgroundColor: '#184461',
+                  borderTopLeftRadius: 10,
+                  borderBottomLeftRadius: 10,
+                }}
+              />
+              <Image
+                source={grocery}
+                style={{
+                  width: 125,
+                  height: 100,
+                }}
+              />
 
+              <View
+                style={{
+                  paddingVertical: 5,
+                  marginStart: 5,
+                  backgroundColor: '#fff',
+                  marginEnd: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    color: '#184461',
+                    fontWeight: 'bold',
+                    marginBottom: 5,
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  Join for grocery shopping
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#184461',
+                    }}
+                  >
+                    19 Aug 2021
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#184461',
+                    }}
+                  >
+                    10 : 00 am
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Icon
+                    type="Ionicons"
+                    name="location"
+                    color="blue"
+                    size={20}
+                  />
+                  <Text>3.5 Miles</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              width: 320,
+              backgroundColor: 'white',
+              borderRadius: 15,
+              elevation: 10,
+              shadowColor: '#000',
+              shadowRadius: 10,
+              shadowOpacity: 0.6,
+              elevation: 8,
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              marginBottom: 10,
+            }}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <View
+                style={{
+                  width: 10,
+                  backgroundColor: '#184461',
+                  borderTopLeftRadius: 10,
+                  borderBottomLeftRadius: 10,
+                }}
+              />
+              <Image
+                source={grocery}
+                style={{
+                  width: 125,
+                  height: 100,
+                }}
+              />
+
+              <View
+                style={{
+                  paddingVertical: 5,
+                  marginStart: 5,
+                  backgroundColor: '#fff',
+                  marginEnd: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    color: '#184461',
+                    fontWeight: 'bold',
+                    marginBottom: 5,
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  Join for grocery shopping
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: 5,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#184461',
+                    }}
+                  >
+                    19 Aug 2021
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#184461',
+                    }}
+                  >
+                    10 : 00 am
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Icon
+                    type="Ionicons"
+                    name="location"
+                    color='#184461'
+                    size={20}
+                  />
+                  <Text>3.5 Miles</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
       </View>
       {/* announcement end */}
     </ScrollView>
   )
 }
 
-
 const styles = StyleSheet.create({
-  header:{
-    backgroundColor: "#184461",
-    height: 150
+  header: {
+    backgroundColor: '#184461',
+    height: 120,
   },
-  headerContent:{
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 15,
   },
-  headerTitle:{
-    fontWeight: "bold",
+  headerTitle: {
+    fontWeight: 'bold',
     fontSize: 18,
-    color: "#fff"
+    color: '#fff',
   },
-  profileImage:{
-    width: 50,
-    height: 50,
-    borderRadius: 50/2
+  profileImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#FFFEFE',
   },
-  cardWrap:{
-    width: "100%",
-    overflow: "hidden",
-    marginTop: -60,
-    width: 300,
-    alignSelf: "center"
+  cardWrap: {
+    width: '100%',
+    overflow: 'hidden',
+    marginTop: -30,
+    width: 280,
+    alignSelf: 'center',
+    elevation: 8,
   },
-  cardContent:{
+  cardContent: {
     padding: 15,
-    backgroundColor: "#D0F2EC",
-    width: 300,
-    alignSelf: "center",
-    justifyContent: "center"
+    backgroundColor: '#D0F2EC',
+    width: 280,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
   },
   cardBottom: {
     width: 0,
     height: 0,
-    backgroundColor: "transparent",
-    borderStyle: "solid",
-    borderLeftWidth: 180,
-    borderRightWidth: 180,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 120,
+    borderRightWidth: 120,
     borderBottomWidth: 50,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "#D0F2EC",
-    alignSelf: "center",
-    transform: [{rotate: "180deg"}]
-  }
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#D0F2EC',
+    alignSelf: 'center',
+    transform: [{ rotate: '180deg' }],
+  },
 })
 
 export default IndexHomeContainer

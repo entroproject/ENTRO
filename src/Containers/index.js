@@ -7,3 +7,6 @@ export { default as IndexRegisterCompanyUserContainer } from './RegisterCompanyU
 export { default as IndexEditUserContainer } from './EditProfile/Index'
 export { default as IndexTutorialSlideContainer} from './TutorialSlide/Index'
 export { default as IndexVirtualAccessContainer} from './VirtualCard/Index'
+export { default as IndexSettingContainer} from './Setting/Index'
+export { default as IndexVisitorContainer} from './Visitors/Index'
+export { default as IndexCommunityContainer} from './Community/Index'

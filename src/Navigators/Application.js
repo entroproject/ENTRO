@@ -12,6 +12,9 @@ import {
   IndexEditUserContainer,
   IndexTutorialSlideContainer,
   IndexVirtualAccessContainer,
+  IndexVisitorContainer,
+  IndexCommunityContainer,
+  IndexSettingContainer,
 } from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
@@ -32,7 +35,7 @@ const ApplicationNavigator = () => {
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-           {/* <Stack.Screen name="Startup" component={StartupContainer} /> */}
+           <Stack.Screen name="Startup" component={StartupContainer} /> 
 
            {/* <Stack.Screen
             name="Login"
@@ -121,6 +124,32 @@ const ApplicationNavigator = () => {
           animationEnabled: false,
         }}
       />
+
+      <Stack.Screen
+        name="VistorsRecord"
+        component={IndexVisitorContainer}
+        options={{
+          animationEnabled: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="CommunityContact"
+        component={IndexCommunityContainer}
+        options={{
+          animationEnabled: false,
+        }}
+      />
+
+      <Stack.Screen
+      name="Settings"
+      component={IndexSettingContainer}
+      options={{
+        animationEnabled: false,
+      }}
+    />
+
+
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

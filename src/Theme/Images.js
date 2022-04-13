@@ -17,5 +17,16 @@ export default function () {
     tutorialfirstimage: require('@/Assets/Images/Destination.png'),
     tutorialsecondimage: require('@/Assets/Images/MeetUp.png'),
     companyQrcode: require('@/Assets/Images/QrCode.png'),
+
+    userProfileImg: require('@/Assets/Images/ProfileWhite.png'),
+    accessKeyImg: require('@/Assets/Images/AccessKeyWhite.png'),
+    alarmWhiteImg: require('@/Assets/Images/AlarmWhite.png'),
+    visitorImg: require('@/Assets/Images/VisitorWhite.png'),
+    faqWhiteImg: require('@/Assets/Images/FaqWhite.png'),
+    businessCardImg: require('@/Assets/Images/BusinessCardWhite.png'),
+
+    homeToggle: require('@/Assets/Images/HomeToggle.png'),
+    settingToggle: require('@/Assets/Images/SettingToggle.png'),
+
   }
 }

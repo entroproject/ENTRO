@@ -156,7 +156,9 @@ const IndexHomeContainer = ({navigation}) => {
             marginTop: 10
           }}>Access Pass</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{
+        <TouchableOpacity 
+         onPress={()=> navigation.navigate("BusinessCard")}
+        style={{
           width: "33%",
           marginBottom: 20,
           justifyContent: "center",

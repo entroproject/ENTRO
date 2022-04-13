@@ -16,6 +16,8 @@ import {
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
 import TabNavigation from './TabNavigation'
+import IndexBusinessCardContainer from '@/Containers/BusinessCard'
+import IndexAddBusinessCardContainer from '@/Containers/AddBusinessCard'
 
 const Stack = createStackNavigator()
 
@@ -32,7 +34,7 @@ const ApplicationNavigator = () => {
 
            {/* <Stack.Screen name="Startup" component={StartupContainer} /> */}
 
-           <Stack.Screen
+           {/* <Stack.Screen
             name="Login"
             component={IndexLoginContainer}
             options={{
@@ -46,7 +48,7 @@ const ApplicationNavigator = () => {
             options={{
               animationEnabled: false,
             }}
-          />
+          /> */}
 
           <Stack.Screen
             name="MainNav"
@@ -87,6 +89,22 @@ const ApplicationNavigator = () => {
               animationEnabled: false,
             }}
           />
+
+          <Stack.Screen
+          name="BusinessCard"
+          component={IndexBusinessCardContainer}
+          options={{
+            animationEnabled: false,
+          }}
+        />
+
+          <Stack.Screen
+          name="AddBusinessCard"
+          component={IndexAddBusinessCardContainer}
+          options={{
+            animationEnabled: false,
+          }}
+        />
 
           <Stack.Screen
           name="TutorialSlide"

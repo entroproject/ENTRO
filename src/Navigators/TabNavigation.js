@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
-import {IndexEditUserContainer, IndexHomeContainer, IndexUserProfileContainer, IndexVirtualAccessContainer} from '@/Containers';
+import {IndexHomeContainer} from '@/Containers';
 import Icon from 'react-native-dynamic-vector-icons'
 import Svg, {Path} from 'react-native-svg';
 import {
@@ -8,6 +8,7 @@ import {
   BottomTabBar,
 } from '@react-navigation/bottom-tabs';
 import {isIphoneX} from 'react-native-iphone-x-helper';
+import IndexBusinessCardContainer from '@/Containers/BusinessCard';
 
 const Tab = createBottomTabNavigator();
 
@@ -133,7 +134,7 @@ const TabNavigation = () => {
 
       <Tab.Screen
         name="Business Card"
-        component={IndexHomeContainer}
+        component={IndexBusinessCardContainer}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon type='FontAwesome' name="vcard-o" size={25} color={focused ? "dodgerblue" : "grey"} />

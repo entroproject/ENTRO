@@ -14,7 +14,7 @@ import PhoneInput from 'react-native-phone-number-input'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import { navigate } from '@/Navigators/utils'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
-import { showMessage, hideMessage } from 'react-native-flash-message'
+import { showMessage } from 'react-native-flash-message'
 import { useNavigation } from '@react-navigation/native'
 
 const IndexLoginContainer = () => {

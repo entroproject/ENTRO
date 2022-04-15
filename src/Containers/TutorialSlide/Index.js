@@ -7,6 +7,8 @@ import {
   Dimensions,
   PixelRatio,
   Text,
+  ScrollView,
+  useWindowDimensions,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { navigate } from '@/Navigators/utils'
@@ -15,6 +17,8 @@ import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 function IndexTutorialSlideContainer({}) {
   const { Fonts, Images, Colors, Layout, Gutters } = useTheme()
   const [loading, setLoading] = useState(false)
+  const SCREEN_WIDTH = useWindowDimensions().width
+  const SCREEN_HEIGHT = useWindowDimensions().height
 
   const { width, height } = Dimensions.get('window')
   const SIZES = {
@@ -338,7 +342,9 @@ function IndexTutorialSlideContainer({}) {
         },
       ]}
     >
-      <View>{renderContent()}</View>
+      <View>
+      {renderContent()}
+      </View>
 
       {/* {!completed ? (
         <View

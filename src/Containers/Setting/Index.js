@@ -21,7 +21,7 @@ const IndexSettingContainer = () => {
   const signOutApp = () => {}
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
       <View
         style={{
           height: 90,
@@ -155,7 +155,7 @@ const IndexSettingContainer = () => {
 
       <Text style={{marginLeft:15, color:'#184461', fontWeight:'500'}}>Management</Text>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

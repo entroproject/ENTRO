@@ -8,14 +8,15 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
-import woman from '../../Assets/Images/woman.jpg'
 import grocery from '../../Assets/Images/grocery.jpg'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
+import { useOrientation } from '../useOrientation'
 
 const IndexHomeContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images } = useTheme()
+  const orientation = useOrientation();
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
@@ -136,6 +137,7 @@ const IndexHomeContainer = ({ navigation }) => {
             style={{
               color: '#000',
               marginTop: 10,
+              
             }}
           >
             Profile
@@ -181,6 +183,7 @@ const IndexHomeContainer = ({ navigation }) => {
             style={{
               color: '#000',
               marginTop: 10,
+              
             }}
           >
             Visitors
@@ -233,6 +236,7 @@ const IndexHomeContainer = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
+        onPress={() => navigation.navigate('VirtualAccessCard')}
           style={{
             width: '33%',
             marginBottom: 20,
@@ -266,17 +270,23 @@ const IndexHomeContainer = ({ navigation }) => {
             </View>
           </DropShadow>
 
+          <View style={{width:60, alignItems:'center', }}>
           <Text
-            style={{
-              color: '#000',
-              marginTop: 10,
-            }}
-          >
-            Access Card
-          </Text>
+          style={{
+            color: '#000',
+            marginTop: 10,
+            flexWrap:'wrap',
+            textAlign:'center'
+          }}
+        >
+          Access Card
+        </Text>
+          </View>
+     
         </TouchableOpacity>
 
         <TouchableOpacity
+        onPress={() => navigation.navigate('BusinessCard')}
           style={{
             width: '33%',
             marginBottom: 20,
@@ -310,14 +320,18 @@ const IndexHomeContainer = ({ navigation }) => {
             </View>
           </DropShadow>
 
+          <View style={{width:60, alignItems:'center', }}>
           <Text
-            style={{
-              color: '#000',
-              marginTop: 10,
-            }}
-          >
-            Business Card
-          </Text>
+          style={{
+            color: '#000',
+            marginTop: 10,
+            flexWrap:'wrap',
+            textAlign:'center'
+          }}
+        >
+          Business Card
+        </Text>
+        </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -370,7 +384,7 @@ const IndexHomeContainer = ({ navigation }) => {
       <Text
         style={{
           fontWeight: 'bold',
-          fontSize: 20,
+          fontSize: orientation === 'PORTRAIT'? 20: 24, 
           color: '#184461',
           marginHorizontal: 10,
         }}
@@ -386,7 +400,6 @@ const IndexHomeContainer = ({ navigation }) => {
         <View>
           <View
             style={{
-              width: 320,
               backgroundColor: 'white',
               borderRadius: 15,
               elevation: 10,
@@ -413,8 +426,9 @@ const IndexHomeContainer = ({ navigation }) => {
               <Image
                 source={grocery}
                 style={{
-                  width: 125,
+                  width: "40%",
                   height: 100,
+                  resizeMode:'cover'
                 }}
               />
 
@@ -427,12 +441,13 @@ const IndexHomeContainer = ({ navigation }) => {
                 }}
               >
                 <Text
-                  style={{
+                  style={[{
                     color: '#184461',
-                    fontWeight: 'bold',
                     marginBottom: 5,
                     flexWrap: 'wrap',
-                  }}
+                    fontWeight: 'bold',
+                    fontSize: orientation === 'PORTRAIT'? 14: 18 
+                  }]}
                 >
                   Join for grocery shopping
                 </Text>
@@ -467,7 +482,7 @@ const IndexHomeContainer = ({ navigation }) => {
                   <Icon
                     type="Ionicons"
                     name="location"
-                    color="blue"
+                    color='#184461'
                     size={20}
                   />
                   <Text>3.5 Miles</Text>
@@ -475,9 +490,11 @@ const IndexHomeContainer = ({ navigation }) => {
               </View>
             </View>
           </View>
+
+
           <View
             style={{
-              width: 320,
+            
               backgroundColor: 'white',
               borderRadius: 15,
               elevation: 10,
@@ -504,8 +521,9 @@ const IndexHomeContainer = ({ navigation }) => {
               <Image
                 source={grocery}
                 style={{
-                  width: 125,
+                  width: "40%",
                   height: 100,
+                  resizeMode:'cover'
                 }}
               />
 
@@ -520,9 +538,10 @@ const IndexHomeContainer = ({ navigation }) => {
                 <Text
                   style={{
                     color: '#184461',
-                    fontWeight: 'bold',
                     marginBottom: 5,
                     flexWrap: 'wrap',
+                    fontWeight: 'bold',
+                    fontSize: orientation === 'PORTRAIT'? 14: 18 
                   }}
                 >
                   Join for grocery shopping

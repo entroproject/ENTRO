@@ -15,12 +15,13 @@ import {
   IndexVisitorContainer,
   IndexCommunityContainer,
   IndexSettingContainer,
+  IndexBusinessCardContainer,
+  IndexAddBusinessCardContainer,
 } from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
 import TabNavigation from './TabNavigation'
-import IndexBusinessCardContainer from '@/Containers/BusinessCard'
-import IndexAddBusinessCardContainer from '@/Containers/AddBusinessCard'
+
 
 const Stack = createStackNavigator()
 
@@ -37,7 +38,7 @@ const ApplicationNavigator = () => {
 
            <Stack.Screen name="Startup" component={StartupContainer} /> 
 
-           <Stack.Screen
+          <Stack.Screen
             name="Login"
             component={IndexLoginContainer}
             options={{
@@ -51,7 +52,7 @@ const ApplicationNavigator = () => {
             options={{
               animationEnabled: false,
             }}
-          />
+          /> 
 
           <Stack.Screen
             name="MainNav"

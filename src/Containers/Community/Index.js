@@ -109,7 +109,7 @@ const IndexCommunityContainer = () => {
           >
             <View
               style={{
-                width: 300,
+                width: "80%",
                 backgroundColor: 'white',
                 borderRadius: 15,
                 elevation: 10,
@@ -197,7 +197,7 @@ const IndexCommunityContainer = () => {
           >
             <View
               style={{
-                width: 300,
+                width: "80%",
                 backgroundColor: 'white',
                 borderRadius: 15,
                 elevation: 10,
@@ -285,7 +285,7 @@ const IndexCommunityContainer = () => {
           >
             <View
               style={{
-                width: 300,
+                width: "80%",
                 backgroundColor: 'white',
                 borderRadius: 15,
                 elevation: 10,
@@ -375,7 +375,7 @@ const IndexCommunityContainer = () => {
           >
             <View
               style={{
-                width: 300,
+                width: "80%",
                 backgroundColor: 'white',
                 borderRadius: 15,
                 elevation: 10,
@@ -463,7 +463,7 @@ const IndexCommunityContainer = () => {
           >
             <View
               style={{
-                width: 300,
+                width: "80%",
                 backgroundColor: 'white',
                 borderRadius: 15,
                 elevation: 10,

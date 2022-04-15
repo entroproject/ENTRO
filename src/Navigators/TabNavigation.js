@@ -2,11 +2,9 @@
 import React from 'react'
 import { View, Image, TouchableOpacity } from 'react-native'
 import {
-  IndexEditUserContainer,
+  IndexBusinessCardContainer,
   IndexHomeContainer,
   IndexSettingContainer,
-  IndexUserProfileContainer,
-  IndexVirtualAccessContainer,
   IndexVisitorContainer,
 } from '@/Containers'
 import Icon from 'react-native-dynamic-vector-icons'

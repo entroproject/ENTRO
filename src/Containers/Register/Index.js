@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  ActivityIndicator,
+  useWindowDimensions,
+  ScrollView,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PhoneInput from 'react-native-phone-number-input'
@@ -16,10 +17,12 @@ import { navigate } from '@/Navigators/utils'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { showMessage, hideMessage } from 'react-native-flash-message'
 import { useNavigation } from '@react-navigation/native'
-import DropShadow from 'react-native-drop-shadow'
+import { useOrientation } from '../useOrientation'
 
 const IndexRegisterContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
+  const SCREEN_WIDTH = useWindowDimensions().width
+  const SCREEN_HEIGHT = useWindowDimensions().height
 
   const navigation = useNavigation()
 
@@ -27,6 +30,7 @@ const IndexRegisterContainer = () => {
   const [numValidated, setNumValidated] = useState(false)
   const [loading, setLoading] = useState(false)
   const [otp, setOtp] = useState(false)
+  const orientation = useOrientation();
 
   const submitPhoneNumber = () => {
     if (phoneNumber.length < 13 || phoneNumber.length > 14) {
@@ -70,7 +74,7 @@ const IndexRegisterContainer = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, width: SCREEN_WIDTH, minHeight: SCREEN_HEIGHT}}>
       <ImageBackground
         source={Images.BackgroundImage}
         style={{
@@ -81,6 +85,7 @@ const IndexRegisterContainer = () => {
           height: Dimensions.get('window').height,
         }}
       >
+      <ScrollView>
         <Image
           source={Images.logoGreen}
           style={{ width: 230, height: 55, marginTop: 57, marginLeft: 20 }}
@@ -106,11 +111,10 @@ const IndexRegisterContainer = () => {
             Create an account to begin your journey
           </Text>
         </View>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal:5 }}>
           <View
             style={{
-              width: 320,
-              height: 370,
+              width:'90%',
               marginTop: 170,
               borderRadius: 20,
               backgroundColor: 'rgba(241, 241, 241, 0.8)',
@@ -123,16 +127,17 @@ const IndexRegisterContainer = () => {
                 width: 0,
                 height: 4,
               },
+              paddingHorizontal:30, 
+              paddingBottom:25
             }}
+            
           >
             <Text
-              style={{
-                fontSize: 13,
+              style={[Fonts.bodyBold,{
+               
                 color: Colors.textColor,
-                fontWeight: '700',
                 marginTop: 63,
-                marginStart: 29,
-              }}
+              }]}
             >
               PHONE NUMBER
             </Text>
@@ -154,13 +159,10 @@ const IndexRegisterContainer = () => {
               {numValidated && (
                 <>
                   <Text
-                    style={{
-                      fontSize: 13,
+                    style={[Fonts.bodyBold,{
                       color: Colors.textColor,
-                      fontWeight: '700',
-                      marginTop: 40,
-                      marginStart: 29,
-                    }}
+                      marginTop:20
+                    }]}
                   >
                     OTP VERIFICATION
                   </Text>
@@ -188,7 +190,7 @@ const IndexRegisterContainer = () => {
                   label="Register"
                   loading={loading}
                   
-                  style={{ width: 250 }}
+                  style={{ width: orientation === 'PORTRAIT' ? 250 : 320}}
                   onPress={() =>
                     numValidated ? handleRegister() : submitPhoneNumber()
                   }
@@ -196,11 +198,9 @@ const IndexRegisterContainer = () => {
 
                 <View style={{ marginTop: 2, flexDirection: 'row' }}>
                   <Text
-                    style={{
+                    style={[Fonts.caption,{
                       color: '#363536',
-                      fontSize: 12,
-                      fontWeight: '500',
-                    }}
+                    }]}
                   >
                     Already have an account?{' '}
                   </Text>
@@ -209,11 +209,10 @@ const IndexRegisterContainer = () => {
                     onPress={() => navigate('Login')}
                   >
                     <Text
-                      style={{
+                      style={[Fonts.captionBold,{
                         color: '#237A0C',
-                        fontSize: 12,
-                        fontWeight: '500',
-                      }}
+                        textDecorationLine:'underline'
+                      }]}
                     >
                       Login Now
                     </Text>
@@ -223,6 +222,7 @@ const IndexRegisterContainer = () => {
             </View>
           </View>
         </View>
+        </ScrollView>
       </ImageBackground>
     </View>
   )
@@ -233,10 +233,11 @@ export default IndexRegisterContainer
 const styleSheet = StyleSheet.create({
   phoneNumberView: {
     height: 50,
-    width: '80%',
+    width: '100%',
     backgroundColor: 'rgba(241, 241, 241, 0.8)',
     marginStart: 29,
     marginEnd: 29,
+    alignSelf:'center'
   },
   otpView: {
     alignSelf: 'center',

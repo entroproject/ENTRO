@@ -5,8 +5,9 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  FlatList,
+  TouchableWithoutFeedback,
   ScrollView,
-  Dimensions,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import Icon from 'react-native-dynamic-vector-icons'
@@ -14,6 +15,7 @@ import Icon from 'react-native-dynamic-vector-icons'
 const IndexUserProfileContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
   const [cardPickedIndex, setcardPickedIndex] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   const VirtualCard = [
     {

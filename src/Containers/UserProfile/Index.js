@@ -7,14 +7,16 @@ import {
   ImageBackground,
   FlatList,
   TouchableWithoutFeedback,
+  ScrollView,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import Icon from 'react-native-dynamic-vector-icons'
-const [loading, setLoading] = useState(false)
+
 
 const IndexUserProfileContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
   const [cardPickedIndex, setcardPickedIndex] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   const VirtualCard = [
     {
@@ -47,10 +49,6 @@ const IndexUserProfileContainer = ({ navigation }) => {
  
   const handCardSelected = (item, index) => {
     setcardPickedIndex(index);
-    navigation.navigate('VirtualAccessCard', {
-      itemCardName: item.companyName,
-      itemCompanyLogo: item.cardIcon,
-    })
   }
 
   return (

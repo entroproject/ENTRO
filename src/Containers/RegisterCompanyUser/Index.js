@@ -8,28 +8,30 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native'
-import { useTheme } from '@/Hooks'
-import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
-import { regexStr } from '@/Assets/Constants'
-import { navigate } from '@/Navigators/utils'
-import DropShadow from 'react-native-drop-shadow'
-import ImagePicker from 'react-native-image-crop-picker'
-import { showMessage, hideMessage } from 'react-native-flash-message'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useTheme } from '@/Hooks';
+import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent';
+import { regexStr } from '@/Assets/Constants';
+import { navigate } from '@/Navigators/utils';
+import DropShadow from 'react-native-drop-shadow';
+import ImagePicker from 'react-native-image-crop-picker';
+import { showMessage, hideMessage } from 'react-native-flash-message';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useOrientation } from '../useOrientation';
 
 const IndexRegisterCompanyUserContainer = () => {
-  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
-  const [photo, setPhoto] = useState(null)
-  const [fullName, setFullName] = useState('')
-  const [emailAddress, setEmailAddress] = useState('')
-  const [companyName, setCompanyName] = useState('')
-  const [carPlateNum, setCarPlateNum] = useState('')
-  const [hasError, setHasError] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [isValidFullName, setIsValidFullName] = useState(true)
-  const [isValidEmailAddress, setIsValidEmailAddress] = useState(true)
-  const [isValidCompanyName, setIsValidCompanyName] = useState(true)
-  const [isValidcarPlateNum, setIsValidCarPlateNum] = useState(true)
+  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme();
+  const [photo, setPhoto] = useState(null);
+  const [fullName, setFullName] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [carPlateNum, setCarPlateNum] = useState('');
+  const [hasError, setHasError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isValidFullName, setIsValidFullName] = useState(true);
+  const [isValidEmailAddress, setIsValidEmailAddress] = useState(true);
+  const [isValidCompanyName, setIsValidCompanyName] = useState(true);
+  const [isValidcarPlateNum, setIsValidCarPlateNum] = useState(true);
+  const orientation = useOrientation();
   const [placeholder, setPlaceholder] = useState({
     fullName: 'Enter FullName',
     emailAddress: 'Enter Email Address',
@@ -154,7 +156,7 @@ const IndexRegisterCompanyUserContainer = () => {
           >
             <View
               style={{
-                width: 320,
+                width: "90%",
                 height: 430,
                 marginTop: 110,
                 borderRadius: 20,
@@ -168,6 +170,7 @@ const IndexRegisterCompanyUserContainer = () => {
                   width: 0,
                   height: 4,
                 },
+              
               }}
             >
               <View style={[Layout.center, { marginBottom: 30 }]}>
@@ -175,10 +178,10 @@ const IndexRegisterCompanyUserContainer = () => {
                   style={[
                     Layout.center,
                     {
-                      width: 120,
-                      height: 120,
+                      width: orientation === 'PORTRAIT' ? 120 : 160,
+                      height: orientation === 'PORTRAIT' ? 120 : 160,
                       position: 'absolute',
-                      borderRadius: 60,
+                      borderRadius: orientation === 'PORTRAIT' ? 60 : 80,
                       borderColor: '#184461',
                       borderWidth: MetricsSizes.zero + 1,
                       backgroundColor: '#C4c4c4',
@@ -189,25 +192,25 @@ const IndexRegisterCompanyUserContainer = () => {
                   <Image
                     source={photo ? { uri: photo.path } : Images.profilepic}
                     style={{
-                      width: 110,
-                      height: 110,
+                      width: orientation === 'PORTRAIT' ? 110 : 150,
+                      height: orientation === 'PORTRAIT' ? 110 : 150,
                       zIndex: 1,
-                      borderRadius: 60,
+                      borderRadius: orientation === 'PORTRAIT' ? 60 : 75.5,
                     }}
                   />
                 </View>
               </View>
-              <View style={[Layout.center, { marginLeft: 70 }]}>
+              <View style={[Layout.center, { marginLeft: orientation === 'PORTRAIT' ? 70 : 90}]}>
                 <TouchableOpacity
                   onPress={() => uploadPhoto()}
-                  activeOpacity={0.5}
+                  activeOpacity={0.9}
                   style={[
                     Layout.center,
                     {
                       backgroundColor: '#184461',
-                      width: 35,
-                      height: 35,
-                      borderRadius: 15.5,
+                      width: orientation === 'PORTRAIT' ? 35 : 40,
+                      height: orientation === 'PORTRAIT' ? 35 : 40,
+                      borderRadius: orientation === 'PORTRAIT' ? 15.5 : 20,
                     },
                   ]}
                 >
@@ -216,12 +219,12 @@ const IndexRegisterCompanyUserContainer = () => {
                     type="Feather"
                     size={18}
                     color="white"
-                    onPress={() => {}}
+                   
                   />
                 </TouchableOpacity>
               </View>
 
-              <View style={[Layout.center, { marginTop: 10 }]}>
+              <View style={[Layout.center, { marginTop: 10, paddingVertical:20 }]}>
                 {/**full name starts here */}
                 <DropShadow
                   style={{
@@ -239,9 +242,7 @@ const IndexRegisterCompanyUserContainer = () => {
                     style={[
                       Layout.row,
                       Layout.alignItemsCenter,
-                      {
-                        width: 280,
-                        height: 47,
+                      {                   
                         borderRadius: 16,
                         marginVertical: MetricsSizes.small - 2,
                         borderWidth: MetricsSizes.tiny - 4,
@@ -261,6 +262,7 @@ const IndexRegisterCompanyUserContainer = () => {
                         fontWeight: '700',
                         fontSize: 14,
                         padding: 10,
+                        width:'85%'
                       }}
                       value={fullName}
                       placeholder={placeholder.fullName}
@@ -298,8 +300,6 @@ const IndexRegisterCompanyUserContainer = () => {
                       Layout.row,
                       Layout.alignItemsCenter,
                       {
-                        width: 280,
-                        height: 47,
                         borderRadius: 16,
                         marginVertical: MetricsSizes.small - 2,
                         borderWidth: MetricsSizes.tiny - 4,
@@ -319,6 +319,7 @@ const IndexRegisterCompanyUserContainer = () => {
                         fontWeight: '700',
                         fontSize: 14,
                         padding: 10,
+                        width:'85%'
                       }}
                       value={emailAddress}
                       placeholder={placeholder.emailAddress}
@@ -357,8 +358,7 @@ const IndexRegisterCompanyUserContainer = () => {
                       Layout.row,
                       Layout.alignItemsCenter,
                       {
-                        width: 280,
-                        height: 47,
+                    
                         borderRadius: 16,
                         marginVertical: MetricsSizes.small - 2,
                         borderWidth: MetricsSizes.tiny - 4,
@@ -378,6 +378,7 @@ const IndexRegisterCompanyUserContainer = () => {
                         fontWeight: '700',
                         fontSize: 14,
                         padding: 10,
+                        width:'85%'
                       }}
                       value={companyName}
                       placeholder={placeholder.companyName}
@@ -415,8 +416,7 @@ const IndexRegisterCompanyUserContainer = () => {
                       Layout.row,
                       Layout.alignItemsCenter,
                       {
-                        width: 280,
-                        height: 47,
+                   
                         borderRadius: 16,
                         marginVertical: MetricsSizes.small - 2,
                         borderWidth: MetricsSizes.tiny - 4,
@@ -436,6 +436,7 @@ const IndexRegisterCompanyUserContainer = () => {
                         fontWeight: '700',
                         fontSize: 14,
                         padding: 10,
+                        width:'85%'
                       }}
                       value={carPlateNum}
                       placeholder={placeholder.carPlateNum}
@@ -458,7 +459,7 @@ const IndexRegisterCompanyUserContainer = () => {
                 <PrimaryButttonComponent
                   loading={loading}
                   label="Submit"
-                  style={{ width: 270, height: 40, marginTop: 20 }}
+                  style={{ width: orientation === 'PORTRAIT' ? 270 : 320, height: 40, marginTop: 20 }}
                   onPress={() => {
                     validate('fullName')
                     validate('emailAddress')

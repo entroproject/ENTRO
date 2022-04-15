@@ -4,15 +4,13 @@ import {
   ActivityIndicator,
   Text,
   Image,
-  TextInput,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import DropShadow from 'react-native-drop-shadow'
 
-const IndexVirtualAccessContainer = ({ navigation, route }) => {
-  const { itemCardName, itemCompanyLogo } = route.params
+const IndexVirtualAccessContainer = ({ navigation }) => {
+
   const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
 
   return (
@@ -34,7 +32,7 @@ const IndexVirtualAccessContainer = ({ navigation, route }) => {
           }}
         >
           <Text style={{ color: '#184461', fontSize: 20, fontWeight: 'bold' }}>
-            {itemCardName}
+            SURIA KLCC
           </Text>
         </View>
 
@@ -47,7 +45,7 @@ const IndexVirtualAccessContainer = ({ navigation, route }) => {
           }}
         >
           <Image
-            source={itemCompanyLogo}
+            source={Images.KlccLogo}
             style={{ width: 200, height: 120, resizeMode: 'contain' }}
           />
         </View>

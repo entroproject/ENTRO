@@ -35,6 +35,7 @@ const IndexAddBusinessCardContainer = ({navigation}) => {
             backgroundColor: 'red',
             duration: 3000,
           })
+          return false;
         }
         if(!logo){
           showMessage({
@@ -42,6 +43,7 @@ const IndexAddBusinessCardContainer = ({navigation}) => {
             backgroundColor: 'red',
             duration: 3000,
           })
+          return false;
         }
         // save card to device
         const cardID = `card-${Date.now()}`

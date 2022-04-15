@@ -17,6 +17,7 @@ import {
 } from '@react-navigation/bottom-tabs'
 import { isIphoneX } from 'react-native-iphone-x-helper'
 import { useTheme } from '@/Hooks'
+import IndexBusinessCardContainer from '@/Containers/BusinessCard'
 
 const Tab = createBottomTabNavigator()
 

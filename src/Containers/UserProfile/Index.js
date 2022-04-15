@@ -5,12 +5,11 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
-  FlatList,
-  TouchableWithoutFeedback,
+  ScrollView,
+  Dimensions,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import Icon from 'react-native-dynamic-vector-icons'
-const [loading, setLoading] = useState(false)
 
 const IndexUserProfileContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
@@ -47,14 +46,10 @@ const IndexUserProfileContainer = ({ navigation }) => {
  
   const handCardSelected = (item, index) => {
     setcardPickedIndex(index);
-    navigation.navigate('VirtualAccessCard', {
-      itemCardName: item.companyName,
-      itemCompanyLogo: item.cardIcon,
-    })
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
       <View
         style={{
           height: 90,
@@ -88,7 +83,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
       </View>
 
       <View style={[{ marginTop: 20 }]}>
-        <View style={Layout.center}>
+        <View style={[Layout.center]}>
           <ImageBackground
             source={Images.userImageDisplay}
             style={{ height: 270, width: 300, elevation: 8 }}
@@ -253,22 +248,23 @@ const IndexUserProfileContainer = ({ navigation }) => {
           flex: 1,
         }}
       >
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={VirtualCard}
-            extraData={cardPickedIndex}
-            keyExtractor={key => key.id}
-            renderItem={({ item, index }) => (
+        <View style={{ flex: 1, marginHorizontal: 16 }}>
+        {
+            VirtualCard.map((item, index) => (
               <TouchableOpacity
+              style={{
+                width: "100%",
+                alignSelf: "center"
+              }}
+                key={index}
                 activeOpacity={1.0}
                 onPress={() => handCardSelected(item, index)}
               >
                 <View
-                  style={[Layout.center, { marginTop: 5, marginBottom: 10 }]}
+                  style={[ { marginTop: 5, marginBottom: 10 }]}
                 >
                   <View
                     style={{
-                      width: 320,
                       backgroundColor: 'white',
                       borderRadius: 15,
                       elevation: 10,
@@ -359,11 +355,11 @@ const IndexUserProfileContainer = ({ navigation }) => {
                   </View>
                 </View>
               </TouchableOpacity>
-            )}
-          />
+            ))
+          }
         </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

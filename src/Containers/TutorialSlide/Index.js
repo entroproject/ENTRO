@@ -7,10 +7,14 @@ import {
   Dimensions,
   PixelRatio,
   Text,
+  ScrollView,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { navigate } from '@/Navigators/utils'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
+
+const width = Dimensions.get("screen").width
+
 
 function IndexTutorialSlideContainer({}) {
   const { Fonts, Images, Colors, Layout, Gutters } = useTheme()
@@ -87,10 +91,10 @@ function IndexTutorialSlideContainer({}) {
           { useNativeDriver: false },
         )}
         contentContainerStyle={{ alignItems: 'center' }}
-        style={{ backgroundColor: '#184461' }}
+        style={{ backgroundColor: '#184461', width }}
       >
         {onBoardings.map((item, index) => (
-          <View
+          <ScrollView
             paddingVertical={10}
             paddingHorizontal={10}
             key={`slide-${index}`}
@@ -283,7 +287,7 @@ function IndexTutorialSlideContainer({}) {
                 )}
               </View>
             </View>
-          </View>
+          </ScrollView>
         ))}
       </Animated.ScrollView>
     )

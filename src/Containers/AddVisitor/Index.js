@@ -3,75 +3,82 @@ import Icon from 'react-native-dynamic-vector-icons'
 import {
   View,
   Text,
-  ImageBackground,
+  Button,
   Image,
   ScrollView,
   TextInput,
+  Modal,
+  TouchableOpacity,
 } from 'react-native'
-import { useTheme } from '@/Hooks';
-import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent';
-import { regexStr } from '@/Assets/Constants';
-import { navigate } from '@/Navigators/utils';
-import DropShadow from 'react-native-drop-shadow';
-import ImagePicker from 'react-native-image-crop-picker';
-import { showMessage, hideMessage } from 'react-native-flash-message';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useOrientation } from '../useOrientation';
+import moment from 'moment'
+import { useTheme } from '@/Hooks'
+import { regexStr } from '@/Assets/Constants'
+import { navigate } from '@/Navigators/utils'
+import DropShadow from 'react-native-drop-shadow'
+import { useOrientation } from '../useOrientation'
+import DatePicker from 'react-native-date-picker'
+import * as Constants from '@/Assets/Constants'
+import ImagePicker from 'react-native-image-crop-picker'
+import { showMessage, hideMessage } from 'react-native-flash-message'
+import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 
-const IndexRegisterCompanyUserContainer = () => {
-  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme();
-  const [photo, setPhoto] = useState(null);
-  const [fullName, setFullName] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [carPlateNum, setCarPlateNum] = useState('');
-  const [hasError, setHasError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [isValidFullName, setIsValidFullName] = useState(true);
-  const [isValidEmailAddress, setIsValidEmailAddress] = useState(true);
-  const [isValidCompanyName, setIsValidCompanyName] = useState(true);
-  const [isValidcarPlateNum, setIsValidCarPlateNum] = useState(true);
-  const orientation = useOrientation();
+const IndexAddVisitorContainer = () => {
+  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
+  const [photo, setPhoto] = useState(null)
+  const [fullName, setFullName] = useState('')
+  const [ICNumber, setICNumber] = useState('')
+  const [mobileNumber, setMobileNumber] = useState('')
+  const [carPlateNum, setCarPlateNum] = useState('')
+  const [hasError, setHasError] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const [isValidFullName, setIsValidFullName] = useState(true)
+  const [isValidVisitorMobile, setIsValidVistorMobile] = useState(true)
+  const [isValidICNumber, setIsValidICNumber] = useState(true)
+  const [isValidcarPlateNum, setIsValidCarPlateNum] = useState(true)
+
+  const orientation = useOrientation()
+
   const [placeholder, setPlaceholder] = useState({
-    fullName: 'Enter FullName',
-    emailAddress: 'Enter Email Address',
-    companyName: 'Enter Company Name',
-    carPlateNum: 'Enter Car Plate Number',
+    fullName: 'Enter Visitor FullName',
+    ICNumber: 'Enter Visitor IC',
+    mobileNumber: 'Enter Visitor phone No',
+    carPlateNum: 'Enter Vehicle Number',
   })
 
-  const validate = type => {
-  
 
+
+  const validate = type => {
     if (type === 'fullName') {
       setIsValidFullName(!regexStr.name.test(fullName))
 
       if (regexStr.name.test(fullName)) {
         showMessage({
-          message: 'All fields are required for registration!',
+          message: 'All field are required!',
           backgroundColor: 'red',
           duration: 3000,
         })
-      }else if(fullName === ''){
+      } else if (fullName === '') {
         showMessage({
-          message: 'All fields are required for registration!',
-          backgroundColor: 'red',
-          duration: 3000,
-        })
-      }
-    } else if (type === 'emailAddress') {
-      setIsValidEmailAddress(regexStr.email.test(emailAddress))
-      if (!regexStr.email.test(emailAddress)) {
-        showMessage({
-          message: 'All fields are required for registration!',
+          message: 'All field are required!',
           backgroundColor: 'red',
           duration: 3000,
         })
       }
-    } else if (type === 'companyName') {
-      setIsValidCompanyName(companyName !== '')
-      if (companyName === '') {
+    } else if (type === 'ICNumber') {
+      setIsValidICNumber(ICNumber !== '')
+      if (ICNumber === '' || ICNumber.length > 14 || ICNumber.length < 12) {
         showMessage({
-          message: 'All fields are required for registration!',
+          message: 'Incorrect IC Number!',
+          backgroundColor: 'red',
+          duration: 3000,
+        })
+      }
+    } else if (type === 'VisitorMobile') {
+      setIsValidVistorMobile(mobileNumber !== '')
+      if (mobileNumber === '') {
+        showMessage({
+          message: 'All field are required!',
           backgroundColor: 'red',
           duration: 3000,
         })
@@ -80,7 +87,7 @@ const IndexRegisterCompanyUserContainer = () => {
       setIsValidCarPlateNum(carPlateNum !== '')
       if (carPlateNum === '') {
         showMessage({
-          message: 'All fields are required for registration!',
+          message: 'All field are required!',
           backgroundColor: 'red',
           duration: 3000,
         })
@@ -100,53 +107,76 @@ const IndexRegisterCompanyUserContainer = () => {
   }
 
   const SubmitForm = () => {
-    if (fullName === '' || emailAddress === '' || companyName === '' || carPlateNum === '') {
+    if (
+      fullName === '' ||
+      ICNumber === '' || ICNumber.length > 14 || ICNumber.length < 12 ||
+      mobileNumber === '' ||
+      carPlateNum === ''
+    ) {
       setLoading(true)
       setTimeout(() => {
-        validate();
-        setLoading(false);
+        validate()
+        setLoading(false)
       }, 2000)
     } else {
       setLoading(true)
       setTimeout(() => {
         setLoading(false)
-        navigate('TutorialSlide')
+        navigate('VisitDateType')
       }, 1000)
     }
   }
 
   return (
     <ScrollView style={{ flex: 1 }}>
-      <ImageBackground
-        source={Images.BackgroundImage}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <ScrollView>
-          <Image
-            source={Images.logoGreen}
-            style={{ width: 230, height: 55, marginTop: 57, marginLeft: 20 }}
-          />
-          <View style={{ marginLeft: 32 }}>
-            <Text
-              style={{
-                fontSize: 24,
-                color: Colors.textColor,
-                fontWeight: '700',
-              }}
-            >
-              Almost there!
-            </Text>
+      <View style={{ height: 90, backgroundColor: '#184461' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}
+        >
+          <Text
+            style={{
+              color: Colors.white,
+              fontWeight: '700',
+              marginLeft: 18,
+            }}
+          >
+            Add Contact Visitor
+          </Text>
 
-            <Text
-              style={{
-                fontSize: 12,
-                color: Colors.textColor,
-                fontWeight: '500',
-              }}
-            >
-              Create an account to begin your journey
-            </Text>
-          </View>
+          <Image
+            source={Images.userImageDisplay}
+            style={{
+              width: 60,
+              height: 60,
+              marginEnd: 20,
+              borderRadius: 30,
+              borderWidth: 2,
+              borderColor: '#FFFEFE',
+            }}
+          />
+        </View>
+      </View>
+
+    
+
+      <View>
+        <DropShadow
+          style={{
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 3,
+              height: 1,
+            },
+            shadowOpacity: 1,
+            shadowRadius: 3,
+            marginTop: -5,
+          }}
+        >
           <View
             style={{
               justifyContent: 'center',
@@ -156,8 +186,8 @@ const IndexRegisterCompanyUserContainer = () => {
           >
             <View
               style={{
-                width: "90%",
-                height: 430,
+                width: '90%',
+
                 marginTop: 110,
                 borderRadius: 20,
                 backgroundColor: '#F1F1F1',
@@ -170,7 +200,6 @@ const IndexRegisterCompanyUserContainer = () => {
                   width: 0,
                   height: 4,
                 },
-              
               }}
             >
               <View style={[Layout.center, { marginBottom: 30 }]}>
@@ -200,7 +229,12 @@ const IndexRegisterCompanyUserContainer = () => {
                   />
                 </View>
               </View>
-              <View style={[Layout.center, { marginLeft: orientation === 'PORTRAIT' ? 70 : 90}]}>
+              <View
+                style={[
+                  Layout.center,
+                  { marginLeft: orientation === 'PORTRAIT' ? 70 : 90 },
+                ]}
+              >
                 <TouchableOpacity
                   onPress={() => uploadPhoto()}
                   activeOpacity={0.9}
@@ -214,17 +248,13 @@ const IndexRegisterCompanyUserContainer = () => {
                     },
                   ]}
                 >
-                  <Icon
-                    name="camera"
-                    type="Feather"
-                    size={18}
-                    color="white"
-                   
-                  />
+                  <Icon name="camera" type="Feather" size={18} color="white" />
                 </TouchableOpacity>
               </View>
 
-              <View style={[Layout.center, { marginTop: 10, paddingVertical:20 }]}>
+              <View
+                style={[Layout.center, { marginTop: 10, paddingVertical: 20 }]}
+              >
                 {/**full name starts here */}
                 <DropShadow
                   style={{
@@ -242,7 +272,7 @@ const IndexRegisterCompanyUserContainer = () => {
                     style={[
                       Layout.row,
                       Layout.alignItemsCenter,
-                      {                   
+                      {
                         borderRadius: 16,
                         marginVertical: MetricsSizes.small - 2,
                         borderWidth: MetricsSizes.tiny - 4,
@@ -262,7 +292,7 @@ const IndexRegisterCompanyUserContainer = () => {
                         fontWeight: '700',
                         fontSize: 14,
                         padding: 10,
-                        width:'85%'
+                        width: '85%',
                       }}
                       value={fullName}
                       placeholder={placeholder.fullName}
@@ -274,10 +304,9 @@ const IndexRegisterCompanyUserContainer = () => {
                       onBlur={() => {
                         setPlaceholder({
                           ...placeholder,
-                          fullName: 'Enter FullName',
+                          fullName: 'Enter Visitor FullName',
                         })
                       }}
-                      
                     />
                   </View>
                 </DropShadow>
@@ -320,22 +349,24 @@ const IndexRegisterCompanyUserContainer = () => {
                         fontWeight: '700',
                         fontSize: 14,
                         padding: 10,
-                        width:'85%'
+                        width: '85%',
                       }}
-                      value={emailAddress}
-                      placeholder={placeholder.emailAddress}
+                      value={ICNumber}
+                      placeholder={placeholder.ICNumber}
+                      keyboardType={'number-pad'}
                       autoCapitalize={'none'}
-                      onChangeText={text => setEmailAddress(text)}
-                      onEndEditing={() => validate('emailAddress')}
+                      onChangeText={text => setICNumber(text)}
+                      onEndEditing={() => validate('ICNumber')}
                       onFocus={() => {
-                        setPlaceholder({ ...placeholder, emailAddress: '' })
+                        setPlaceholder({ ...placeholder, ICNumber: '' })
                       }}
                       onBlur={() => {
                         setPlaceholder({
                           ...placeholder,
-                          emailAddress: 'Enter Email Address',
+                          ICNumber: 'Enter Visitor IC',
                         })
                       }}
+                      
                     />
                   </View>
                 </DropShadow>
@@ -359,7 +390,6 @@ const IndexRegisterCompanyUserContainer = () => {
                       Layout.row,
                       Layout.alignItemsCenter,
                       {
-                    
                         borderRadius: 16,
                         marginVertical: MetricsSizes.small - 2,
                         borderWidth: MetricsSizes.tiny - 4,
@@ -379,19 +409,20 @@ const IndexRegisterCompanyUserContainer = () => {
                         fontWeight: '700',
                         fontSize: 14,
                         padding: 10,
-                        width:'85%'
+                        width: '85%',
                       }}
-                      value={companyName}
-                      placeholder={placeholder.companyName}
-                      onChangeText={text => setCompanyName(text)}
-                      onEndEditing={() => validate('companyName')}
+                      value={mobileNumber}
+                      placeholder={placeholder.mobileNumber}
+                      keyboardType={'number-pad'}
+                      onChangeText={text => setMobileNumber(text)}
+                      onEndEditing={() => validate('VisitorMobile')}
                       onFocus={() => {
-                        setPlaceholder({ ...placeholder, companyName: '' })
+                        setPlaceholder({ ...placeholder, mobileNumber: '' })
                       }}
                       onBlur={() => {
                         setPlaceholder({
                           ...placeholder,
-                          companyName: 'Enter Company Name',
+                          mobileNumber: 'Enter Visitor phone No',
                         })
                       }}
                     />
@@ -417,7 +448,6 @@ const IndexRegisterCompanyUserContainer = () => {
                       Layout.row,
                       Layout.alignItemsCenter,
                       {
-                   
                         borderRadius: 16,
                         marginVertical: MetricsSizes.small - 2,
                         borderWidth: MetricsSizes.tiny - 4,
@@ -437,7 +467,7 @@ const IndexRegisterCompanyUserContainer = () => {
                         fontWeight: '700',
                         fontSize: 14,
                         padding: 10,
-                        width:'85%'
+                        width: '85%',
                       }}
                       value={carPlateNum}
                       placeholder={placeholder.carPlateNum}
@@ -449,7 +479,7 @@ const IndexRegisterCompanyUserContainer = () => {
                       onBlur={() => {
                         setPlaceholder({
                           ...placeholder,
-                          carPlateNum: 'Enter Car Plate Number',
+                          carPlateNum: 'Enter Vehicle Number',
                         })
                       }}
                     />
@@ -457,34 +487,38 @@ const IndexRegisterCompanyUserContainer = () => {
                 </DropShadow>
                 {/**car plate number ends here */}
 
+             
+                
                 <PrimaryButttonComponent
                   loading={loading}
-                  label="Submit"
-                  style={{ width: orientation === 'PORTRAIT' ? 270 : 320, height: 40, marginTop: 20 }}
+                  label="Next"
+                  style={{
+                    width: orientation === 'PORTRAIT' ? 270 : 320,
+                    height: 40,
+                    marginTop: 20,
+                  }}
                   onPress={() => {
                     validate('fullName')
-                    validate('emailAddress')
-                    validate('companyName')
+                    validate('VisitorMobile')
+                    validate('ICNumber')
                     validate('carPlateNum')
                     if (
                       isValidFullName &&
-                      isValidEmailAddress &&
-                      isValidCompanyName &&
+                      isValidVisitorMobile &&
+                      isValidICNumber &&
                       isValidcarPlateNum
                     ) {
                       SubmitForm()
-                    } else {
-                      setHasError(true)
-                    }
+                    } 
                   }}
                 />
               </View>
             </View>
           </View>
-        </ScrollView>
-      </ImageBackground>
+        </DropShadow>
+      </View>
     </ScrollView>
   )
 }
 
-export default IndexRegisterCompanyUserContainer
+export default IndexAddVisitorContainer

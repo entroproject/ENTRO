@@ -46,20 +46,17 @@ const IndexLoginContainer = () => {
     } 
 
     // make api call to validate phone number
-    
 
-    // send otp to phone
-    showMessage({
-      message: 'We have sent you an OTP.',
-      backgroundColor: 'green',
-      duration: 3000,
-    })
-
-    // validate otp
-    
-    // log user in
-    setLoading(false)
-    setNumValidated(true)
+      setTimeout(()=> {
+        // send otp to phone
+        showMessage({
+          message: 'We have sent you an OTP.',
+          backgroundColor: 'green',
+          duration: 3000,
+        })
+        setLoading(false)
+        setNumValidated(true)
+      }, 2000)
   }
 
   const handleLogin = () => {
@@ -67,7 +64,7 @@ const IndexLoginContainer = () => {
       showMessage({
         message: 'Please enter a valid OTP',
         backgroundColor: 'red',
-        duration: 3000,
+        duration: 2000,
       })
       return false
     }

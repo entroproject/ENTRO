@@ -28,7 +28,7 @@ const IndexHomeContainer = ({ navigation }) => {
       {/* header start */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Home {user.firstname}</Text>
+          <Text style={styles.headerTitle}>Home</Text>
           <Image source={Images.userImageDisplay} style={styles.profileImage} />
         </View>
       </View>

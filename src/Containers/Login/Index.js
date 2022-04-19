@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, {useState } from 'react'
 import {
   View,
   Text,
@@ -18,6 +18,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { showMessage } from 'react-native-flash-message'
 import { useNavigation } from '@react-navigation/native'
 import { useOrientation } from '../useOrientation'
+import axios from 'axios'
 
 const IndexLoginContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
@@ -33,24 +34,32 @@ const IndexLoginContainer = () => {
   const orientation = useOrientation();
 
   const submitPhoneNumber = () => {
+    setLoading(true)
     if (phoneNumber.length < 13 || phoneNumber.length > 14) {
       showMessage({
         message: 'Please enter a valid phone number',
         backgroundColor: 'red',
         duration: 3000,
-      })
-    } else {
-      showMessage({
-        message: 'We have sent you an OTP.',
-        backgroundColor: 'green',
-        duration: 3000,
-      })
-      setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-        setNumValidated(true)
-      }, 3000)
-    }
+      });
+      setLoading(false);
+      return false;
+    } 
+
+    // make api call to validate phone number
+    
+
+    // send otp to phone
+    showMessage({
+      message: 'We have sent you an OTP.',
+      backgroundColor: 'green',
+      duration: 3000,
+    })
+
+    // validate otp
+    
+    // log user in
+    setLoading(false)
+    setNumValidated(true)
   }
 
   const handleLogin = () => {

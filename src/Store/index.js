@@ -12,22 +12,12 @@ import {
 } from 'redux-persist'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
-
-import { api } from '@/Services/api'
-import * as modules from '@/Services/modules'
 import theme from './Theme'
 import userReducer from '../Features/users'
 
 const reducers = combineReducers({
   user: userReducer,  
-  theme,
-  ...Object.values(modules).reduce(
-    (acc, module) => ({
-      ...acc,
-      [module.reducerPath]: module.reducer,
-    }),
-    {},
-  ),
+  theme
 })
 
 const persistConfig = {
@@ -45,7 +35,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(api.middleware)
+    })
 
     if (__DEV__ && !process.env.JEST_WORKER_ID) {
       const createDebugger = require('redux-flipper').default

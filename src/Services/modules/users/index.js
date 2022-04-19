@@ -1,9 +1,9 @@
 import { api } from '../../api'
-import fetchOne from './fetchOne'
+import signupUser from './signupUser'
 
 export const userApi = api.injectEndpoints({
   endpoints: build => ({
-    fetchOne: fetchOne(build),
+    fetchOne: signupUser(build),
   }),
   overrideExisting: false,
 })

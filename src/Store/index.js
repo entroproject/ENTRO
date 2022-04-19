@@ -16,8 +16,10 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { api } from '@/Services/api'
 import * as modules from '@/Services/modules'
 import theme from './Theme'
+import userReducer from '../Features/users'
 
 const reducers = combineReducers({
+  user: userReducer,  
   theme,
   ...Object.values(modules).reduce(
     (acc, module) => ({

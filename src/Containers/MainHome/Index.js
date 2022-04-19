@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   View,
   Text,
@@ -14,16 +14,21 @@ import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { useOrientation } from '../useOrientation'
 
+
 const IndexHomeContainer = ({ navigation }) => {
-  const { Fonts, Gutters, Layout, Images } = useTheme()
+  const { Images } = useTheme()
   const orientation = useOrientation();
+
+  useEffect(()=> {
+    
+  },[])
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
       {/* header start */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Home</Text>
+          <Text style={styles.headerTitle}>Home {user.firstname}</Text>
           <Image source={Images.userImageDisplay} style={styles.profileImage} />
         </View>
       </View>

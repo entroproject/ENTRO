@@ -1,5 +1,6 @@
 import { Config } from '@/Config'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { userApi } from './modules'
 
 const baseQuery = fetchBaseQuery({ baseUrl: Config.API_URL })
 
@@ -13,5 +14,7 @@ const baseQueryWithInterceptor = async (args, api, extraOptions) => {
 
 export const api = createApi({
   baseQuery: baseQueryWithInterceptor,
-  endpoints: () => ({}),
+  endpoints: (builder) => ({
+    user: userApi
+  }),
 })

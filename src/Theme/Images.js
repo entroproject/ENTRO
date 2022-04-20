@@ -27,6 +27,7 @@ export default function () {
 
     homeToggle: require('@/Assets/Images/HomeToggle.png'),
     settingToggle: require('@/Assets/Images/SettingToggle.png'),
-
+    groceryIcon: require('@/Assets/Images/grocery.jpg'),
+    pexelsmeetupIcon: require('@/Assets/Images/Pexelsmeetup.jpg'),
   }
 }

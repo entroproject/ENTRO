@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -44,6 +44,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
       selectedCard: Images.defaultCardIcon,
     },
   ]
+
 
  
   const handCardSelected = (item, index) => {

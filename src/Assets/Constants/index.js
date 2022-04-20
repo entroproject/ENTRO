@@ -4,3 +4,11 @@ export const regexStr = {
     carplate: /[a-zA-Z0-9_]/,
    
   }
+
+  export const visitorType =[
+    'Contractor', 
+    'visitor', 
+    'delivery'
+  ]
+   
+  

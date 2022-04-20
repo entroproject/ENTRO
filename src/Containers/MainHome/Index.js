@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
-import grocery from '../../Assets/Images/grocery.jpg'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
@@ -17,7 +16,6 @@ import { useOrientation } from '../useOrientation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAnnouncements } from '@/api-utils'
 import { addAnnouncement } from '@/Features/announcements'
-
 
 const IndexHomeContainer = ({ navigation }) => {
   const { Images } = useTheme()
@@ -159,7 +157,6 @@ const IndexHomeContainer = ({ navigation }) => {
             style={{
               color: '#000',
               marginTop: 10,
-              
             }}
           >
             Profile
@@ -167,7 +164,7 @@ const IndexHomeContainer = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-        onPress={() => navigation.navigate('VistorsRecord')}
+          onPress={() => navigation.navigate('VistorsRecord')}
           style={{
             width: '33%',
             marginBottom: 20,
@@ -205,7 +202,6 @@ const IndexHomeContainer = ({ navigation }) => {
             style={{
               color: '#000',
               marginTop: 10,
-              
             }}
           >
             Visitors
@@ -213,7 +209,7 @@ const IndexHomeContainer = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-        onPress={() => navigation.navigate('CommunityContact')}
+          onPress={() => navigation.navigate('CommunityContact')}
           style={{
             width: '33%',
             marginBottom: 20,
@@ -258,7 +254,7 @@ const IndexHomeContainer = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-        onPress={() => navigation.navigate('VirtualAccessCard')}
+          onPress={() => navigation.navigate('VirtualAccessCard')}
           style={{
             width: '33%',
             marginBottom: 20,
@@ -292,23 +288,22 @@ const IndexHomeContainer = ({ navigation }) => {
             </View>
           </DropShadow>
 
-          <View style={{width:60, alignItems:'center', }}>
-          <Text
-          style={{
-            color: '#000',
-            marginTop: 10,
-            flexWrap:'wrap',
-            textAlign:'center'
-          }}
-        >
-          Access Card
-        </Text>
+          <View style={{ width: 60, alignItems: 'center' }}>
+            <Text
+              style={{
+                color: '#000',
+                marginTop: 10,
+                flexWrap: 'wrap',
+                textAlign: 'center',
+              }}
+            >
+              Access Card
+            </Text>
           </View>
-     
         </TouchableOpacity>
 
         <TouchableOpacity
-        onPress={() => navigation.navigate('BusinessCard')}
+          onPress={() => navigation.navigate('BusinessCard')}
           style={{
             width: '33%',
             marginBottom: 20,
@@ -342,18 +337,18 @@ const IndexHomeContainer = ({ navigation }) => {
             </View>
           </DropShadow>
 
-          <View style={{width:60, alignItems:'center', }}>
-          <Text
-          style={{
-            color: '#000',
-            marginTop: 10,
-            flexWrap:'wrap',
-            textAlign:'center'
-          }}
-        >
-          Business Card
-        </Text>
-        </View>
+          <View style={{ width: 60, alignItems: 'center' }}>
+            <Text
+              style={{
+                color: '#000',
+                marginTop: 10,
+                flexWrap: 'wrap',
+                textAlign: 'center',
+              }}
+            >
+              Business Card
+            </Text>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -406,13 +401,14 @@ const IndexHomeContainer = ({ navigation }) => {
       <Text
         style={{
           fontWeight: 'bold',
-          fontSize: orientation === 'PORTRAIT'? 20: 24, 
+          fontSize: orientation === 'PORTRAIT' ? 20 : 24,
           color: '#184461',
           marginHorizontal: 10,
         }}
       >
         Announcement
       </Text>
+
       <View
         style={{
           marginHorizontal: 20,
@@ -486,39 +482,79 @@ const IndexHomeContainer = ({ navigation }) => {
                 </Text>
                 <View
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginBottom: 5,
+                    paddingVertical: 5,
+                    marginStart: 5,
+                    backgroundColor: '#fff',
+                    marginEnd: 5,
                   }}
                 >
                   <Text
-                    style={{
-                      color: '#184461',
-                    }}
+                    style={[
+                      {
+                        color: '#184461',
+                        marginBottom: 5,
+                        flexWrap: 'wrap',
+                        fontWeight: 'bold',
+                        fontSize: orientation === 'PORTRAIT' ? 14 : 18,
+                      },
+                    ]}
                   >
-                    19 Aug 2021
+                    {item.cardTitle}
                   </Text>
+
                   <Text
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                    style={[
+                      {
+                        color: '#184461',
+                        marginBottom: 3,
+                        flexWrap: 'wrap',
+                        fontSize: orientation === 'PORTRAIT' ? 14 : 18,
+                        width: orientation === 'PORTRAIT' ? 150 : 200,
+                      },
+                    ]}
+                  >
+                    {item.cardDes}
+                  </Text>
+                  <View
                     style={{
-                      color: '#184461',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginBottom: 5,
                     }}
                   >
-                    10 : 00 am
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Icon
-                    type="Ionicons"
-                    name="location"
-                    color='#184461'
-                    size={20}
-                  />
-                  <Text>3.5 Miles</Text>
+                    <Text
+                      style={{
+                        color: '#184461',
+                        fontSize: orientation === 'PORTRAIT' ? 12 : 14,
+                      }}
+                    >
+                      {item.eventDate}
+                    </Text>
+                    <Text
+                      style={{
+                        color: '#184461',
+                        fontSize: orientation === 'PORTRAIT' ? 12 : 14,
+                      }}
+                    >
+                      {item.eventTime}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Icon
+                      type="Ionicons"
+                      name="location"
+                      color="#184461"
+                      size={20}
+                    />
+                    <Text>{item.distance}</Text>
+                  </View>
                 </View>
               </View>
             </View>

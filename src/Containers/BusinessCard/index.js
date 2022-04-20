@@ -30,6 +30,7 @@ const CardComponent = ({businessCards, selectedCardID, Images, handleChangeSelec
 
   const navigation = useNavigation();
 
+
   const handleOpenModal = id => {
     setModalID(id)
     setShowmodal(true);
@@ -60,7 +61,7 @@ const CardComponent = ({businessCards, selectedCardID, Images, handleChangeSelec
           <View
             style={{
               flexDirection: 'row',
-              backgroundColor: '#D7E01F',
+              backgroundColor: '#184461',
               marginHorizontal: 20,
               marginBottom: 10,
               borderRadius: 10,
@@ -151,8 +152,10 @@ const CardComponent = ({businessCards, selectedCardID, Images, handleChangeSelec
                 style={{
                   width: 100,
                   height: 100,
-                  resizeMode: 'contain',
+                  alignSelf:'center',
+                  marginTop: 15, 
                 }}
+                resizeMode={'cover'}
               />
               </View>
               <TouchableOpacity 
@@ -162,7 +165,7 @@ const CardComponent = ({businessCards, selectedCardID, Images, handleChangeSelec
                 alignItems: "flex-end",
                 padding: 15
               }}>
-                <Icon type='FontAwesome' color='#000' size={35} name="ellipsis-v" />
+                <Icon type='FontAwesome' color='#000' size={30} name="ellipsis-v" />
               </TouchableOpacity>
             </View>
           </View>
@@ -289,39 +292,12 @@ const IndexBusinessCardContainer = ({ navigation }) => {
     await AsyncStorage.setItem('defaultBCard', id)
   }
 
-  const handleSearch = () =>{
-    const _arrCards = [];
-    Object.keys(_businessCards).map(key => {
-      _arrCards.push(_businessCards[key]);
-    });
-    const _filtered_cards = _arrCards.filter(c => {
-      if(c.fullname.toLocaleLowerCase().includes(searchText.toLocaleLowerCase().split(" ")[0]) 
-      || c.phone.toLocaleLowerCase().includes(searchText.toLocaleLowerCase().split(" ")[0])
-      || c.businessWebsite.toLocaleLowerCase().includes(searchText.toLocaleLowerCase().split(" ")[0])
-      ){
-        return true;
-      }
-      return false;
-    });
-    const _objCards = {}
-    _filtered_cards.map(c => {
-      _objCards[c.id] = c;
-    })
-    setBusinessCards(_objCards);
-  }
+
 
   const resetCards = () => {
     setBusinessCards(_businessCards);
     setSearchText("");
   }
-
-  useEffect(()=> {
-    if(searchText.length < 1){
-      resetCards();
-    }else{
-      handleSearch();
-    }
-  }, [searchText])
 
   const handleDeleteCard = async id => {
     try{
@@ -361,6 +337,36 @@ const IndexBusinessCardContainer = ({ navigation }) => {
     setLoading(false);
   }
 
+    const handleSearch = () =>{
+    const _arrCards = [];
+    Object.keys(_businessCards).map(key => {
+      _arrCards.push(_businessCards[key]);
+    });
+    const _filtered_cards = _arrCards.filter(c => {
+      if(c.fullname.toLocaleLowerCase().includes(searchText.toLocaleLowerCase().split(" ")[0]) 
+      || c.phone.toLocaleLowerCase().includes(searchText.toLocaleLowerCase().split(" ")[0])
+      || c.businessWebsite.toLocaleLowerCase().includes(searchText.toLocaleLowerCase().split(" ")[0])
+      ){
+        return true;
+      }
+      return false;
+    });
+    const _objCards = {}
+    _filtered_cards.map(c => {
+      _objCards[c.id] = c;
+    })
+    setBusinessCards(_objCards);
+  }
+
+  useEffect(()=> {
+    if(searchText.length < 1){
+      resetCards();
+    }else{
+      handleSearch();
+    }
+  }, [searchText])
+
+
   useEffect(() => {
     setLoading(true);
     retrieveCards()
@@ -394,7 +400,7 @@ const IndexBusinessCardContainer = ({ navigation }) => {
               placeholder='Search by business name, phone or website'
               returnKeyType='search'
               keyboardType='web-search'
-              placeholderTextColor="#000"
+              placeholderTextColor="#666666"
               value={searchText}
               onChangeText={text => setSearchText(text)}
               // onBlur={()=> setOpenSearch(false)}
@@ -456,13 +462,13 @@ const IndexBusinessCardContainer = ({ navigation }) => {
               <Text style ={{
                 fontSize: 22,
                 fontWeight: "bold",
-                color: "#000",
+                color: '#184461', 
                 textAlign: "center",
                 marginBottom: 15
               }}>Virtual Business Card</Text>
               <Text style={{
                 fontSize: 16,
-                color: "#000",
+                color: '#184461', 
                 textAlign: "center"
               }}>
                 Store your business card here will help you

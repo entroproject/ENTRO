@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -20,6 +20,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
   const VirtualCard = useSelector(virtualCard => virtualCard.virtualCard.cards);
   const defaultCardID = useSelector(virtualCard => virtualCard.virtualCard.defaultCard);
   const dispatch = useDispatch();
+
 
  
   const handCardSelected = (item) => {

@@ -18,7 +18,10 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { showMessage } from 'react-native-flash-message'
 import { useNavigation } from '@react-navigation/native'
 import { useOrientation } from '../useOrientation'
-import axios from 'axios'
+import { requestProfile, sendOtp, validateNumber } from '../../api-utils'
+import { loginUser } from '@/Features/users'
+import { useDispatch } from 'react-redux'
+import { addCard, setDefaultCard } from '@/Features/virtualCards'
 
 const IndexLoginContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
@@ -27,15 +30,35 @@ const IndexLoginContainer = () => {
 
   const navigation = useNavigation()
 
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [numValidated, setNumValidated] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [otp, setOtp] = useState(false)
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [numValidated, setNumValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [otp, setOtp] = useState(false);
+  const [sentOtp, setSentOtp] = useState(false);
   const orientation = useOrientation();
+  const dispatch = useDispatch();
 
-  const submitPhoneNumber = () => {
-    setLoading(true)
-    if (phoneNumber.length < 13 || phoneNumber.length > 14) {
+  const submitPhoneNumber = async () => {
+    try{
+      setLoading(true)
+
+    // make api call to validate phone number
+    const req = await validateNumber(phoneNumber);
+    const res = await req.json();
+    if(res.StatusCode === "200"){
+      // send ot to phone number
+      // const _sentOtp = String(Math.random()).slice(2, 8);
+      setSentOtp("123456");
+      const otp_req = await sendOtp(phoneNumber, "123456"); 
+      const otp_res = await otp_req.json();
+      showMessage({
+        message: 'We have sent you an OTP.',
+        backgroundColor: 'green',
+        duration: 2000
+      });
+      setNumValidated(true);
+      setLoading(false);
+    }else{
       showMessage({
         message: 'Please enter a valid phone number',
         backgroundColor: 'red',
@@ -43,39 +66,43 @@ const IndexLoginContainer = () => {
       });
       setLoading(false);
       return false;
-    } 
-
-    // make api call to validate phone number
-
-      setTimeout(()=> {
-        // send otp to phone
-        showMessage({
-          message: 'We have sent you an OTP.',
-          backgroundColor: 'green',
-          duration: 3000,
-        })
-        setLoading(false)
-        setNumValidated(true)
-      }, 2000)
+    }
+    }catch(err){
+      console.log("Error msg: ", err);
+    }
   }
 
-  const handleLogin = () => {
-    if (otp.length !== 6) {
+  const handleLogin = async () => {
+    setLoading(true);
+    if (otp.length !== 6 || otp !== sentOtp) {
       showMessage({
         message: 'Please enter a valid OTP',
         backgroundColor: 'red',
         duration: 2000,
       })
+      setLoading(false);
       return false
     }
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
+    // request profile
+    const req_prof = await requestProfile("");
+    const prof = await req_prof.json();
+    if(prof.StatusCode !== "200"){
+      setLoading(false);
+      showMessage({
+        message: prof.message,
+        backgroundColor: 'red',
+        duration: 2000,
+      })
+    }else{
+      setLoading(false);
+      dispatch(addCard(prof.VirtualKey));
+      dispatch(setDefaultCard(prof.VirtualKey[0].VirtualKey));
+      dispatch(loginUser(prof));
       navigation.reset({
         index: 0,
         routes: [{ name: 'MainNav' }],
       })
-    }, 3000)
+    }    
   }
 
   return (
@@ -160,7 +187,8 @@ const IndexLoginContainer = () => {
         containerStyle={styleSheet.phoneNumberView}
         textContainerStyle={{ paddingVertical: 0 }}
         onChangeFormattedText={text => {
-          setPhoneNumber(text)
+          setNumValidated(false);
+          setPhoneNumber(text);
         }}
       />
 

@@ -18,6 +18,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { showMessage, hideMessage } from 'react-native-flash-message'
 import { useNavigation } from '@react-navigation/native'
 import { useOrientation } from '../useOrientation'
+import { requestProfile, sendOtp, validateNumber } from '@/api-utils'
 
 const IndexRegisterContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
@@ -29,50 +30,60 @@ const IndexRegisterContainer = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [numValidated, setNumValidated] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [otp, setOtp] = useState(false)
+  const [otp, setOtp] = useState(false);
+  const [sentOtp, setSentOtp] = useState(false);
   const orientation = useOrientation();
 
-  const submitPhoneNumber = () => {
-    if (phoneNumber.length < 13 || phoneNumber.length > 14) {
-      showMessage({
-        message: 'Please enter a valid phone number to register',
-        backgroundColor: 'red',
-        duration: 3000,
-      })
-    } else {
+
+  const submitPhoneNumber = async () => {
+    try{
+      setLoading(true)
+
+    // make api call to validate phone number
+    const req = await validateNumber(phoneNumber);
+    const res = await req.json();
+    if(res.StatusCode === "200"){
+      // send ot to phone number
+      // const _sentOtp = String(Math.random()).slice(2, 8);
+      setSentOtp("123456");
+      const otp_req = await sendOtp(phoneNumber, "123456"); 
+      const otp_res = await otp_req.json();
       showMessage({
         message: 'We have sent you an OTP.',
         backgroundColor: 'green',
+        duration: 2000
+      });
+      setNumValidated(true);
+      setLoading(false);
+    }else{
+      showMessage({
+        message: 'Please enter a valid phone number',
+        backgroundColor: 'red',
         duration: 3000,
-      })
-      setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-        setNumValidated(true)
-      }, 3000)
+      });
+      setLoading(false);
+      return false;
+    }
+    }catch(err){
+      console.log("Error msg: ", err);
     }
   }
 
-  const handleRegister = () => {
-  
-    if (otp.length !== 6) {
+  const handleRegister = async () => {
+    setLoading(true);
+    if (otp.length !== 6 || otp !== sentOtp) {
       showMessage({
         message: 'Please enter a valid OTP',
         backgroundColor: 'red',
-        duration: 3000,
+        duration: 2000,
       })
+      setLoading(false);
       return false
     }
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'RegisterCompanyUser' }],
-      })
-    }, 3000)
+    setLoading(false); 
+    navigation.navigate("RegisterCompanyUser", {phoneNumber})
   }
-
+  
   return (
     <View style={{ flex: 1, width: SCREEN_WIDTH, minHeight: SCREEN_HEIGHT}}>
       <ImageBackground

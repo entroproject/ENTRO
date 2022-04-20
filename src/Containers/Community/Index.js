@@ -6,15 +6,19 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Linking,
+  Pressable,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { ButtonGroup } from 'react-native-elements'
 import Icon from 'react-native-dynamic-vector-icons'
+import { useSelector } from 'react-redux'
 
 const IndexCommunityContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [displaycontact, setDisplayContact] = useState(true)
+  const user = useSelector(user => user.user.profile);
 
   useEffect(() => {
     if (selectedIndex === 0) {
@@ -46,7 +50,7 @@ const IndexCommunityContainer = () => {
         </Text>
 
         <Image
-          source={Images.userImageDisplay}
+          source={{uri: `data:image/png;base64,${user.ProfileLogo}`}}
           style={{
             width: 60,
             height: 60,
@@ -100,7 +104,15 @@ const IndexCommunityContainer = () => {
 
       {displaycontact ? (
         <ScrollView style={{ marginTop: 20 }}>
-          <View
+          {
+            user.Emergency.map((serv, key) => (
+              <Pressable
+              key={key}
+              onPress={()=> {
+                Linking.openURL(`tel:${serv.PhoneNo}`)
+              }}
+            >
+              <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -159,7 +171,7 @@ const IndexCommunityContainer = () => {
                       fontSize: 14,
                     }}
                   >
-                    Ambulance
+                    {serv.Name}
                   </Text>
                   <View
                     style={{
@@ -180,193 +192,29 @@ const IndexCommunityContainer = () => {
                         marginStart: 5,
                       }}
                     >
-                      +601112228889
+                      {serv.PhoneNo}
                     </Text>
                   </View>
                 </View>
               </View>
             </View>
           </View>
+          </Pressable>
+            ))
+          }
 
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 10,
-            }}
-          >
-            <View
-              style={{
-                width: "80%",
-                backgroundColor: 'white',
-                borderRadius: 15,
-                elevation: 10,
-                shadowColor: '#000',
-                shadowRadius: 10,
-                shadowOpacity: 0.6,
-                elevation: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <View
-                  style={{
-                    width: 10,
-                    backgroundColor: '#184461',
-                    borderTopLeftRadius: 10,
-                    borderBottomLeftRadius: 10,
-                  }}
-                />
-
-                <View style={{ justifyContent: 'center', margin: 5 }}>
-                  <Icon
-                    type="FontAwesome"
-                    name="user-circle"
-                    color="#184461"
-                    size={40}
-                  />
-                </View>
-
-                <View
-                  style={{
-                    paddingVertical: 5,
-                    marginStart: 5,
-                    backgroundColor: '#fff',
-                    marginEnd: 5,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: '#184461',
-                      fontWeight: 'bold',
-                      marginBottom: 5,
-                      flexWrap: 'wrap',
-                      fontSize: 14,
-                    }}
-                  >
-                    Hospital
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginBottom: 5,
-                    }}
-                  >
-                    <Icon
-                      type="FontAwesome"
-                      name="phone"
-                      color="#184461"
-                      size={20}
-                    />
-                    <Text
-                      style={{
-                        color: '#184461',
-                        marginStart: 5,
-                      }}
-                    >
-                      +60346789092
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 10,
-            }}
-          >
-            <View
-              style={{
-                width: "80%",
-                backgroundColor: 'white',
-                borderRadius: 15,
-                elevation: 10,
-                shadowColor: '#000',
-                shadowRadius: 10,
-                shadowOpacity: 0.6,
-                elevation: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <View
-                  style={{
-                    width: 10,
-                    backgroundColor: '#184461',
-                    borderTopLeftRadius: 10,
-                    borderBottomLeftRadius: 10,
-                  }}
-                />
-
-                <View style={{ justifyContent: 'center', margin: 5 }}>
-                  <Icon
-                    type="FontAwesome"
-                    name="user-circle"
-                    color="#184461"
-                    size={40}
-                  />
-                </View>
-
-                <View
-                  style={{
-                    paddingVertical: 5,
-                    marginStart: 5,
-                    backgroundColor: '#fff',
-                    marginEnd: 5,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: '#184461',
-                      fontWeight: 'bold',
-                      marginBottom: 5,
-                      flexWrap: 'wrap',
-                      fontSize: 14,
-                    }}
-                  >
-                    FireService
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginBottom: 5,
-                    }}
-                  >
-                    <Icon
-                      type="FontAwesome"
-                      name="phone"
-                      color="#184461"
-                      size={20}
-                    />
-                    <Text
-                      style={{
-                        color: '#184461',
-                        marginStart: 5,
-                      }}
-                    >
-                      +60399876580
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
         </ScrollView>
       ) : (
         <ScrollView style={{ marginTop: 20 }}>
-          <View
+        {
+          user.Community.map((com, key) => (
+            <Pressable
+              key={key}
+              onPress={()=> {
+                Linking.openURL(`tel:${com.PhoneNo}`)
+              }}
+            >
+            <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -425,7 +273,7 @@ const IndexCommunityContainer = () => {
                       fontSize: 14,
                     }}
                   >
-                    Entro Manager
+                    {com.Name}
                   </Text>
                   <View
                     style={{
@@ -440,107 +288,22 @@ const IndexCommunityContainer = () => {
                       color="#184461"
                       size={20}
                     />
-                    <Text
-                      style={{
-                        color: '#184461',
-                        marginStart: 5,
-                      }}
-                    >
-                      +601112228889
-                    </Text>
+                      <Text
+                        style={{
+                          color: '#184461',
+                          marginStart: 5,
+                        }}
+                      >
+                        {com.PhoneNo}
+                      </Text>
                   </View>
                 </View>
               </View>
             </View>
           </View>
-
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 10,
-            }}
-          >
-            <View
-              style={{
-                width: "80%",
-                backgroundColor: 'white',
-                borderRadius: 15,
-                elevation: 10,
-                shadowColor: '#000',
-                shadowRadius: 10,
-                shadowOpacity: 0.6,
-                elevation: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <View
-                  style={{
-                    width: 10,
-                    backgroundColor: '#184461',
-                    borderTopLeftRadius: 10,
-                    borderBottomLeftRadius: 10,
-                  }}
-                />
-
-                <View style={{ justifyContent: 'center', margin: 5 }}>
-                  <Icon
-                    type="FontAwesome"
-                    name="user-circle"
-                    color="#184461"
-                    size={40}
-                  />
-                </View>
-
-                <View
-                  style={{
-                    paddingVertical: 5,
-                    marginStart: 5,
-                    backgroundColor: '#fff',
-                    marginEnd: 5,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: '#184461',
-                      fontWeight: 'bold',
-                      marginBottom: 5,
-                      flexWrap: 'wrap',
-                      fontSize: 14,
-                    }}
-                  >
-                    Security Guard
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginBottom: 5,
-                    }}
-                  >
-                    <Icon
-                      type="FontAwesome"
-                      name="phone"
-                      color="#184461"
-                      size={20}
-                    />
-                    <Text
-                      style={{
-                        color: '#184461',
-                        marginStart: 5,
-                      }}
-                    >
-                      +60399876580
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
+          </Pressable>
+          ))
+        }
         </ScrollView>
       )}
     </View>

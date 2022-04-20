@@ -5,9 +5,11 @@ import { useTheme } from '@/Hooks'
 import { Brand } from '@/Components'
 import { setDefaultTheme } from '@/Store/Theme'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
+import { useSelector } from 'react-redux'
 
 const StartupContainer = () => {
   const { Layout, Gutters, Fonts } = useTheme()
+  const isLoggedIn = useSelector(user => user.user.isLoggedIn);
 
   const { t } = useTranslation()
 
@@ -17,8 +19,8 @@ const StartupContainer = () => {
         resolve(true)
       }, 2000),
     )
-    await setDefaultTheme({ theme: 'default', darkMode: null })
-    navigateAndSimpleReset('Login')
+    await setDefaultTheme({ theme: 'default', darkMode: null }) 
+    navigateAndSimpleReset(isLoggedIn ? "MainNav" : "Login")
   }
 
   useEffect(() => {

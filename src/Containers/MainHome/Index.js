@@ -478,7 +478,7 @@ const IndexHomeContainer = ({ navigation }) => {
                     fontSize: orientation === 'PORTRAIT'? 14: 18 
                   }}
                 >
-                  Join for grocery shopping
+                  {ann.Title}
                 </Text>
                 <View
                   style={{
@@ -488,35 +488,6 @@ const IndexHomeContainer = ({ navigation }) => {
                     marginEnd: 5,
                   }}
                 >
-                  <Text
-                    style={[
-                      {
-                        color: '#184461',
-                        marginBottom: 5,
-                        flexWrap: 'wrap',
-                        fontWeight: 'bold',
-                        fontSize: orientation === 'PORTRAIT' ? 14 : 18,
-                      },
-                    ]}
-                  >
-                    {item.cardTitle}
-                  </Text>
-
-                  <Text
-                    numberOfLines={2}
-                    ellipsizeMode="tail"
-                    style={[
-                      {
-                        color: '#184461',
-                        marginBottom: 3,
-                        flexWrap: 'wrap',
-                        fontSize: orientation === 'PORTRAIT' ? 14 : 18,
-                        width: orientation === 'PORTRAIT' ? 150 : 200,
-                      },
-                    ]}
-                  >
-                    {item.cardDes}
-                  </Text>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -530,15 +501,7 @@ const IndexHomeContainer = ({ navigation }) => {
                         fontSize: orientation === 'PORTRAIT' ? 12 : 14,
                       }}
                     >
-                      {item.eventDate}
-                    </Text>
-                    <Text
-                      style={{
-                        color: '#184461',
-                        fontSize: orientation === 'PORTRAIT' ? 12 : 14,
-                      }}
-                    >
-                      {item.eventTime}
+                      {new Date(Number(ann.EventStartAt.replace(/\/date\(/gi, "").replace(/\//gi, "").replace(/\)/gi, ""))).toLocaleString()}
                     </Text>
                   </View>
                   <View
@@ -553,7 +516,12 @@ const IndexHomeContainer = ({ navigation }) => {
                       color="#184461"
                       size={20}
                     />
-                    <Text>{item.distance}</Text>
+                    <Text
+                      numberOfLines={1}
+                      style={{
+                        flexWrap: "wrap"
+                      }}
+                    >{ann.Description.slice(10)}</Text>
                   </View>
                 </View>
               </View>

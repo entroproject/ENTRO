@@ -11,14 +11,19 @@ import {
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import LottieView from 'lottie-react-native'
+import { logoutUser } from '@/Features/users'
+import { useDispatch } from 'react-redux'
 
 const IndexSettingContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
   const [progress, setProgress] = useState(new Animated.Value(0))
+  const dispatch = useDispatch();
 
   const buttonRef = useRef < LottieView > null
 
-  const signOutApp = () => {}
+  const signOutApp = () => {
+    dispatch(logoutUser)
+  }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>

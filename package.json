@@ -22,6 +22,7 @@
     "axios": "^0.26.1",
     "i18next": "^21.6.5",
     "lottie-react-native": "^5.0.1",
+    "moment": "^2.29.3",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-i18next": "^11.15.3",

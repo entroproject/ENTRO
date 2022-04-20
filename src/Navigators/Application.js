@@ -25,6 +25,7 @@ import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
 import TabNavigation from './TabNavigation'
 import IndexEditBusinessCardContainer from '@/Containers/EditBusinessCard/Index'
+import { useSelector } from 'react-redux'
 
 const Stack = createStackNavigator()
 
@@ -32,6 +33,8 @@ const Stack = createStackNavigator()
 const ApplicationNavigator = () => {
   const { Layout, darkMode, NavigationTheme } = useTheme()
   const { colors } = NavigationTheme
+  const isLogged = useSelector(user => user.user.isLoggedIn);
+  console.log(isLogged)
   return (
     <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
       <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
@@ -55,6 +58,9 @@ const ApplicationNavigator = () => {
             }}
           />
 
+          {
+            isLogged
+            &&<Stack.Group>
           <Stack.Screen
             name="MainNav"
             component={TabNavigation}
@@ -182,6 +188,9 @@ const ApplicationNavigator = () => {
               animationEnabled: false,
             }}
           />
+          </Stack.Group>
+          }
+
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

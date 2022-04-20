@@ -17,11 +17,16 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useOrientation } from '../useOrientation';
+import { registerUser, requestProfile } from '@/api-utils';
+import { loginUser } from '@/Features/users';
+import { addCard, setDefaultCard } from '@/Features/virtualCards';
+import { useDispatch } from 'react-redux';
 
 const IndexRegisterCompanyUserContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme();
   const [photo, setPhoto] = useState(null);
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [carPlateNum, setCarPlateNum] = useState('');
@@ -33,32 +38,38 @@ const IndexRegisterCompanyUserContainer = () => {
   const [isValidcarPlateNum, setIsValidCarPlateNum] = useState(true);
   const orientation = useOrientation();
   const [placeholder, setPlaceholder] = useState({
-    fullName: 'Enter FullName',
+    firstName: 'Enter FirstName',
+    lastName: 'Enter LastName',
     emailAddress: 'Enter Email Address',
     companyName: 'Enter Company Name',
     carPlateNum: 'Enter Car Plate Number',
   })
+  const dispatch = useDispatch()
 
   const validate = type => {
   
 
-    if (type === 'fullName') {
-      setIsValidFullName(!regexStr.name.test(fullName))
-
-      if (regexStr.name.test(fullName)) {
-        showMessage({
-          message: 'All fields are required for registration!',
-          backgroundColor: 'red',
-          duration: 3000,
-        })
-      }else if(fullName === ''){
+    if (type === 'firstName') {
+      setIsValidCompanyName(firstName !== '')
+      if (firstName === '') {
         showMessage({
           message: 'All fields are required for registration!',
           backgroundColor: 'red',
           duration: 3000,
         })
       }
-    } else if (type === 'emailAddress') {
+    }
+    else if (type === 'lastName') {
+      setIsValidCompanyName(lastName !== '')
+      if (lastName === '') {
+        showMessage({
+          message: 'All fields are required for registration!',
+          backgroundColor: 'red',
+          duration: 3000,
+        })
+      }
+    }
+    else if (type === 'emailAddress') {
       setIsValidEmailAddress(regexStr.email.test(emailAddress))
       if (!regexStr.email.test(emailAddress)) {
         showMessage({
@@ -92,27 +103,48 @@ const IndexRegisterCompanyUserContainer = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true,
+      cropping: true
     }).then(image => {
       setPhoto(image)
       console.log(image)
     })
   }
 
-  const SubmitForm = () => {
-    if (fullName === '' || emailAddress === '' || companyName === '' || carPlateNum === '') {
-      setLoading(true)
-      setTimeout(() => {
+  const SubmitForm = async () => {
+    setLoading(true);
+    if (firstName === '' || emailAddress === '' || companyName === '' || carPlateNum === '') {
         validate();
         setLoading(false);
-      }, 2000)
-    } else {
-      setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-        navigate('TutorialSlide')
-      }, 1000)
+        return false;
     }
+    // register user
+    const req_register = await registerUser({
+      "Email": emailAddress,
+      "FirstName": firstName,
+      "LastName": lastName,
+      "CompanyName": companyName, 
+      "VehicleNo": carPlateNum,
+      "MobileNo": "+3272722773"
+    });
+    const res_register = await req_register.json();
+
+    if(res_register.StatusCode !== "200"){
+      setLoading(false);
+      showMessage({
+        message: res_register.message,
+        backgroundColor: 'red',
+        duration: 2000,
+      })
+    }else{
+      const req_prof = await requestProfile("");
+      const prof = await req_prof.json();
+      setLoading(false);
+      dispatch(addCard(prof.VirtualKey));
+      dispatch(setDefaultCard(prof.VirtualKey[0].VirtualKey));
+      dispatch(loginUser(prof));
+      navigate('TutorialSlide');
+    }
+    setLoading(false);
   }
 
   return (
@@ -157,7 +189,6 @@ const IndexRegisterCompanyUserContainer = () => {
             <View
               style={{
                 width: "90%",
-                height: 430,
                 marginTop: 110,
                 borderRadius: 20,
                 backgroundColor: '#F1F1F1',
@@ -225,7 +256,7 @@ const IndexRegisterCompanyUserContainer = () => {
               </View>
 
               <View style={[Layout.center, { marginTop: 10, paddingVertical:20 }]}>
-                {/**full name starts here */}
+                {/**first name starts here */}
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -264,23 +295,80 @@ const IndexRegisterCompanyUserContainer = () => {
                         padding: 10,
                         width:'85%'
                       }}
-                      value={fullName}
-                      placeholder={placeholder.fullName}
-                      onChangeText={text => setFullName(text)}
-                      onEndEditing={() => validate('fullName')}
+                      value={firstName}
+                      placeholder={placeholder.firstName}
+                      onChangeText={text => setFirstName(text)}
+                      onEndEditing={() => validate('firstName')}
                       onFocus={() => {
-                        setPlaceholder({ ...placeholder, fullName: '' })
+                        setPlaceholder({ ...placeholder, firstName: '' })
                       }}
                       onBlur={() => {
                         setPlaceholder({
                           ...placeholder,
-                          fullName: 'Enter FullName',
+                          firstName: 'Enter FirstName',
                         })
                       }}
                     />
                   </View>
                 </DropShadow>
-                {/**full name ends here */}
+                {/**first name ends here */}
+
+                {/**first name starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                    marginTop: -5,
+                  }}
+                >
+                  <View
+                    style={[
+                      Layout.row,
+                      Layout.alignItemsCenter,
+                      {                   
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 2,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        backgroundColor: Colors.white,
+                        elevation: 5,
+                      },
+                    ]}
+                  >
+                    <TextInput
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: 10,
+                        width:'85%'
+                      }}
+                      value={lastName}
+                      placeholder={placeholder.lastName}
+                      onChangeText={text => setLastName(text)}
+                      onEndEditing={() => validate('lastName')}
+                      onFocus={() => {
+                        setPlaceholder({ ...placeholder, lastName: '' })
+                      }}
+                      onBlur={() => {
+                        setPlaceholder({
+                          ...placeholder,
+                          lastName: 'Enter LastName',
+                        })
+                      }}
+                    />
+                  </View>
+                </DropShadow>
+                {/**first name ends here */}
 
                 {/**email starts here */}
                 <DropShadow

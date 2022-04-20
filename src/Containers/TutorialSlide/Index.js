@@ -11,8 +11,7 @@ import {
   useWindowDimensions,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
-import { navigate } from '@/Navigators/utils'
-import { navigateAndSimpleReset } from '@/Navigators/utils'
+import { navigate, navigateAndSimpleReset } from '@/Navigators/utils'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 
 const width = Dimensions.get("screen").width

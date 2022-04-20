@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -6,45 +6,36 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { useOrientation } from '../useOrientation'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAnnouncements } from '@/api-utils'
+import { addAnnouncement } from '@/Features/announcements'
 
 const IndexHomeContainer = ({ navigation }) => {
-  const { Fonts, Gutters, Layout, Images } = useTheme()
-  const orientation = useOrientation()
+  const { Images } = useTheme()
+  const orientation = useOrientation();
+  const user = useSelector((user) => user.user.profile);
+  const [announcementsLoading, setAnnouncementLoading] = useState(true);
+  const announcements = useSelector((announcement)=> announcement.announcement.announcements);
+  const dispatch = useDispatch();
 
-  const AnnouncementCard = [
-    {
-      id: 0,
-      cardTitle: 'Join for grocery shopping',
-      cardIcon: Images.groceryIcon,
-      cardDes:
-        'Description: This text will be for a short description on what the card is all about.',
-      eventDate: '19 August 2021',
-      eventTime: '21:00:00 pm',
-      distance: '3.5 miles',
-    },
-
-    {
-      id: 1,
-      cardTitle: 'Lets Meetup!',
-      cardIcon: Images.pexelsmeetupIcon,
-      cardDes:
-        'Description: This text will be for a short description on what the card is all about.',
-      eventDate: '18 August 2021',
-      eventTime: '21:00:00 pm',
-      distance: '3.5 miles',
-    },
-  ]
-
-  const handleAnnouncement=(item, index)=>{
-    navigation.navigate('Announcement')
-
+  const handleGetAnnouncements = async () => {
+    setAnnouncementLoading(true);
+    const req_ann = await getAnnouncements("");
+    const ann = await req_ann.json();
+    dispatch(addAnnouncement(ann.Announcement));
+    setAnnouncementLoading(false);
   }
+
+  useEffect(()=> {
+    handleGetAnnouncements();
+  },[])
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
@@ -52,7 +43,7 @@ const IndexHomeContainer = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <Text style={styles.headerTitle}>Home</Text>
-          <Image source={Images.userImageDisplay} style={styles.profileImage} />
+          <Image source={{uri: `data:image/png;base64,${user.ProfileLogo}`}} style={styles.profileImage} />
         </View>
       </View>
       {/* header end */}
@@ -84,9 +75,10 @@ const IndexHomeContainer = ({ navigation }) => {
                 marginVertical: 8,
                 color: '#184461',
                 textAlign: 'center',
+                textTransform: "capitalize"
               }}
             >
-              Vilyn Tan Cho
+              {user.FirstName} {user.LastName}
             </Text>
             {/* divider start */}
             <View
@@ -423,53 +415,71 @@ const IndexHomeContainer = ({ navigation }) => {
           marginTop: 20,
         }}
       >
-        {AnnouncementCard.map((item, index) => (
-          <TouchableOpacity 
-          key={index} 
-          activeOpacity={1.0}
-          onPress={() => navigation.navigate('Announcementdetails',{
-            itemTitle : item.cardTitle,
-            itemIcon: item.cardIcon,
-            itemDesc: item.cardDes,
-            itemDate: item.eventDate,
-            itemTime: item.eventTime,
-            itemDistance: item.distance
+        <View>
+        <View>
+          {
+            announcementsLoading 
+            ?
+              <ActivityIndicator size={50} color="blue" style={{
+                alignSelf: "center"
+              }} />
+            : announcements.length > 0
+            ?announcements.map((ann, key) => (
+              <View
+            key={key}
+            style={{
+            
+              backgroundColor: 'white',
+              borderRadius: 15,
+              elevation: 10,
+              shadowColor: '#000',
+              shadowRadius: 10,
+              shadowOpacity: 0.6,
+              elevation: 8,
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              marginBottom: 10,
+            }}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <View
+                style={{
+                  width: 10,
+                  backgroundColor: '#184461',
+                  borderTopLeftRadius: 10,
+                  borderBottomLeftRadius: 10,
+                }}
+              />
+              <Image
+                source={{uri: `data:image/png;base64,${ann.EventBannerLogo}`}}
+                style={{
+                  width: "40%",
+                  height: 100,
+                  resizeMode:'cover'
+                }}
+              />
 
-          })}>
-            <View
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 15,
-                elevation: 10,
-                shadowColor: '#000',
-                shadowRadius: 10,
-                shadowOpacity: 0.6,
-                elevation: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                marginBottom: 10,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <View
+              <View
+                style={{
+                  paddingVertical: 5,
+                  marginStart: 5,
+                  backgroundColor: '#fff',
+                  marginEnd: 5,
+                }}
+              >
+                <Text
                   style={{
-                    width: 10,
-                    backgroundColor: '#184461',
-                    borderTopLeftRadius: 10,
-                    borderBottomLeftRadius: 10,
+                    color: '#184461',
+                    marginBottom: 5,
+                    flexWrap: 'wrap',
+                    fontWeight: 'bold',
+                    fontSize: orientation === 'PORTRAIT'? 14: 18 
                   }}
-                />
-                <Image
-                  source={item.cardIcon}
-                  style={{
-                    width: '35%',
-                    height: orientation === 'PORTRAIT' ? 120 : 140,
-                    resizeMode: 'cover',
-                  }}
-                />
-
+                >
+                  Join for grocery shopping
+                </Text>
                 <View
                   style={{
                     paddingVertical: 5,
@@ -548,8 +558,16 @@ const IndexHomeContainer = ({ navigation }) => {
                 </View>
               </View>
             </View>
-          </TouchableOpacity>
-        ))}
+          </View>
+            ))
+            :<View>
+              <Text style={{
+                textAlign: "center"
+              }}>No Announcements available now</Text>
+            </View>
+          }
+        </View>
+      </View>
       </View>
       {/* announcement end */}
     </ScrollView>

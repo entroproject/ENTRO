@@ -11,44 +11,20 @@ import {
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import Icon from 'react-native-dynamic-vector-icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { setDefaultCard } from '@/Features/virtualCards'
 
 const IndexUserProfileContainer = ({ navigation }) => {
-  const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
-  const [cardPickedIndex, setcardPickedIndex] = useState(0)
-  const [loading, setLoading] = useState(false)
-
-  const VirtualCard = [
-    {
-      id: 0,
-      companyName: 'SURIA KLCC',
-      cardIcon: Images.KlccLogo,
-      cardExpries: '24 -01-2022  21:00: 00 pm',
-      hostNumber: 'ST33223',
-      selectedCard: Images.defaultCardIcon,
-    },
-
-    {
-      id: 1,
-      companyName: 'PLAZA 33',
-      cardIcon: Images.Plaza33Logo,
-      cardExpries: '22 -01-2022  22:00: 00 pm',
-      hostNumber: 'ST33223',
-      selectedCard: Images.defaultCardIcon,
-    },
-    {
-      id: 2,
-      companyName: 'SURIA KLCC',
-      cardIcon: Images.KlccLogo,
-      cardExpries: '24 -01-2022  21:00: 00 pm',
-      hostNumber: 'ST33223',
-      selectedCard: Images.defaultCardIcon,
-    },
-  ]
+  const { Layout, Colors, Images } = useTheme()
+  const user = useSelector(user => user.user.profile);
+  const VirtualCard = useSelector(virtualCard => virtualCard.virtualCard.cards);
+  const defaultCardID = useSelector(virtualCard => virtualCard.virtualCard.defaultCard);
+  const dispatch = useDispatch();
 
 
  
-  const handCardSelected = (item, index) => {
-    setcardPickedIndex(index);
+  const handCardSelected = (item) => {
+    dispatch(setDefaultCard(item.VirtualKey))
   }
 
   return (
@@ -73,7 +49,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
         </Text>
 
         <Image
-          source={Images.userImageDisplay}
+          source={{uri: `data:image/png;base64,${user.ProfileLogo}`}}
           style={{
             width: 60,
             height: 60,
@@ -88,7 +64,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
       <View style={[{ marginTop: 20 }]}>
         <View style={[Layout.center]}>
           <ImageBackground
-            source={Images.userImageDisplay}
+            source={{uri: `data:image/png;base64,${user.ProfileLogo}`}}
             style={{ height: 270, width: 300, elevation: 8 }}
             borderTopLeftRadius={20}
             borderTopRightRadius={20}
@@ -128,9 +104,10 @@ const IndexUserProfileContainer = ({ navigation }) => {
                     fontSize: 15,
                     fontWeight: '700',
                     color: '#184461',
+                    textTransform: "capitalize"
                   }}
                 >
-                  Vilyn Fong Cho
+                  {user.FirstName} {user.LastName}
                 </Text>
               </View>
 
@@ -172,7 +149,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
                     color: '#184461',
                   }}
                 >
-                  +601133939816
+                  {user.MobileNo}
                 </Text>
               </View>
             </View>
@@ -199,7 +176,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
                     color: '#184461',
                   }}
                 >
-                  vilynfong@gmail.com
+                  {user.Email}
                 </Text>
               </View>
             </View>
@@ -226,7 +203,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
                     color: '#184461',
                   }}
                 >
-                  AVG 8801
+                  {user.VehicleNo}
                 </Text>
               </View>
             </View>
@@ -261,7 +238,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
               }}
                 key={index}
                 activeOpacity={1.0}
-                onPress={() => handCardSelected(item, index)}
+                onPress={() => handCardSelected(item)}
               >
                 <View
                   style={[ { marginTop: 5, marginBottom: 10 }]}
@@ -301,7 +278,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
                             marginLeft: 2,
                           }}
                         >
-                          {item.companyName}
+                          {item.BuildingName}
                         </Text>
                         <Text
                           style={{
@@ -323,7 +300,8 @@ const IndexUserProfileContainer = ({ navigation }) => {
                             marginTop: 5,
                           }}
                         >
-                          {item.cardExpries}
+                          {new Date(Number(item.AccessEndAt.replace(/\/date\(/gi, "").replace(/\//gi, "").replace(/\)/gi, ""))).toLocaleString()}
+
                         </Text>
                         <Text
                           style={{
@@ -335,12 +313,12 @@ const IndexUserProfileContainer = ({ navigation }) => {
                             marginBottom: 3,
                           }}
                         >
-                          Host Number: <Text>{item.hostNumber} hello {item.id}</Text>
+                          Host Number: <Text>{item.VirtualKey}</Text>
                         </Text>
 
-                        { item.id === cardPickedIndex ? (
+                        { item.VirtualKey ===  defaultCardID ? (
                           <Image
-                            source={item.selectedCard}
+                            source={Images.defaultCardIcon}
                             style={{ width: 20, height: 20, margin: 3 }}
                             resizeMode={'contain'}
                           />

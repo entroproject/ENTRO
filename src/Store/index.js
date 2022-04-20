@@ -14,9 +14,13 @@ import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import theme from './Theme'
 import userReducer from '../Features/users'
+import announcementReducer from '../Features/announcements'
+import virtualCardsReducer from '../Features/virtualCards'
 
 const reducers = combineReducers({
   user: userReducer,  
+  announcement: announcementReducer,
+  virtualCard: virtualCardsReducer,
   theme
 })
 

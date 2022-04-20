@@ -2,13 +2,40 @@ import React, { useState, useEffect } from 'react'
 import { View, ActivityIndicator, Text, Image, ScrollView } from 'react-native'
 import { useTheme } from '@/Hooks'
 import DropShadow from 'react-native-drop-shadow'
+import { getQRAccess } from '@/api-utils'
+import { useSelector } from 'react-redux'
 
 const IndexVirtualAccessContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
 
+  const [loading, setLoading] = useState(true);
+  const [image, setImage] = useState("");
+  const user = useSelector(user => user.user.profile);
+
+
+  const getImage = async () => {
+    const req_img = await getQRAccess("");
+    const res_img = await req_img.json();
+    setImage(res_img);
+    setTimeout(getImage, 2 * (60 * 1000));
+  }
+
+  useEffect(()=> {
+    getImage();
+  });
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
-      <View
+    <ScrollView>
+      {
+      !image ?
+      <ActivityIndicator
+      size={50}
+      color="blue"
+      style={{
+        alignSelf: "center"
+      }}
+      />
+      :<View
         style={{
           justifyContent: 'center',
           alignItems: 'center',
@@ -36,7 +63,7 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
           }}
         >
           <Image
-            source={Images.KlccLogo}
+            source={{uri: `data:image/png;base64,${image.Image}`}}
             style={{ width: 200, height: 120, resizeMode: 'contain' }}
           />
         </View>
@@ -92,6 +119,7 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
           </Text>
         </View>
       </View>
+      }
     </ScrollView>
   )
 }

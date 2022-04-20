@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { navigate } from '@/Navigators/utils'
+import { navigateAndSimpleReset } from '@/Navigators/utils'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 
 const width = Dimensions.get("screen").width
@@ -71,7 +72,7 @@ function IndexTutorialSlideContainer({}) {
             setLoading(true)
             setTimeout(() => {
               setLoading(false)
-              navigate('UserProfile')
+              navigateAndSimpleReset('MainNav')
             }, 3000)
           }}
         />
@@ -105,6 +106,7 @@ function IndexTutorialSlideContainer({}) {
               width: SIZES.width,
               height: SIZES.height,
               backgroundColor: '#184461',
+             
             }}
           >
             <View
@@ -112,6 +114,7 @@ function IndexTutorialSlideContainer({}) {
               flex={1}
               style={{
                 backgroundColor: Colors.white,
+
               }}
             >
               <View flex={1}>
@@ -221,7 +224,7 @@ function IndexTutorialSlideContainer({}) {
                         Fonts.textCenter,
                         {
                           color: Colors.bodyText,
-                          marginBottom: item.description_slide_1_2 ? 15 : 0,
+                          marginBottom: item.description_slide_1_2 ? 125 : 10,
                         },
                       ]}
                     >
@@ -259,7 +262,7 @@ function IndexTutorialSlideContainer({}) {
 
                 {item.btnButton ? (
                   <View
-                    style={[{ marginTop: 20, marginLeft: 50, marginRight: 50 }]}
+                    style={[{ marginTop: 20, marginLeft: 50, marginRight: 50, marginBottom: 20 }]}
                   >
                     {item.btnButton}
                   </View>
@@ -270,6 +273,7 @@ function IndexTutorialSlideContainer({}) {
                       {
                         bottom: 20,
                         position: 'absolute',
+                       
                       },
                     ]}
                   >

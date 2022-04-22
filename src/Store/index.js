@@ -16,10 +16,12 @@ import theme from './Theme'
 import userReducer from '../Features/users'
 import announcementReducer from '../Features/announcements'
 import virtualCardsReducer from '../Features/virtualCards'
+import visitorsReducer from '../Features/visitors'
 
 const reducers = combineReducers({
   user: userReducer,  
   announcement: announcementReducer,
+  visitors: visitorsReducer,
   virtualCard: virtualCardsReducer,
   theme
 })

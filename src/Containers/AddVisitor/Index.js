@@ -20,6 +20,7 @@ import { useOrientation } from '../useOrientation'
 import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage, hideMessage } from 'react-native-flash-message'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
+import { inviteVisitors } from '@/api-utils'
 
 const IndexAddVisitorContainer = ({navigation}) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -49,13 +50,15 @@ const IndexAddVisitorContainer = ({navigation}) => {
     })
   }
 
-  const SubmitForm = () => {
+  const SubmitForm = async () => {
+    setLoading(true);
     if (!fullName || !ICNumber || !mobileNumber || !carPlateNum) {
+        setLoading(false);
         showMessage({
             message: 'All fields are required',
             backgroundColor: 'red',
             duration: 3000,
-          })
+          });
           return false
     } 
 
@@ -64,17 +67,42 @@ const IndexAddVisitorContainer = ({navigation}) => {
             message: 'Please Indicate a valid IC-Number',
             backgroundColor: 'red',
             duration: 3000,
-          })
+          });
+          setLoading(false);
           return false
     }
 
     if (fullName !== '' || ICNumber !== '' ||  mobileNumber !== '' || carPlateNum !== '' ) {
-        showMessage({
+
+        const req_invite = await inviteVisitors("", {
+          "accessId": "ea204301348a34b8695319778667d311",
+          "BuildingName": "Plaza33",
+          "Visitortype": "Contractor",
+          "VisitorName": fullName,
+          "DocumentNumber": ICNumber,
+          "MobileNumber": mobileNumber,
+          "VehicleNumber": carPlateNum,
+          "StartDateTime": "2021-08-11T23:05:41.000Z",
+          "EndDateTime": "2021-08-11T23:05:41.000Z"
+        });
+        const resp = await req_invite.json();
+
+        if(resp.StatusCode == '200'){
+          setLoading(false);
+          showMessage({
             message: 'Details successfully saved!',
             backgroundColor: 'green',
             duration: 3000,
           })
           navigation.navigate('VisitDateType')
+        }else{
+          setLoading(false);
+          showMessage({
+            message: resp.message,
+            backgroundColor: 'green',
+            duration: 3000,
+          })
+        }
     }
   }
 

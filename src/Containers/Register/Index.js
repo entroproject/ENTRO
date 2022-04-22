@@ -81,7 +81,7 @@ const IndexRegisterContainer = () => {
       return false
     }
     setLoading(false); 
-    navigation.navigate("RegisterCompanyUser", {phoneNumber})
+    navigation.navigate("RegisterCompanyUser", {phoneNumber});
   }
   
   return (
@@ -98,7 +98,7 @@ const IndexRegisterContainer = () => {
       >
       <ScrollView>
         <Image
-          source={Images.logoGreen}
+          source={Images.logoGreesn}
           style={{ width: 230, height: 55, marginTop: 57, marginLeft: 20 }}
         />
         <View style={{ marginLeft: 32 }}>

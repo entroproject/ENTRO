@@ -58,6 +58,14 @@ const ApplicationNavigator = () => {
             }}
           />
 
+          <Stack.Screen
+            name="RegisterCompanyUser"
+            component={IndexRegisterCompanyUserContainer}
+            options={{
+              animationEnabled: false,
+            }}
+          />
+
           {
             isLogged
             &&<Stack.Group>
@@ -72,14 +80,6 @@ const ApplicationNavigator = () => {
           <Stack.Screen
             name="MainHome"
             component={IndexHomeContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
-
-          <Stack.Screen
-            name="RegisterCompanyUser"
-            component={IndexRegisterCompanyUserContainer}
             options={{
               animationEnabled: false,
             }}

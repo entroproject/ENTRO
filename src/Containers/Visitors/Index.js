@@ -13,15 +13,21 @@ import { useTheme } from '@/Hooks'
 import Icon from 'react-native-dynamic-vector-icons'
 import { useOrientation } from '../useOrientation'
 import { ButtonGroup } from 'react-native-elements'
+import { getVisitors, getVisitorsHistory } from '@/api-utils'
 
 const IndexVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [displaycontact, setDisplayContact] = useState(true)
-  const [chooseAll, setChooseAll] = useState('Select All')
-  const [chooseItem, setChooseItem] = useState('Select')
-  const [searchVehicle, setSearchVehicle] = useState('')
-  const orientation = useOrientation()
+  const [displaycontact, setDisplayContact] = useState(true);
+  const [chooseAll, setChooseAll] = useState('Select All');
+  const [chooseItem, setChooseItem] = useState('Select');
+  const [searchVehicle, setSearchVehicle] = useState('');
+  const [allVisitors, setAllVisitors] = useState([]);
+  const [customized_visitors, setCustomized_visitors] = useState([]);
+  const [allVisitorsHistory, setAllVisitorsHistory] = useState([]);
+  const [customized_visitors_history, setCustomized_visitors_history] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const orientation = useOrientation();
 
   useEffect(() => {
     if (selectedIndex === 0) {
@@ -29,7 +35,28 @@ const IndexVisitorContainer = ({ navigation }) => {
     } else {
       setDisplayContact(false)
     }
-  })
+  }, [selectedIndex]);
+
+  useEffect(()=> {
+    getAllVisitors();
+    getAllVisitorsHistory();
+  }, []);
+
+  const getAllVisitors = async () => {
+    const req_vis = await getVisitors("");
+    const visitors = await req_vis.json();
+    setAllVisitors(visitors.Visitors);
+    setCustomized_visitors(visitors.Visitors);
+    setLoading(false);
+  } 
+
+  const getAllVisitorsHistory = async () => {
+    const req_vis = await getVisitorsHistory("");
+    const visitors_hist = await req_vis.json();
+    setAllVisitorsHistory(visitors_hist.Visitors);
+    setCustomized_visitors_history(visitors_hist.Visitors);
+    setLoading(false);
+  } 
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
@@ -108,7 +135,29 @@ const IndexVisitorContainer = ({ navigation }) => {
         />
       </View>
 
-      {displaycontact ? (
+      {
+        loading
+        ?
+        <View style={{
+          flex: 1,
+          justifyContent: "center",
+          height: 500
+        }}>
+          <ActivityIndicator
+            size={50}
+            color={"blue"}
+            style={{
+              alignSelf: "center"
+            }}
+          />
+          <Text style={{
+            textAlign: "center",
+            color: "#000",
+            fontSize: 16,
+            marginTop: 10
+          }}>Please wait...</Text>
+        </View>
+        :displaycontact ? (
         <ScrollView>
           <View style={{ backgroundColor: '#D0F2EC' }}>
             <View
@@ -253,131 +302,137 @@ const IndexVisitorContainer = ({ navigation }) => {
 
 
           {/**Card start from here Vistor registration */}
-          <View style={{ marginVertical: 15 }}>
+          
+            <View style={{ marginVertical: 15 }}>
             <View style={{ flex: 1, marginHorizontal: 16 }}>
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-                }}
-                activeOpacity={1.0}
-              >
-                <View style={[{ marginTop: 5, marginBottom: 10 }]}>
-                  <View
+            {
+            allVisitors.map((v, key) => (
+                  <TouchableOpacity
+                   key={key}
                     style={{
-                      backgroundColor: 'white',
-                      borderRadius: 15,
-                      elevation: 10,
-                      shadowColor: '#000',
-                      shadowRadius: 10,
-                      shadowOpacity: 0.6,
-                      elevation: 8,
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
+                      width: '100%',
+                      alignSelf: 'center',
                     }}
+                    activeOpacity={1.0}
                   >
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={[{ marginTop: 5, marginBottom: 10 }]}>
                       <View
                         style={{
-                          width: 10,
-                          backgroundColor: '#184461',
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
+                          backgroundColor: 'white',
+                          borderRadius: 15,
+                          elevation: 10,
+                          shadowColor: '#000',
+                          shadowRadius: 10,
+                          shadowOpacity: 0.6,
+                          elevation: 8,
+                          shadowOffset: {
+                            width: 0,
+                            height: 4,
+                          },
                         }}
-                      />
+                      >
+                        <View style={{ flexDirection: 'row' }}>
+                          <View
+                            style={{
+                              width: 10,
+                              backgroundColor: '#184461',
+                              borderTopLeftRadius: 10,
+                              borderBottomLeftRadius: 10,
+                            }}
+                          />
 
-                      <View style={{ flex: 3 }}>
-                        <Text
-                          style={{
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginTop: 5,
-                            marginLeft: 2,
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                          }}
-                        >
-                          Start Date: <Text>2021-09-14 12:30:00pm</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginTop: 2,
-                            marginLeft: 2,
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                          }}
-                        >
-                          End Date: <Text>2021-09-14 12:30:00pm</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 1,
-                          }}
-                        >
-                          Location: <Text>Plaza33</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 1,
-                          }}
-                        >
-                          Vehicle No: <Text>VBD1314</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 1,
-                          }}
-                        >
-                          Vistor Name: <Text>Hakimi</Text>
-                        </Text>
+                          <View style={{ flex: 3 }}>
+                            <Text
+                              style={{
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginTop: 5,
+                                marginLeft: 2,
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                              }}
+                            >
+                              Start Date: <Text>{new Date(Number(v.StartDateTime.replace(/\/date\(/gi, "").replace(/\//gi, "").replace(/\)/gi, ""))).toLocaleString()}</Text>
+                            </Text>
+                            <Text
+                              style={{
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginTop: 2,
+                                marginLeft: 2,
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                              }}
+                            >
+                              End Date: <Text>{new Date(Number(v.EndDateTime.replace(/\/date\(/gi, "").replace(/\//gi, "").replace(/\)/gi, ""))).toLocaleString()}</Text>
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginLeft: 2,
+                                marginTop: 1,
+                              }}
+                            >
+                              Location: <Text>Plaza33</Text>
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginLeft: 2,
+                                marginTop: 1,
+                              }}
+                            >
+                              Vehicle No: <Text>{v.VehicleNumber}</Text>
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginLeft: 2,
+                                marginTop: 1,
+                              }}
+                            >
+                              Vistor Name: <Text>{v.VisitorName}</Text>
+                            </Text>
 
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 1,
-                            marginBottom: 3,
-                          }}
-                        >
-                          Status: <Text>Registered</Text>
-                        </Text>
-                      </View>
+                            <Text
+                              style={{
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginLeft: 2,
+                                marginTop: 1,
+                                marginBottom: 3,
+                              }}
+                            >
+                              Status: <Text>{v.VisitorStatus}</Text>
+                            </Text>
+                          </View>
 
-                      <View style={{ justifyContent: 'center', flex: 1 }}>
-                        <Image
-                          source={Images.userImageDisplay}
-                          style={{
-                            width: orientation === 'PORTRAIT' ? 70 : 90,
-                            height: orientation === 'PORTRAIT' ? 70 : 90,
-                            marginEnd: 3,
-                            borderRadius: orientation === 'PORTRAIT' ? 35 : 45,
-                            alignSelf: 'flex-end',
-                          }}
-                          resizeMode={'cover'}
-                        />
+                          <View style={{ justifyContent: 'center', flex: 1 }}>
+                            <Image
+                              source={Images.userImageDisplay}
+                              style={{
+                                width: orientation === 'PORTRAIT' ? 70 : 90,
+                                height: orientation === 'PORTRAIT' ? 70 : 90,
+                                marginEnd: 3,
+                                borderRadius: orientation === 'PORTRAIT' ? 35 : 45,
+                                alignSelf: 'flex-end',
+                              }}
+                              resizeMode={'cover'}
+                            />
+                          </View>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
+                  </TouchableOpacity>
+            ))
+            }
             </View>
-          </View>
+            </View>
           {/**Card start from here Vistor registration */}
         </ScrollView>
       ) : (
@@ -524,209 +579,111 @@ const IndexVisitorContainer = ({ navigation }) => {
 
 
           <View style={{ marginVertical: 15 }}>
-            <View style={{ flex: 1, marginHorizontal: 16 }}>
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-                }}
-                activeOpacity={1.0}
-              >
-                <View style={[{ marginTop: 5, marginBottom: 10 }]}>
-                  <View
+            {
+              allVisitorsHistory.map((v, key) => (
+                <View key={key} style={{ flex: 1, marginHorizontal: 16 }}>
+                  <TouchableOpacity
                     style={{
-                      backgroundColor: 'white',
-                      borderRadius: 15,
-                      elevation: 10,
-                      shadowColor: '#000',
-                      shadowRadius: 10,
-                      shadowOpacity: 0.6,
-                      elevation: 8,
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
+                      width: '100%',
+                      alignSelf: 'center',
                     }}
+                    activeOpacity={1.0}
                   >
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={[{ marginTop: 5, marginBottom: 10 }]}>
                       <View
                         style={{
-                          width: 10,
-                          backgroundColor: '#184461',
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
+                          backgroundColor: 'white',
+                          borderRadius: 15,
+                          elevation: 10,
+                          shadowColor: '#000',
+                          shadowRadius: 10,
+                          shadowOpacity: 0.6,
+                          elevation: 8,
+                          shadowOffset: {
+                            width: 0,
+                            height: 4,
+                          },
                         }}
-                      />
+                      >
+                        <View style={{ flexDirection: 'row' }}>
+                          <View
+                            style={{
+                              width: 10,
+                              backgroundColor: '#184461',
+                              borderTopLeftRadius: 10,
+                              borderBottomLeftRadius: 10,
+                            }}
+                          />
 
-                      <View style={{ flex: 3 }}>
-                        <Text
-                          style={{
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginTop: 5,
-                            marginLeft: 2,
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                          }}
-                        >
-                          Date: <Text>2021-09-14 12:30:00pm</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 3,
-                          }}
-                        >
-                          Location: <Text>Plaza33</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 3,
-                          }}
-                        >
-                          Vehicle No: <Text>VBD1314</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 3,
-                            marginBottom: 3,
-                          }}
-                        >
-                          Vistor Name: <Text>Hakimi</Text>
-                        </Text>
-                      </View>
+                          <View style={{ flex: 3 }}>
+                            <Text
+                              style={{
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginTop: 5,
+                                marginLeft: 2,
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                              }}
+                            >
+                              Date: <Text>{new Date(Number(v.StartDateTime.replace(/\/date\(/gi, "").replace(/\//gi, "").replace(/\)/gi, ""))).toLocaleString()}</Text>
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginLeft: 2,
+                                marginTop: 3,
+                              }}
+                            >
+                              Location: <Text>Plaza33</Text>
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginLeft: 2,
+                                marginTop: 3,
+                              }}
+                            >
+                              Vehicle No: <Text>{v.VehicleNumber}</Text>
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: orientation === 'PORTRAIT' ? 13 : 16,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginLeft: 2,
+                                marginTop: 3,
+                                marginBottom: 3,
+                              }}
+                            >
+                              Vistor Name: <Text>{v.VisitorName}</Text>
+                            </Text>
+                          </View>
 
-                      <View style={{ justifyContent: 'center', flex: 2 }}>
-                        <Image
-                          source={Images.userImageDisplay}
-                          style={{
-                            width: orientation === 'PORTRAIT' ? 70 : 90,
-                            height: orientation === 'PORTRAIT' ? 70 : 90,
-                            marginEnd: 3,
-                            borderRadius: orientation === 'PORTRAIT' ? 35 : 45,
-                            alignSelf: 'flex-end',
-                            marginEnd: 20,
-                          }}
-                          resizeMode={'cover'}
-                        />
+                          <View style={{ justifyContent: 'center', flex: 2 }}>
+                            <Image
+                              source={Images.userImageDisplay}
+                              style={{
+                                width: orientation === 'PORTRAIT' ? 70 : 90,
+                                height: orientation === 'PORTRAIT' ? 70 : 90,
+                                marginEnd: 3,
+                                borderRadius: orientation === 'PORTRAIT' ? 35 : 45,
+                                alignSelf: 'flex-end',
+                                marginEnd: 20,
+                              }}
+                              resizeMode={'cover'}
+                            />
+                          </View>
+                        </View>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ flex: 1, marginHorizontal: 16 }}>
-              <TouchableOpacity
-                style={{
-                  width: '100%',
-                  alignSelf: 'center',
-                }}
-                activeOpacity={1.0}
-              >
-                <View style={[{ marginTop: 5, marginBottom: 10 }]}>
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      borderRadius: 15,
-                      elevation: 10,
-                      shadowColor: '#000',
-                      shadowRadius: 10,
-                      shadowOpacity: 0.6,
-                      elevation: 8,
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                    }}
-                  >
-                    <View style={{ flexDirection: 'row' }}>
-                      <View
-                        style={{
-                          width: 10,
-                          backgroundColor: '#184461',
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
-                        }}
-                      />
-
-                      <View style={{ flex: 3 }}>
-                        <Text
-                          style={{
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginTop: 5,
-                            marginLeft: 2,
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                          }}
-                        >
-                          Date: <Text>2021-09-14 12:30:00pm</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 3,
-                          }}
-                        >
-                          Location: <Text>Plaza33</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 3,
-                          }}
-                        >
-                          Vehicle No: <Text>VBD1314</Text>
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 3,
-                            marginBottom: 3,
-                          }}
-                        >
-                          Vistor Name: <Text>Hakimi</Text>
-                        </Text>
-                      </View>
-
-                      <View style={{ justifyContent: 'center', flex: 2 }}>
-                        <Image
-                          source={Images.userImageDisplay}
-                          style={{
-                            width: orientation === 'PORTRAIT' ? 70 : 90,
-                            height: orientation === 'PORTRAIT' ? 70 : 90,
-                            marginEnd: 3,
-                            borderRadius: orientation === 'PORTRAIT' ? 35 : 45,
-                            alignSelf: 'flex-end',
-                            marginEnd: 20,
-                          }}
-                          resizeMode={'cover'}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
+              ))
+            }
           </View>
         </ScrollView>
       )}

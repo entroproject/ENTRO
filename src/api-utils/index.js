@@ -38,13 +38,33 @@ export const getAnnouncements = async AccessId => {
     }));
 }
 
+export const getVisitors = async AccessId => {
+    return await makeRequest("PlannedVisitor", JSON.stringify({
+        "AccessId": "883217495722675713416e41a25dd051",
+        "BuildingName": "PLAZA33"
+    }));
+}
+
+export const getVisitorsHistory = async AccessId => {
+    return await makeRequest("HistoryVisitor", JSON.stringify({
+        "AccessId": "883217495722675713416e41a25dd051",
+        "BuildingName": "PLAZA33"
+    }));
+}
+
+export const inviteVisitors = async AccessId => {
+    return await makeRequest("InviteVisitor", JSON.stringify({
+        "AccessId": "883217495722675713416e41a25dd051",
+        "BuildingName": "PLAZA33"
+    }));
+}
+
 export const getQRAccess = async AccessId => {
     return await makeRequest("qraccess", JSON.stringify({
         "AccessId": "883217495722675713416e41a25dd051",
         "BuildingName": "PLAZA33 Chinese"
     }));
 }
-
 
 export const registerUser = async body => {
     return await makeRequest("signup", JSON.stringify(body));

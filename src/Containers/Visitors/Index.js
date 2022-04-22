@@ -145,7 +145,7 @@ const IndexVisitorContainer = ({ navigation }) => {
         }}>
           <ActivityIndicator
             size={50}
-            color={"blue"}
+            color={"#184461"}
             style={{
               alignSelf: "center"
             }}
@@ -414,7 +414,7 @@ const IndexVisitorContainer = ({ navigation }) => {
 
                           <View style={{ justifyContent: 'center', flex: 1 }}>
                             <Image
-                              source={Images.userImageDisplay}
+                              source={{uri: `data:image/png;base64,${v.VisitorImageLogo}`}}
                               style={{
                                 width: orientation === 'PORTRAIT' ? 70 : 90,
                                 height: orientation === 'PORTRAIT' ? 70 : 90,
@@ -665,7 +665,7 @@ const IndexVisitorContainer = ({ navigation }) => {
 
                           <View style={{ justifyContent: 'center', flex: 2 }}>
                             <Image
-                              source={Images.userImageDisplay}
+                            source={{uri: `data:image/png;base64,${v.VisitorImageLogo}`}}
                               style={{
                                 width: orientation === 'PORTRAIT' ? 70 : 90,
                                 height: orientation === 'PORTRAIT' ? 70 : 90,

@@ -156,7 +156,6 @@ const IndexVisitorContainer = ({ navigation }) => {
     setSelectAllDialogView(false)
   }
 
-
   // reset visitors lists
   const resetAcc = () => {
     setCustomized_visitors_history(allVisitorsHistory);
@@ -165,7 +164,6 @@ const IndexVisitorContainer = ({ navigation }) => {
   const resetReg = () => {
     setCustomized_visitors(allVisitors);
   }
-
 
   const handleSearchReg = () =>{
     const _filtered_visitors = allVisitors.filter(c => {
@@ -194,19 +192,17 @@ const IndexVisitorContainer = ({ navigation }) => {
     if(searchVehicle.length > 0){
       handleSearchReg();
     }
-    if(searchVehicle1.length > 0){
-      handleSearchAcc();
-    }
+    filterVisitorReg();
+  }, [searchVehicle, filterVisitorType])
+
+  useEffect(() => {
     if(searchVehicle1.length < 1){
       resetAcc();
     }
-    filterVisitorReg();
-  }, [searchVehicle, searchVehicle1, filterVisitorType])
-
-  // update visitors list based on filter changes
-  useEffect(()=> {
-
-  }, [])
+    if(searchVehicle1.length > 0){
+      handleSearchAcc();
+    }
+  }, [searchVehicle1])
 
 
 

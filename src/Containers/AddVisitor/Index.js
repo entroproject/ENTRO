@@ -24,12 +24,10 @@ import { inviteVisitors } from '@/api-utils'
 
 const IndexAddVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
-  const [photo, setPhoto] = useState(null)
   const [fullName, setFullName] = useState('')
   const [ICNumber, setICNumber] = useState('')
   const [mobileNumber, setMobileNumber] = useState('')
   const [carPlateNum, setCarPlateNum] = useState('')
-  const [hasError, setHasError] = useState(false)
   const [loading, setLoading] = useState(false)
   const [date, setDate] = useState(new Date())
   const [enddate, setenddate] = useState(new Date())
@@ -99,17 +97,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
     setIsVisitorDialogVisible(false)
   }
 
-  const uploadPhoto = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      setPhoto(image)
-      console.log(image)
-    })
-  }
-
   const SubmitForm = async () => {
     setLoading(true)
     if (!fullName || !ICNumber || !mobileNumber || !carPlateNum) {
@@ -122,7 +109,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       return false
     }
 
-    if (ICNumber.length < 12 || ICNumber.length > 14) {
+    if (ICNumber.length < 12 || ICNumber.length > 15) {
       showMessage({
         message: 'Please Indicate a valid IC-Number',
         backgroundColor: 'red',
@@ -163,7 +150,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
         setLoading(false)
         showMessage({
           message: resp.message,
-          backgroundColor: 'green',
+          backgroundColor: 'red',
           duration: 3000,
         })
       }
@@ -312,7 +299,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               style={{
                 width: '90%',
 
-                marginTop: 110,
+                marginTop: 30,
                 borderRadius: 20,
                 backgroundColor: '#F1F1F1',
                 elevation: 10,
@@ -327,50 +314,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               }}
             >
               <View style={[Layout.center, { marginBottom: 30 }]}>
-                <View
-                  style={[
-                    Layout.center,
-                    {
-                      width: 130,
-                      height: 130,
-                      position: 'absolute',
-                      borderRadius: 65,
-                      borderColor: '#184461',
-                      borderWidth: MetricsSizes.zero + 1,
-                      backgroundColor: '#C4c4c4',
-                      shadowColor: ' rgba(0, 0, 0, 0.25)',
-                    },
-                  ]}
-                >
-                  <Image
-                    source={photo ? { uri: photo.path } : Images.profilepic}
-                    style={{
-                      width: 150,
-                      height: 150,
-                      zIndex: 1,
-                      borderRadius: 75.5,
-                    }}
-                  />
-                </View>
               </View>
-              <View style={[Layout.center, { marginLeft: 90 }]}>
-                <TouchableOpacity
-                  onPress={() => uploadPhoto()}
-                  activeOpacity={0.9}
-                  style={[
-                    Layout.center,
-                    {
-                      backgroundColor: '#184461',
-                      width: 40,
-                      height: 40,
-                      borderRadius: 20,
-                    },
-                  ]}
-                >
-                  <Icon name="camera" type="Feather" size={18} color="white" />
-                </TouchableOpacity>
-              </View>
-
               <View style={{ marginHorizontal: 20, marginVertical: 12 }}>
                 <DropShadow
                   style={{

@@ -17,7 +17,7 @@ const StartupContainer = () => {
     await new Promise(resolve =>
       setTimeout(() => {
         resolve(true)
-      }, 2000),
+      }, 1000),
     )
     await setDefaultTheme({ theme: 'default', darkMode: null }) 
     navigateAndSimpleReset(isLoggedIn ? "MainNav" : "Login")

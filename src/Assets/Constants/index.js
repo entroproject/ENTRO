@@ -23,3 +23,11 @@ export const regexStr = {
     'Checked Out'
   ]
   
+  export const visitorStatusType =[
+    'All', 
+    'Pending',
+    'Registered'
+  ]
+
+
+  

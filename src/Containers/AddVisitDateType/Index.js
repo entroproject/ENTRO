@@ -12,7 +12,6 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { useTheme } from '@/Hooks'
-import { navigate } from '@/Navigators/utils'
 import DropShadow from 'react-native-drop-shadow'
 import { useOrientation } from '../useOrientation'
 import DatePicker from 'react-native-date-picker'
@@ -22,7 +21,6 @@ import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 
 const IndexAddVisitDateTypeContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
-  const [hasError, setHasError] = useState(false)
 
   const [loading, setLoading] = useState(false)
   const orientation = useOrientation()

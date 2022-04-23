@@ -36,8 +36,8 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   const [open, setOpen] = useState(false)
   const [openEndDate, setOpenEndDate] = useState(false)
   const [vistor, setVisitor] = useState('Select Visitor Type')
-  const [chooseVisitStartDate, setChooseVisitStartDate] = useState('Visit Arrival Time')
-  const [choosenVisitEndDate, setChoosenVisitEndDate] = useState('Visit departure Time')
+  const [chooseVisitStartDate, setChooseVisitStartDate] = useState('Visit Start Date')
+  const [choosenVisitEndDate, setChoosenVisitEndDate] = useState('Visit End Date')
   const [isVisitorDialogVisible, setIsVisitorDialogVisible] = useState(false)
   const user = useSelector(user => user.user.profile)
 
@@ -93,6 +93,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       </TouchableOpacity>
     )
   })
+  
   const selectVisitingPerson = item => {
     setVisitor(item)
     setIsVisitorDialogVisible(false)
@@ -401,6 +402,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                         shadowRadius: 5,
                         backgroundColor: Colors.white,
                         elevation: 5,
+                     
                       },
                     ]}
                   >
@@ -412,11 +414,11 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                         {
                           width: '85%',
                           height: 48,
-                          fontWeight: '700',
                           flexWrap: 'wrap',
                           flexShrink: 1,
                           fontSize: 14,
-                          padding: 12,
+                          color: vistor ? '#666666' : '#000',
+                          paddingTop: 12
                         },
                       ]}
                     >
@@ -552,56 +554,55 @@ const IndexAddVisitorContainer = ({ navigation }) => {
 
                 {/**Visit Date starts here */}
                 <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
+                style={{
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 0,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 3,
+                }}
+              >
+                <View
+                  style={[
+                    Layout.row,
+                    Layout.alignItemsCenter,
+                    {
+                      borderRadius: 16,
+                      marginVertical: MetricsSizes.small - 2,
+                      borderWidth: MetricsSizes.tiny - 4,
+                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                      borderWidth: 2,
+                      shadowColor: 'rgba(0, 0, 0, 0.25)',
+                      shadowOffset: { width: 5, height: 0 },
+                      shadowOpacity: 1,
+                      shadowRadius: 5,
+                      backgroundColor: Colors.white,
+                      elevation: 5,
                     },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
+                  ]}
                 >
-                  <View
+                  <Text
+                    onPress={() => {
+                      setOpen(true)
+                    }}
                     style={[
-                      Layout.row,
-                      Layout.alignItemsCenter,
                       {
-                        borderWidth: 1,
-                        paddingLeft: 15,
-                        color: '#000',
-                        marginVertical: 8,
-                        borderRadius: 16,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        backgroundColor: Colors.white,
-                        elevation: 5,
+                        width: '85%',
+                        height: 48,
+                        flexWrap: 'wrap',
+                        flexShrink: 1,
+                        fontSize: 14,
+                        padding: 12,
+                        color:chooseVisitStartDate ? '#000' : '#666666'
                       },
                     ]}
                   >
-                    <Text
-                      onPress={() => {
-                        setOpen(true)
-                      }}
-                      style={[
-                        {
-                          width: '85%',
-                          height: 48,
-                          fontWeight: '700',
-                          flexWrap: 'wrap',
-                          flexShrink: 1,
-                          fontSize: 14,
-                          padding: 12,
-                        },
-                      ]}
-                    >
-                      {chooseVisitStartDate}
-                    </Text>
-                  </View>
-                </DropShadow>
+                    {chooseVisitStartDate}
+                  </Text>
+                </View>
+              </DropShadow>
                 {/**Visit visitor type ends here */}
 
                 {/**Visit end Date starts here */}
@@ -643,11 +644,11 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                         {
                           width: '85%',
                           height: 48,
-                          fontWeight: '700',
                           flexWrap: 'wrap',
                           flexShrink: 1,
                           fontSize: 14,
                           padding: 12,
+                          color: choosenVisitEndDate ? '#000' : '#666666'
                         },
                       ]}
                     >

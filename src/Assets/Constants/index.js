@@ -7,8 +7,19 @@ export const regexStr = {
 
   export const visitorType =[
     'Contractor', 
-    'visitor', 
-    'delivery'
+    'Visitor', 
+    'Delivery'
   ]
    
+  
+  export const visitorAll =[
+    'All', 
+  ]
+
+  
+  export const visitorSelectionType =[
+    'All', 
+    'Checked In',
+    'Checked Out'
+  ]
   

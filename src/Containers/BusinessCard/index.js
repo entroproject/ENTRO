@@ -373,7 +373,7 @@ const IndexBusinessCardContainer = ({ navigation }) => {
   }, [isFocused])
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1,backgroundColor: '#f1f1f1'  }}>
       {/* header start */}
       <View style={styles.header}>
         <View style={styles.headerContent}>

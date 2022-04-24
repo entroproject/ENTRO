@@ -291,7 +291,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor:'#F1F1F1', flex: 1}}>
       {/* header start */}
       <View style={styles.header}>
         <View style={styles.headerContent}>

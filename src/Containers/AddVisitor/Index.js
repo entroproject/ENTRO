@@ -158,7 +158,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1'  }}>
       <View style={{ height: 90, backgroundColor: '#184461' }}>
         <View
           style={{

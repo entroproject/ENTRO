@@ -62,7 +62,7 @@ export const inviteVisitors = async AccessId => {
 export const getQRAccess = async AccessId => {
     return await makeRequest("qraccess", JSON.stringify({
         "AccessId": "883217495722675713416e41a25dd051",
-        "BuildingName": "PLAZA33 Chinese"
+        "BuildingName": "PLAZA33"
     }));
 }
 

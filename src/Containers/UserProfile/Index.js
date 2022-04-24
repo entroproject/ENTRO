@@ -16,14 +16,14 @@ import { setDefaultCard } from '@/Features/virtualCards'
 
 const IndexUserProfileContainer = ({ navigation }) => {
   const { Layout, Colors, Images } = useTheme()
-  const user = useSelector(user => user.user.profile);
-  const VirtualCard = useSelector(virtualCard => virtualCard.virtualCard.cards);
-  const defaultCardID = useSelector(virtualCard => virtualCard.virtualCard.defaultCard);
-  const dispatch = useDispatch();
+  const user = useSelector(user => user.user.profile)
+  const VirtualCard = useSelector(virtualCard => virtualCard.virtualCard.cards)
+  const defaultCardID = useSelector(
+    virtualCard => virtualCard.virtualCard.defaultCard,
+  )
+  const dispatch = useDispatch()
 
-
- 
-  const handCardSelected = (item) => {
+  const handCardSelected = item => {
     dispatch(setDefaultCard(item.VirtualKey))
   }
 
@@ -49,7 +49,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
         </Text>
 
         <Image
-          source={{uri: `data:image/png;base64,${user.ProfileLogo}`}}
+          source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
           style={{
             width: 60,
             height: 60,
@@ -64,7 +64,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
       <View style={[{ marginTop: 20 }]}>
         <View style={[Layout.center]}>
           <ImageBackground
-            source={{uri: `data:image/png;base64,${user.ProfileLogo}`}}
+            source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
             style={{ height: 270, width: 300, elevation: 8 }}
             borderTopLeftRadius={20}
             borderTopRightRadius={20}
@@ -104,7 +104,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
                     fontSize: 15,
                     fontWeight: '700',
                     color: '#184461',
-                    textTransform: "capitalize"
+                    textTransform: 'capitalize',
                   }}
                 >
                   {user.FirstName} {user.LastName}
@@ -229,68 +229,64 @@ const IndexUserProfileContainer = ({ navigation }) => {
         }}
       >
         <View style={{ flex: 1, marginHorizontal: 16 }}>
-        {
-            VirtualCard.map((item, index) => (
-              <TouchableOpacity
+          {VirtualCard.map((item, index) => (
+            <TouchableOpacity
               style={{
-                width: "100%",
-                alignSelf: "center"
+                width: '100%',
+                alignSelf: 'center',
               }}
-                key={index}
-                activeOpacity={1.0}
-                onPress={() => handCardSelected(item)}
-              >
+              key={index}
+              activeOpacity={1.0}
+              onPress={() => handCardSelected(item)}
+            >
+              <View style={[{ marginTop: 5, marginBottom: 10 }]}>
                 <View
-                  style={[ { marginTop: 5, marginBottom: 10 }]}
+                  style={{
+                    backgroundColor: 'white',
+                    borderRadius: 15,
+                    elevation: 10,
+                    shadowColor: '#000',
+                    shadowRadius: 10,
+                    shadowOpacity: 0.6,
+                    elevation: 8,
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                  }}
                 >
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      borderRadius: 15,
-                      elevation: 10,
-                      shadowColor: '#000',
-                      shadowRadius: 10,
-                      shadowOpacity: 0.6,
-                      elevation: 8,
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                    }}
-                  >
-                    <View style={{ flexDirection: 'row' }}>
-                      <View
+                  <View style={{ flexDirection: 'row' }}>
+                    <View
+                      style={{
+                        width: 10,
+                        backgroundColor: '#184461',
+                        borderTopLeftRadius: 10,
+                        borderBottomLeftRadius: 10,
+                      }}
+                    />
+
+                    <View style={{ flex: 3 }}>
+                      <Text
                         style={{
-                          width: 10,
-                          backgroundColor: '#184461',
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
+                          fontSize: 18,
+                          fontWeight: '700',
+                          color: '#184461',
+                          marginTop: 5,
+                          marginLeft: 2,
                         }}
-                      />
-
-                      <View style={{ flex: 3 }}>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: '700',
-                            color: '#184461',
-                            marginTop: 5,
-                            marginLeft: 2,
-                          }}
-                        >
-                          {item.BuildingName}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 5,
-                          }}
-                        >
-                          Expires on:
-                        </Text>
+                      >
+                        {item.BuildingName}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontWeight: '500',
+                          color: '#184461',
+                          marginLeft: 2,
+                          marginTop: 5,
+                        }}
+                      >
+                        Expires on:
                         <Text
                           style={{
                             fontSize: 12,
@@ -300,44 +296,51 @@ const IndexUserProfileContainer = ({ navigation }) => {
                             marginTop: 5,
                           }}
                         >
-                          {new Date(Number(item.AccessEndAt.replace(/\/date\(/gi, "").replace(/\//gi, "").replace(/\)/gi, ""))).toLocaleString()}
-
+                          {new Date(
+                            Number(
+                              item.AccessEndAt.replace(/\/date\(/gi, '')
+                                .replace(/\//gi, '')
+                                .replace(/\)/gi, ''),
+                            ),
+                          ).toLocaleString()}
                         </Text>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            fontWeight: '500',
-                            color: '#184461',
-                            marginLeft: 2,
-                            marginTop: 5,
-                            marginBottom: 3,
-                          }}
-                        >
-                          Host Number: <Text>{item.VirtualKey}</Text>
-                        </Text>
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontWeight: '500',
+                          color: '#184461',
+                          marginLeft: 2,
+                          marginTop: 5,
+                          marginBottom: 3,
+                        }}
+                      >
+                        Host Number: <Text>{item.VirtualKey}</Text>
+                      </Text>
 
-                        { item.VirtualKey ===  defaultCardID ? (
-                          <Image
-                            source={Images.defaultCardIcon}
-                            style={{ width: 20, height: 20, margin: 3 }}
-                            resizeMode={'contain'}
-                          />
-                        ) : null}
-                      </View>
-
-                      <View style={{ justifyContent: 'center', flex: 2 }}>
+                      {item.VirtualKey === defaultCardID ? (
                         <Image
-                          source={item.cardIcon}
-                          style={{ width: 90, height: 45, marginEnd: 3 }}
+                          source={Images.defaultCardIcon}
+                          style={{ width: 20, height: 20, margin: 3 }}
                           resizeMode={'contain'}
                         />
-                      </View>
+                      ) : null}
+                    </View>
+
+                    <View style={{ justifyContent: 'center', flex: 2 }}>
+                      <Image
+                        source={{
+                          uri: `data:image/png;base64,${item.BuildingLogo}`,
+                        }}
+                        style={{ width: 90, height: 55, marginEnd: 3, backgroundColor:'red'}}
+                        resizeMode={'cover'}
+                      />
                     </View>
                   </View>
                 </View>
-              </TouchableOpacity>
-            ))
-          }
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
     </ScrollView>

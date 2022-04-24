@@ -11,9 +11,11 @@ import {
 import { useTheme } from '@/Hooks'
 import { useOrientation } from '../useOrientation'
 import Icon from 'react-native-dynamic-vector-icons'
+import { useDispatch, useSelector } from 'react-redux';
 
 const IndexAnnouncmentContainer = ({ navigation, route }) => {
   const orientation = useOrientation()
+  const user = useSelector(user => user.user.profile)
   const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
   const { itemTitle, itemIcon, itemDesc, itemDate, itemTime, itemDistance } =
     route.params
@@ -39,7 +41,7 @@ const IndexAnnouncmentContainer = ({ navigation, route }) => {
         </Text>
 
         <Image
-          source={Images.userImageDisplay}
+        source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
           style={{
             width: 60,
             height: 60,
@@ -53,7 +55,9 @@ const IndexAnnouncmentContainer = ({ navigation, route }) => {
       <View style={{ marginTop: 20 }}>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Image
-            source={itemIcon}
+            source={{
+              uri: `data:image/png;base64,${itemIcon}`,
+            }}
             style={{ height: 250, width: '90%', borderRadius: 5 }}
             resizeMode={'cover'}
           />
@@ -82,35 +86,29 @@ const IndexAnnouncmentContainer = ({ navigation, route }) => {
         >
           {itemDesc}
         </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Icon type="Feather" name="calendar" color="#184461" size={20} />
-          <Text
-            style={{
-              fontSize: orientation === 'PORTRAIT' ? 14 : 20,
-              fontWeight: '600',
-              color: '#184461',
-              marginTop: 5,
-              marginStart: 5,
-            }}
-          >
-            {itemDate}
-          </Text>
-        </View>
+       
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon type="Feather" name="clock" color="#184461" size={20} />
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Icon type="Feather" name="clock" color="#184461" size={20} />
-          <Text
-            style={{
-              fontSize: orientation === 'PORTRAIT' ? 14 : 20,
-              fontWeight: '600',
-              color: '#184461',
-              marginTop: 5,
-              marginStart: 5,
-            }}
-          >
-            {itemTime}
-          </Text>
-        </View>
+            <Text
+              style={{
+                color: '#184461',
+                fontSize: orientation === 'PORTRAIT' ? 12 : 14,
+                marginStart: 5,
+                fontWeight:'600'
+              }}
+            >
+              {new Date(
+                Number(
+                  itemDate
+                    .replace(/\/date\(/gi, '')
+                    .replace(/\//gi, '')
+                    .replace(/\)/gi, ''),
+                ),
+              ).toLocaleString()}
+            </Text>
+          </View>
+   
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Icon type="Ionicons" name="location" color="#184461" size={20} />

@@ -6428,7 +6428,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@^15.5.10", "prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.0", "prop-types@^15.7.2", "prop-types@^15.8.1":
+"prop-types@^15.5.10", "prop-types@^15.5.7", "prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.0", "prop-types@^15.7.2", "prop-types@^15.8.1":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -6766,6 +6766,13 @@
   dependencies:
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
+
+"react-native-view-more-text@^2.1.0":
+  "integrity" "sha512-zmYfgXfIKZDrGpzm/aTfiRn6dRp15MWvil6NsmZp9CTwaDonavgfiSxx5Yzn6ONB7HnIR2CZDyB7JBFUXIHNuA=="
+  "resolved" "https://registry.npmjs.org/react-native-view-more-text/-/react-native-view-more-text-2.1.0.tgz"
+  "version" "2.1.0"
+  dependencies:
+    "prop-types" "^15.5.7"
 
 "react-native-web@*", "react-native-web@0.9.x":
   "integrity" "sha512-P1nCvBVFrv3J5BXu39iS4A3fR7m0vtGaCAy4MigAtZpakIuara/98h516fDQajPqoVy2T4cQgYZUQAr+FBnppQ=="

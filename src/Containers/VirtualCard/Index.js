@@ -25,108 +25,85 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
   })
 
   return (
-    <ScrollView >
-      {!image ? (
+    <ScrollView  style={{ backgroundColor: '#F1F1F1'  }}>
 
-        <View style={{
-          minHeight: height * .6,
-          justifyContent: "center"
-        }}>
-          <ActivityIndicator size={50} color="#184461" />
-        </View>
-       
-      ) : (
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <View
+   
+    {!image ? (
+
+      <View style={{
+        minHeight: height * .6,
+        justifyContent: "center"
+      }}>
+        <ActivityIndicator size={50} color="#184461" />
+      </View>
+     
+    ) : (
+
+      <View style={{flex: 1, }}>
+    
+      <View
+        style={{   
+          width: 350,          
+          marginTop: 160,
+          alignSelf:'center'
+          
+        }}
+      >
+        <View style={[Layout.center, {  }]}>
+          <DropShadow
             style={{
-              marginTop: 40,
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 5,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 5,
             }}
           >
-            <Text
-              style={{ color: '#184461', fontSize: 20, fontWeight: 'bold' }}
+            <View
+              style={[
+                Layout.center,
+                {
+                  width: 300,
+                  height: 300,
+                  borderRadius: 150,
+                  backgroundColor: '#ffffff',
+                  shadowColor: ' rgba(0, 0, 0, 0.25)',
+                  elevation: 10,
+                },
+              ]}
             >
-              SURIA KLCC
-            </Text>
-          </View>
-
-          <View
-            style={{
-              marginTop: 40,
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Image
+              <Image
               source={{ uri: `data:image/png;base64,${image.Image}` }}
               style={{ width: 200, height: 120, resizeMode: 'contain' }}
-            />
-          </View>
-
-          <View
-            style={{
-              marginTop: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: 350,
-            }}
-          >
-            <View style={[Layout.center, { marginBottom: 30 }]}>
-              <DropShadow
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 5,
-                }}
-              >
-                <View
-                  style={[
-                    Layout.center,
-                    {
-                      width: 300,
-                      height: 300,
-                      borderRadius: 150,
-                      backgroundColor: '#ffffff',
-                      shadowColor: ' rgba(0, 0, 0, 0.25)',
-                      elevation: 10,
-                    },
-                  ]}
-                >
-                  <Image
-                    source={Images.companyQrcode}
-                    width={200}
-                    height={200}
-                  />
-                </View>
-              </DropShadow>
+                width={200}
+                height={120}
+              />
             </View>
-
-            <Text
-              style={{
-                marginTop: 10,
-                fontSize: 14,
-                fontWeight: '700',
-                color: '#184461',
-                marginBottom: 20,
-              }}
-            >
-              QR codes refreshes every 2 minutes
-            </Text>
-          </View>
+          </DropShadow>
         </View>
-      )}
+
+        <Text
+          style={{
+            marginTop: 30,
+            fontSize: 14,
+            fontWeight: '700',
+            color: '#184461',
+            marginBottom: 20,
+            alignSelf:'center'
+          }}
+        >
+          QR codes refreshes every 2 minutes
+        </Text>
+      </View>
+    </View>
+   
+     
+    )}
+    
+ 
+    
     </ScrollView>
   )
 }

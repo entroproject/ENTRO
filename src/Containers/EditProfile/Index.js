@@ -17,6 +17,7 @@ import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage, hideMessage } from 'react-native-flash-message'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useOrientation } from '../useOrientation'
+import { useDispatch, useSelector } from 'react-redux'
 
 const IndexEditUserContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -31,6 +32,7 @@ const IndexEditUserContainer = () => {
   const [isValidEmailAddress, setIsValidEmailAddress] = useState(true)
   const [isValidCompanyName, setIsValidCompanyName] = useState(true)
   const [isValidcarPlateNum, setIsValidCarPlateNum] = useState(true)
+  const user = useSelector(user => user.user.profile)
   const orientation = useOrientation()
   const [placeholder, setPlaceholder] = useState({
     fullName: 'Enter FullName',
@@ -119,7 +121,7 @@ const IndexEditUserContainer = () => {
   }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1, backgroundColor:'#F1F1F1' }}>
       <View
         style={{
           height: 90,
@@ -141,7 +143,7 @@ const IndexEditUserContainer = () => {
         </Text>
 
         <Image
-          source={Images.userImageDisplay}
+        source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
           style={{
             width: 60,
             height: 60,

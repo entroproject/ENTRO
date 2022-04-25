@@ -12,11 +12,12 @@ import {
 import { useTheme } from '@/Hooks'
 import LottieView from 'lottie-react-native'
 import { logoutUser } from '@/Features/users'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const IndexSettingContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
   const [progress, setProgress] = useState(new Animated.Value(0))
+  const user = useSelector(user => user.user.profile)
   const dispatch = useDispatch();
 
   const buttonRef = useRef < LottieView > null
@@ -47,7 +48,7 @@ const IndexSettingContainer = () => {
         </Text>
 
         <Image
-          source={Images.userImageDisplay}
+        source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
           style={{
             width: 60,
             height: 60,

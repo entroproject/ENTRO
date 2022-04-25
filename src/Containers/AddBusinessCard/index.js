@@ -359,6 +359,16 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
               }}
             >
               <View style={{ marginHorizontal: 12, marginVertical: 12 }}>
+              <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 7,
+                  }}
+                >
+                  Enter Full Name
+                  </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -372,15 +382,14 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 >
                   <TextInput
                     placeholder="Enter Full Name"
-                    placeholderTextColor={'#666666'}
                     keyboardType="default"
                     onChangeText={text => setFname(text)}
                     value={fname}
                     style={{
                       borderWidth: 1,
                       paddingLeft: 15,
-                      color: '#000',
-                      marginVertical: 8,
+                      color:  fname === 'Enter Full Name' ? '#666666' : '#000',
+                      marginVertical: 2,
                       borderRadius: 16,
                       borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                       shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -389,10 +398,21 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                       shadowRadius: 5,
                       backgroundColor: Colors.white,
                       elevation: 5,
+                      fontWeight:'700'
                     }}
                   />
                 </DropShadow>
 
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 7,
+                  }}
+                >
+                  Enter Business Name
+                  </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -406,15 +426,14 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 >
                   <TextInput
                     placeholder="Business Name"
-                    placeholderTextColor={'#666666'}
                     keyboardType="default"
                     onChangeText={text => setBname(text)}
                     value={bname}
                     style={{
                       borderWidth: 1,
                       paddingLeft: 15,
-                      color: '#000',
-                      marginVertical: 8,
+                      color:  bname === 'Business Name' ? '#666666' : '#000',
+                      marginVertical: 2,
                       borderRadius: 16,
                       borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                       shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -423,10 +442,21 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                       shadowRadius: 5,
                       backgroundColor: Colors.white,
                       elevation: 5,
+                      fontWeight:'700'
                     }}
                   />
                 </DropShadow>
 
+                <Text
+                style={{
+                  fontWeight: '700',
+                  color: '#184461',
+                  marginStart: 5,
+                  marginTop: 7,
+                }}
+              >
+                Enter Business Website
+                </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -440,15 +470,14 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 >
                   <TextInput
                     placeholder="Business Website"
-                    placeholderTextColor={'#666666'}
                     keyboardType="url"
                     onChangeText={text => setBwebsite(text)}
                     value={bwebsite}
                     style={{
                       borderWidth: 1,
                       paddingLeft: 15,
-                      color: '#000',
-                      marginVertical: 8,
+                      color:  bwebsite === 'Business Website' ? '#666666' : '#000',
+                      marginVertical: 2,
                       borderRadius: 16,
                       borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                       shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -457,10 +486,21 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                       shadowRadius: 5,
                       backgroundColor: Colors.white,
                       elevation: 5,
+                      fontWeight:'700'
                     }}
                   />
                 </DropShadow>
 
+                <Text
+                style={{
+                  fontWeight: '700',
+                  color: '#184461',
+                  marginStart: 5,
+                  marginTop: 7,
+                }}
+              >
+                Enter Business Phone Number
+                </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -474,15 +514,14 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 >
                   <TextInput
                     placeholder="Business Phone Number"
-                    placeholderTextColor={'#666666'}
                     keyboardType="phone-pad"
                     onChangeText={text => setPhone(text)}
                     value={phone}
                     style={{
                       borderWidth: 1,
                       paddingLeft: 15,
-                      color: '#000',
-                      marginVertical: 8,
+                      color:  phone === 'Business Phone Number' ? '#666666' : '#000',
+                      marginVertical: 2,
                       borderRadius: 16,
                       borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                       shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -491,6 +530,8 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                       shadowRadius: 5,
                       backgroundColor: Colors.white,
                       elevation: 5,
+                      fontWeight:'700',
+                      
                     }}
                   />
                 </DropShadow>
@@ -502,6 +543,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                     alignItems: 'center',
                     paddingRight: 20,
                     marginBottom: 10,
+                    marginTop: 7
                   }}
                 >
                   <DropShadow
@@ -538,20 +580,15 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                         source={{ uri: `data:image/jpeg;base64,${logo}` }}
                         style={{
                           resizeMode: 'cover',
-                          width: 80,
+                          width: 100,
                           height: 80,
+                          marginTop: 5,
+                          borderRadius: 10,
+                          borderWidth: 2,
+                          borderColor:'#184461',
                         }}
                       />
-                    ) : (
-                      <Text
-                        style={{
-                          color: '#000',
-                          marginStart: 7,
-                        }}
-                      >
-                        Logo will appear here
-                      </Text>
-                    )}
+                    ) : null}
                   </View>
                 </View>
                 <View
@@ -596,6 +633,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                       <View
                         style={{
                           flexDirection: 'row',
+                          
                         }}
                       >
                         <Image
@@ -603,7 +641,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                             uri: `data:image/jpeg;base64,${cardFront}`,
                           }}
                           style={{
-                            resizeMode: 'contain',
+                            resizeMode: 'cover',
                             width: 60,
                             height: 50,
                           }}
@@ -611,7 +649,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                         <Image
                           source={{ uri: `data:image/jpeg;base64,${cardBack}` }}
                           style={{
-                            resizeMode: 'contain',
+                            resizeMode: 'cover',
                             width: 60,
                             height: 50,
                           }}

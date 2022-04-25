@@ -41,7 +41,15 @@ const IndexLoginContainer = () => {
   const submitPhoneNumber = async () => {
     try{
       setLoading(true)
-
+      if(phoneNumber.length < 13 || phoneNumber.length > 14){
+        showMessage({
+        message: 'Please enter a valid phone number',
+        backgroundColor: 'red',
+        duration: 3000,
+      });
+      setLoading(false);
+      return false;
+      }
     // make api call to validate phone number
     const req = await validateNumber(phoneNumber);
     const res = await req.json();

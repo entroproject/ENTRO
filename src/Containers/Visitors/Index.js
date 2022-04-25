@@ -31,7 +31,8 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [allVisitors, setAllVisitors] = useState([])
   const [customized_visitors, setCustomized_visitors] = useState([])
   const [allVisitorsHistory, setAllVisitorsHistory] = useState([])
-  const [customized_visitors_history, setCustomized_visitors_history] = useState([])
+  const [customized_visitors_history, setCustomized_visitors_history] =
+    useState([])
   const [loading, setLoading] = useState(true)
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
@@ -41,12 +42,11 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [selectAllDialogViewAll, setSelectAllDialogViewAll] = useState(false)
   const [selectAllDialogViewAll2, setSelectAllDialogViewAll2] = useState(false)
 
-
-  const onchange = (selectedDate) => {
-      const currentDate = selectedDate;
-      setDate(currentDate)
-      const formattedDate = `${moment(selectedDate).format("MMM Do YY") }`
-      setselectFilterDate(formattedDate)
+  const onchange = selectedDate => {
+    const currentDate = selectedDate
+    setDate(currentDate)
+    const formattedDate = `${moment(selectedDate).format('MMM Do YY')}`
+    setselectFilterDate(formattedDate)
   }
 
   const optionVisitor = Constants.visitorAll.map((item, index) => {
@@ -70,84 +70,96 @@ const IndexVisitorContainer = ({ navigation }) => {
     )
   })
 
-  const optionVisitorCheckInOrOut = Constants.visitorStatusType.map((item, index) => {
-    return (
-      <TouchableOpacity
-        style={[Layout.alignItemsStart]}
-        key={index}
-        onPress={() => selectVisitorCheckInOrOut_reg(item)}
-      >
-        <Text
-          style={{
-            color: Colors.bodyText,
-            fontSize: 16,
-            margin: 5,
-            fontWeight: '500',
-          }}
+  const optionVisitorCheckInOrOut = Constants.visitorStatusType.map(
+    (item, index) => {
+      return (
+        <TouchableOpacity
+          style={[Layout.alignItemsStart]}
+          key={index}
+          onPress={() => selectVisitorCheckInOrOut_reg(item)}
         >
-          {item}
-        </Text>
-      </TouchableOpacity>
-    )
-  })
+          <Text
+            style={{
+              color: Colors.bodyText,
+              fontSize: 16,
+              margin: 5,
+              fontWeight: '500',
+            }}
+          >
+            {item}
+          </Text>
+        </TouchableOpacity>
+      )
+    },
+  )
 
-  const optionVisitorCheckInOrOut2 = Constants.visitorSelectionType.map((item, index) => {
-    return (
-      <TouchableOpacity
-        style={[Layout.alignItemsStart]}
-        key={index}
-        onPress={() => selectVisitorCheckInOrOut_acc(item)}
-      >
-        <Text
-          style={{
-            color: Colors.bodyText,
-            fontSize: 16,
-            margin: 5,
-            fontWeight: '500',
-          }}
+  const optionVisitorCheckInOrOut2 = Constants.visitorSelectionType.map(
+    (item, index) => {
+      return (
+        <TouchableOpacity
+          style={[Layout.alignItemsStart]}
+          key={index}
+          onPress={() => selectVisitorCheckInOrOut_acc(item)}
         >
-          {item}
-        </Text>
-      </TouchableOpacity>
-    )
-  })
+          <Text
+            style={{
+              color: Colors.bodyText,
+              fontSize: 16,
+              margin: 5,
+              fontWeight: '500',
+            }}
+          >
+            {item}
+          </Text>
+        </TouchableOpacity>
+      )
+    },
+  )
 
   // checked in filter
   const selectVisitorCheckInOrOut_reg = item => {
-    setFilterVisitorType(item);
-    setSelectAllDialogViewAll(false);
+    setFilterVisitorType(item)
+    setSelectAllDialogViewAll(false)
   }
 
   const filterVisitorReg = () => {
-    if(filterVisitorType.toLocaleLowerCase() === 'all') {
-      return;
+    if (filterVisitorType.toLocaleLowerCase() === 'all') {
+      return
     }
     const _filtered_visitors = customized_visitors.filter(c => {
-      if(c.VisitorStatus.toLocaleLowerCase().includes(filterVisitorType.toLocaleLowerCase())){
-        return true;
+      if (
+        c.VisitorStatus.toLocaleLowerCase().includes(
+          filterVisitorType.toLocaleLowerCase(),
+        )
+      ) {
+        return true
       }
-      return false;
-    });
-    setCustomized_visitors(_filtered_visitors);
+      return false
+    })
+    setCustomized_visitors(_filtered_visitors)
   }
 
   // checked in filter
   const selectVisitorCheckInOrOut_acc = item => {
-    setFilterVisitorType2(item);
-    setSelectAllDialogViewAll2(false);
+    setFilterVisitorType2(item)
+    setSelectAllDialogViewAll2(false)
   }
 
   const filterVisitorAcc = () => {
-    if(filterVisitorType2.toLocaleLowerCase() === 'all') {
-      return;
+    if (filterVisitorType2.toLocaleLowerCase() === 'all') {
+      return
     }
     const _filtered_visitors = customized_visitors.filter(c => {
-      if(c.VisitorStatus.toLocaleLowerCase().includes(filterVisitorType2.toLocaleLowerCase())){
-        return true;
+      if (
+        c.VisitorStatus.toLocaleLowerCase().includes(
+          filterVisitorType2.toLocaleLowerCase(),
+        )
+      ) {
+        return true
       }
-      return false;
-    });
-    setCustomized_visitors(_filtered_visitors);
+      return false
+    })
+    setCustomized_visitors(_filtered_visitors)
   }
 
   // first filter
@@ -158,53 +170,59 @@ const IndexVisitorContainer = ({ navigation }) => {
 
   // reset visitors lists
   const resetAcc = () => {
-    setCustomized_visitors_history(allVisitorsHistory);
+    setCustomized_visitors_history(allVisitorsHistory)
   }
 
   const resetReg = () => {
-    setCustomized_visitors(allVisitors);
+    setCustomized_visitors(allVisitors)
   }
 
-  const handleSearchReg = () =>{
+  const handleSearchReg = () => {
     const _filtered_visitors = allVisitors.filter(c => {
-      if(c.VehicleNumber.toLocaleLowerCase().includes(searchVehicle.toLocaleLowerCase())){
-        return true;
+      if (
+        c.VehicleNumber.toLocaleLowerCase().includes(
+          searchVehicle.toLocaleLowerCase(),
+        )
+      ) {
+        return true
       }
-      return false;
-    });
-    setCustomized_visitors(_filtered_visitors);
+      return false
+    })
+    setCustomized_visitors(_filtered_visitors)
   }
 
-  const handleSearchAcc = () =>{
+  const handleSearchAcc = () => {
     const _filtered_visitors = allVisitorsHistory.filter(c => {
-      if(c.VehicleNumber.toLocaleLowerCase().includes(searchVehicle1.toLocaleLowerCase())){
-        return true;
+      if (
+        c.VehicleNumber.toLocaleLowerCase().includes(
+          searchVehicle1.toLocaleLowerCase(),
+        )
+      ) {
+        return true
       }
-      return false;
-    });
-    setCustomized_visitors_history(_filtered_visitors);
+      return false
+    })
+    setCustomized_visitors_history(_filtered_visitors)
   }
 
   useEffect(() => {
-    if(searchVehicle.length < 1){
-      resetReg();
+    if (searchVehicle.length < 1) {
+      resetReg()
     }
-    if(searchVehicle.length > 0){
-      handleSearchReg();
+    if (searchVehicle.length > 0) {
+      handleSearchReg()
     }
-    filterVisitorReg();
+    filterVisitorReg()
   }, [searchVehicle, filterVisitorType])
 
   useEffect(() => {
-    if(searchVehicle1.length < 1){
-      resetAcc();
+    if (searchVehicle1.length < 1) {
+      resetAcc()
     }
-    if(searchVehicle1.length > 0){
-      handleSearchAcc();
+    if (searchVehicle1.length > 0) {
+      handleSearchAcc()
     }
   }, [searchVehicle1])
-
-
 
   // switch between tabs
   useEffect(() => {
@@ -215,11 +233,10 @@ const IndexVisitorContainer = ({ navigation }) => {
     }
   }, [selectedIndex])
 
-
   // make api request to get all visitors and access
   useEffect(() => {
-    getAllVisitors();
-    getAllVisitorsHistory();
+    getAllVisitors()
+    getAllVisitorsHistory()
   }, [])
 
   const getAllVisitors = async () => {
@@ -400,185 +417,187 @@ const IndexVisitorContainer = ({ navigation }) => {
       </View>
 
       <DatePicker
-                  modal
-                  open={open}
-                  date={date}
-                  androidVariant={'iosClone'}
-                  mode={'datetime'}
-                  onConfirm={(date) => {
-                    setOpen(false)
-                    setDate(date)
-                    onchange(date)
-                  }}
-                  onCancel={() => {
-                    setOpen(false)
-                  }}
-                />
+        modal
+        open={open}
+        date={date}
+        androidVariant={'iosClone'}
+        mode={'datetime'}
+        onConfirm={date => {
+          setOpen(false)
+          setDate(date)
+          onchange(date)
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      />
 
       <View style={{ alignItems: 'center' }}>
-      {/* for select  filter visitor registration*/}
-      <View style={Layout.center}>
-        <Modal
-          visible={selectAllDialogViewAll}
-          transparent={true}
-          onDismiss={() => setSelectAllDialogViewAll(!selectAllDialogViewAll)}
-          onRequestClose={() => setSelectAllDialogViewAll(false)}
-          animationType="slide"
-        >
-          <View
-            style={[
-              Layout.center,
-              {
-                flex: 1,
-                backgroundColor: '#00000099',
-              },
-            ]}
+        {/* for select  filter visitor registration*/}
+        <View style={Layout.center}>
+          <Modal
+            visible={selectAllDialogViewAll}
+            transparent={true}
+            onDismiss={() => setSelectAllDialogViewAll(!selectAllDialogViewAll)}
+            onRequestClose={() => setSelectAllDialogViewAll(false)}
+            animationType="slide"
           >
             <View
-              style={{
-                width: 250,
-                height: 250,
-                backgroundColor: Colors.white,
-                borderRadius: MetricsSizes.medium,
-              }}
+              style={[
+                Layout.center,
+                {
+                  flex: 1,
+                  backgroundColor: '#00000099',
+                },
+              ]}
             >
               <View
-                style={[
-                  Layout.center,
-
-                  {
-                    height: 48,
-                    backgroundColor: '#184461',
-                    borderTopRightRadius: MetricsSizes.medium,
-                    borderTopLeftRadius: MetricsSizes.medium,
-                  },
-                ]}
-              >
-                <View style={[Layout.row, Layout.center]}>
-                  <View style={{ flex: 3, alignItems: 'flex-end' }}>
-                    <Text style={{ color: '#fff', fontWeight: '700' }}>
-                      {' '}
-                      Please Select Filter
-                    </Text>
-                  </View>
-
-                  <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Image
-                      source={Images.logolight}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        zIndex: 1,
-                        borderRadius: 60,
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View
                 style={{
-                  flex: 1,
+                  width: 250,
+                  height: 250,
+                  backgroundColor: Colors.white,
+                  borderRadius: MetricsSizes.medium,
                 }}
               >
-                <ScrollView
+                <View
+                  style={[
+                    Layout.center,
+
+                    {
+                      height: 48,
+                      backgroundColor: '#184461',
+                      borderTopRightRadius: MetricsSizes.medium,
+                      borderTopLeftRadius: MetricsSizes.medium,
+                    },
+                  ]}
+                >
+                  <View style={[Layout.row, Layout.center]}>
+                    <View style={{ flex: 3, alignItems: 'flex-end' }}>
+                      <Text style={{ color: '#fff', fontWeight: '700' }}>
+                        {' '}
+                        Please Select Filter
+                      </Text>
+                    </View>
+
+                    <View style={{ flex: 1, alignItems: 'center' }}>
+                      <Image
+                        source={Images.logolight}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          zIndex: 1,
+                          borderRadius: 60,
+                        }}
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View
                   style={{
-                    backgroundColor: Colors.white,
-                    borderBottomLeftRadius: MetricsSizes.medium,
-                    borderBottomRightRadius: MetricsSizes.medium,
-                    marginHorizontal: MetricsSizes.small,
-                    marginBottom: MetricsSizes.small,
+                    flex: 1,
                   }}
                 >
-                  {optionVisitorCheckInOrOut}
-                </ScrollView>
+                  <ScrollView
+                    style={{
+                      backgroundColor: Colors.white,
+                      borderBottomLeftRadius: MetricsSizes.medium,
+                      borderBottomRightRadius: MetricsSizes.medium,
+                      marginHorizontal: MetricsSizes.small,
+                      marginBottom: MetricsSizes.small,
+                    }}
+                  >
+                    {optionVisitorCheckInOrOut}
+                  </ScrollView>
+                </View>
               </View>
             </View>
-          </View>
-        </Modal>
-      </View>
-       {/* for select  filter visitor registration*/}
-      {/* for select  filter visitor registration*/}
-      <View style={Layout.center}>
-        <Modal
-          visible={selectAllDialogViewAll2}
-          transparent={true}
-          onDismiss={() => setSelectAllDialogViewAll(!selectAllDialogViewAll2)}
-          onRequestClose={() => setSelectAllDialogViewAll2(false)}
-          animationType="slide"
-        >
-          <View
-            style={[
-              Layout.center,
-              {
-                flex: 1,
-                backgroundColor: '#00000099',
-              },
-            ]}
+          </Modal>
+        </View>
+        {/* for select  filter visitor registration*/}
+        {/* for select  filter visitor registration*/}
+        <View style={Layout.center}>
+          <Modal
+            visible={selectAllDialogViewAll2}
+            transparent={true}
+            onDismiss={() =>
+              setSelectAllDialogViewAll(!selectAllDialogViewAll2)
+            }
+            onRequestClose={() => setSelectAllDialogViewAll2(false)}
+            animationType="slide"
           >
             <View
-              style={{
-                width: 250,
-                height: 250,
-                backgroundColor: Colors.white,
-                borderRadius: MetricsSizes.medium,
-              }}
+              style={[
+                Layout.center,
+                {
+                  flex: 1,
+                  backgroundColor: '#00000099',
+                },
+              ]}
             >
               <View
-                style={[
-                  Layout.center,
-
-                  {
-                    height: 48,
-                    backgroundColor: '#184461',
-                    borderTopRightRadius: MetricsSizes.medium,
-                    borderTopLeftRadius: MetricsSizes.medium,
-                  },
-                ]}
-              >
-                <View style={[Layout.row, Layout.center]}>
-                  <View style={{ flex: 3, alignItems: 'flex-end' }}>
-                    <Text style={{ color: '#fff', fontWeight: '700' }}>
-                      {' '}
-                      Please Select Filter
-                    </Text>
-                  </View>
-
-                  <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Image
-                      source={Images.logolight}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        zIndex: 1,
-                        borderRadius: 60,
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View
                 style={{
-                  flex: 1,
+                  width: 250,
+                  height: 250,
+                  backgroundColor: Colors.white,
+                  borderRadius: MetricsSizes.medium,
                 }}
               >
-                <ScrollView
+                <View
+                  style={[
+                    Layout.center,
+
+                    {
+                      height: 48,
+                      backgroundColor: '#184461',
+                      borderTopRightRadius: MetricsSizes.medium,
+                      borderTopLeftRadius: MetricsSizes.medium,
+                    },
+                  ]}
+                >
+                  <View style={[Layout.row, Layout.center]}>
+                    <View style={{ flex: 3, alignItems: 'flex-end' }}>
+                      <Text style={{ color: '#fff', fontWeight: '700' }}>
+                        {' '}
+                        Please Select Filter
+                      </Text>
+                    </View>
+
+                    <View style={{ flex: 1, alignItems: 'center' }}>
+                      <Image
+                        source={Images.logolight}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          zIndex: 1,
+                          borderRadius: 60,
+                        }}
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View
                   style={{
-                    backgroundColor: Colors.white,
-                    borderBottomLeftRadius: MetricsSizes.medium,
-                    borderBottomRightRadius: MetricsSizes.medium,
-                    marginHorizontal: MetricsSizes.small,
-                    marginBottom: MetricsSizes.small,
+                    flex: 1,
                   }}
                 >
-                  {optionVisitorCheckInOrOut2}
-                </ScrollView>
+                  <ScrollView
+                    style={{
+                      backgroundColor: Colors.white,
+                      borderBottomLeftRadius: MetricsSizes.medium,
+                      borderBottomRightRadius: MetricsSizes.medium,
+                      marginHorizontal: MetricsSizes.small,
+                      marginBottom: MetricsSizes.small,
+                    }}
+                  >
+                    {optionVisitorCheckInOrOut2}
+                  </ScrollView>
+                </View>
               </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        </View>
+        {/* for select  filter visitor registration*/}
       </View>
-       {/* for select  filter visitor registration*/}
-    </View>
 
       {loading ? (
         <View
@@ -700,7 +719,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 <TouchableOpacity
                   style={[{ flexDirection: 'row' }]}
                   activeOpacity={0.7}
-                  onPress={()=> setSelectAllDialogViewAll(true)}
+                  onPress={() => setSelectAllDialogViewAll(true)}
                 >
                   <Icon
                     name={'sort-amount-desc'}
@@ -733,7 +752,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 <TouchableOpacity
                   style={[{ flexDirection: 'row' }]}
                   activeOpacity={0.7}
-                  onPress={()=> setOpen(true)}
+                  onPress={() => setOpen(true)}
                 >
                   <Icon
                     name={'calendar'}
@@ -997,7 +1016,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 <TouchableOpacity
                   style={[{ flexDirection: 'row' }]}
                   activeOpacity={0.7}
-                  onPress={()=> setSelectAllDialogViewAll2(true)}
+                  onPress={() => setSelectAllDialogViewAll2(true)}
                 >
                   <Icon
                     name={'sort-amount-desc'}
@@ -1030,7 +1049,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 <TouchableOpacity
                   style={[{ flexDirection: 'row' }]}
                   activeOpacity={0.7}
-                  onPress={()=> setOpen(true)}
+                  onPress={() => setOpen(true)}
                 >
                   <Icon
                     name={'calendar'}

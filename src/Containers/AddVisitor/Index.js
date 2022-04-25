@@ -34,25 +34,31 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   const [open, setOpen] = useState(false)
   const [openEndDate, setOpenEndDate] = useState(false)
   const [vistor, setVisitor] = useState('Select Visitor Type')
-  const [chooseVisitStartDate, setChooseVisitStartDate] = useState('Visit Start Date')
-  const [choosenVisitEndDate, setChoosenVisitEndDate] = useState('Visit End Date')
+  const [chooseVisitStartDate, setChooseVisitStartDate] =
+    useState('Visit Start Date')
+  const [choosenVisitEndDate, setChoosenVisitEndDate] =
+    useState('Visit End Date')
   const [isVisitorDialogVisible, setIsVisitorDialogVisible] = useState(false)
   const user = useSelector(user => user.user.profile)
+
+  const [placeholder, setPlaceholder] = useState({
+    fullName: "Enter Full Name",
+  })
 
   const onchange = (selectedDate, type) => {
     if (type === 'startDate') {
       const currentDate = selectedDate || date
       setDate(currentDate)
-      const formattedDate = `${moment(date).format('YYYY-MM-DD')} ${moment(
-        currentDate,
-      ).format('HH:mm:ss A')}`
+      const formattedDate = `${moment(currentDate).format(
+        'YYYY-MM-DD',
+      )} ${moment(currentDate).format('HH:mm:ss A')}`
       setChooseVisitStartDate(formattedDate)
     } else if (type === 'endDate') {
       const currenEndDate = selectedDate || enddate
       setenddate(currenEndDate)
-      const formattedDate1 = `${moment(enddate).format('YYYY-MM-DD')} ${moment(
-        currenEndDate,
-      ).format('HH:mm:ss A')}`
+      const formattedDate1 = `${moment(currenEndDate).format(
+        'YYYY-MM-DD',
+      )} ${moment(currenEndDate).format('HH:mm:ss A')}`
       setChoosenVisitEndDate(formattedDate1)
     }
 
@@ -91,7 +97,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       </TouchableOpacity>
     )
   })
-  
+
   const selectVisitingPerson = item => {
     setVisitor(item)
     setIsVisitorDialogVisible(false)
@@ -146,6 +152,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
           duration: 3000,
         })
         navigation.navigate('VistorsRecord')
+        setFullName("")
       } else {
         setLoading(false)
         showMessage({
@@ -158,7 +165,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1'  }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
       <View style={{ height: 90, backgroundColor: '#184461' }}>
         <View
           style={{
@@ -298,7 +305,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
             <View
               style={{
                 width: '90%',
-
                 marginTop: 30,
                 borderRadius: 20,
                 backgroundColor: '#F1F1F1',
@@ -313,9 +319,17 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                 },
               }}
             >
-              <View style={[Layout.center, { marginBottom: 30 }]}>
-              </View>
               <View style={{ marginHorizontal: 20, marginVertical: 12 }}>
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 5,
+                  }}
+                >
+                  Select Visitor
+                </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -337,7 +351,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                         borderWidth: 1,
                         paddingLeft: 15,
                         color: '#000',
-                        marginVertical: 8,
+                        marginVertical: 2,
                         borderRadius: 16,
                         borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                         shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -346,7 +360,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                         shadowRadius: 5,
                         backgroundColor: Colors.white,
                         elevation: 5,
-                     
                       },
                     ]}
                   >
@@ -361,8 +374,12 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                           flexWrap: 'wrap',
                           flexShrink: 1,
                           fontSize: 14,
-                          color: vistor ? '#666666' : '#000',
-                          paddingTop: 12
+                          color:
+                            vistor === 'Select Visitor Type'
+                              ? '#A6A2A2'
+                              : '#000',
+                          paddingTop: 12,
+                          fontWeight: '700',
                         },
                       ]}
                     >
@@ -371,17 +388,39 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                   </View>
 
                   {/**visitor type ends here */}
+                </DropShadow>
+
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 7,
+                  }}
+                >
+                  Enter Full Name
+                </Text>
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 0,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
                   <TextInput
+                    value={fullName}
                     placeholder="Enter Full Name"
-                    placeholderTextColor={'#666666'}
                     keyboardType="default"
                     onChangeText={text => setFullName(text)}
-                    value={fullName}
                     style={{
                       borderWidth: 1,
                       paddingLeft: 15,
-                      color: '#000',
-                      marginVertical: 8,
+                      color:  fullName === 'Enter Full Name' ? '#666666' : '#000',
+                      marginVertical: 2,
                       borderRadius: 16,
                       borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                       shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -390,10 +429,21 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                       shadowRadius: 5,
                       backgroundColor: Colors.white,
                       elevation: 5,
+                      fontWeight:'700'
                     }}
                   />
                 </DropShadow>
 
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 7,
+                  }}
+                >
+                  Enter IC Number
+                </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -407,15 +457,13 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                 >
                   <TextInput
                     placeholder="Enter IC Number"
-                    placeholderTextColor={'#666666'}
                     keyboardType="number-pad"
                     onChangeText={text => setICNumber(text)}
                     value={ICNumber}
                     style={{
                       borderWidth: 1,
                       paddingLeft: 15,
-                      color: '#000',
-                      marginVertical: 8,
+                      marginVertical: 2,
                       borderRadius: 16,
                       borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                       shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -424,10 +472,23 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                       shadowRadius: 5,
                       backgroundColor: Colors.white,
                       elevation: 5,
+                      fontWeight: '700',
+                      color:
+                      ICNumber === 'Enter Full Name' ? '#666666' : '#000',
                     }}
                   />
                 </DropShadow>
 
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 7,
+                  }}
+                >
+                  Enter Mobile Number
+                </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -441,15 +502,13 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                 >
                   <TextInput
                     placeholder="Enter Mobile Number"
-                    placeholderTextColor={'#666666'}
-                    keyboardType="default"
+                    keyboardType="number-pad"
                     onChangeText={text => setMobileNumber(text)}
                     value={mobileNumber}
                     style={{
                       borderWidth: 1,
                       paddingLeft: 15,
-                      color: '#000',
-                      marginVertical: 8,
+                      marginVertical: 2,
                       borderRadius: 16,
                       borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                       shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -458,10 +517,25 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                       shadowRadius: 5,
                       backgroundColor: Colors.white,
                       elevation: 5,
+                      fontWeight: '700',
+                      color:
+                        mobileNumber === 'Enter Mobile Number'
+                          ? '#666666'
+                          : '#000',
                     }}
                   />
                 </DropShadow>
 
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 7,
+                  }}
+                >
+                  Enter Vehicle Number
+                </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -475,15 +549,13 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                 >
                   <TextInput
                     placeholder="Enter Vehicle Number"
-                    placeholderTextColor={'#666666'}
                     keyboardType="default"
                     onChangeText={text => setCarPlateNum(text)}
                     value={carPlateNum}
                     style={{
                       borderWidth: 1,
                       paddingLeft: 15,
-                      color: '#000',
-                      marginVertical: 8,
+                      marginVertical: 2,
                       borderRadius: 16,
                       borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                       shadowColor: 'rgba(0, 0, 0, 0.25)',
@@ -492,64 +564,26 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                       shadowRadius: 5,
                       backgroundColor: Colors.white,
                       elevation: 5,
+                      fontWeight: '700',
+                      color:
+                        carPlateNum === 'Enter Vehicle Number'
+                          ? '#666666'
+                          : '#000',
                     }}
                   />
                 </DropShadow>
 
                 {/**Visit Date starts here */}
-                <DropShadow
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 3,
-                }}
-              >
-                <View
-                  style={[
-                    Layout.row,
-                    Layout.alignItemsCenter,
-                    {
-                      borderRadius: 16,
-                      marginVertical: MetricsSizes.small - 2,
-                      borderWidth: MetricsSizes.tiny - 4,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      borderWidth: 2,
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                    },
-                  ]}
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 7,
+                  }}
                 >
-                  <Text
-                    onPress={() => {
-                      setOpen(true)
-                    }}
-                    style={[
-                      {
-                        width: '85%',
-                        height: 48,
-                        flexWrap: 'wrap',
-                        flexShrink: 1,
-                        fontSize: 14,
-                        padding: 12,
-                        color:chooseVisitStartDate ? '#000' : '#666666'
-                      },
-                    ]}
-                  >
-                    {chooseVisitStartDate}
-                  </Text>
-                </View>
-              </DropShadow>
-                {/**Visit visitor type ends here */}
-
-                {/**Visit end Date starts here */}
+                  Enter Start Date
+                </Text>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
@@ -567,7 +601,72 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                       Layout.alignItemsCenter,
                       {
                         borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 2,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        backgroundColor: Colors.white,
+                        elevation: 5,
+                      },
+                    ]}
+                  >
+                    <Text
+                      onPress={() => {
+                        setOpen(true)
+                      }}
+                      style={[
+                        {
+                          width: '85%',
+                          height: 48,
+                          flexWrap: 'wrap',
+                          flexShrink: 1,
+                          fontSize: 14,
+                          padding: 12,
+                          color:
+                            chooseVisitStartDate === 'Visit Start Date'
+                              ? '#A6A2A2'
+                              : '#000',
+                          fontWeight: '700',
+                        },
+                      ]}
+                    >
+                      {chooseVisitStartDate}
+                    </Text>
+                  </View>
+                </DropShadow>
+                {/**Visit visitor type ends here */}
+
+                {/**Visit end Date starts here */}
+                <Text
+                  style={{
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 7,
+                  }}
+                >
+                  Enter End Date
+                </Text>
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 0,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      Layout.row,
+                      Layout.alignItemsCenter,
+                      {
+                        borderRadius: 16,
                         borderWidth: MetricsSizes.tiny - 4,
                         borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
                         borderWidth: 2,
@@ -592,7 +691,11 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                           flexShrink: 1,
                           fontSize: 14,
                           padding: 12,
-                          color: choosenVisitEndDate ? '#000' : '#666666'
+                          color:
+                            choosenVisitEndDate === 'Visit End Date'
+                              ? '#A6A2A2'
+                              : '#000',
+                          fontWeight: '700',
                         },
                       ]}
                     >
@@ -608,7 +711,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                   date={enddate}
                   androidVariant={'iosClone'}
                   mode={'datetime'}
-                  onConfirm={(enddate) => {
+                  onConfirm={enddate => {
                     setOpenEndDate(false)
                     setenddate(enddate)
                     onchange(enddate, 'endDate')
@@ -624,7 +727,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                   date={date}
                   androidVariant={'iosClone'}
                   mode={'datetime'}
-                  onConfirm={(date) => {
+                  onConfirm={date => {
                     setOpen(false)
                     setDate(date)
                     onchange(date, 'startDate')

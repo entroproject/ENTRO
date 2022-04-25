@@ -7,16 +7,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native';
-import { useTheme } from '@/Hooks';
-import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent';
-import Icon from 'react-native-dynamic-vector-icons';
-import DropShadow from 'react-native-drop-shadow';
-import { useOrientation } from '../useOrientation';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAnnouncements } from '@/api-utils';
-import { addAnnouncement } from '@/Features/announcements';
-import ViewMoreText from 'react-native-view-more-text';
+} from 'react-native'
+import { useTheme } from '@/Hooks'
+import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
+import Icon from 'react-native-dynamic-vector-icons'
+import DropShadow from 'react-native-drop-shadow'
+import { useOrientation } from '../useOrientation'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAnnouncements } from '@/api-utils'
+import { addAnnouncement } from '@/Features/announcements'
+import ViewMoreText from 'react-native-view-more-text'
 
 const IndexHomeContainer = ({ navigation }) => {
   const { Images } = useTheme()
@@ -364,6 +364,7 @@ const IndexHomeContainer = ({ navigation }) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}
+          onPress={() => navigation.navigate('FaqAnswer')}
         >
           <DropShadow
             style={{
@@ -434,142 +435,140 @@ const IndexHomeContainer = ({ navigation }) => {
             ) : announcements.length > 0 ? (
               announcements.map((ann, key) => (
                 <TouchableOpacity
-             
-                key={key} 
-                activeOpacity={1.0}
-                onPress={() => navigation.navigate('Announcementdetails',{
-                  itemTitle :ann.Title,
-                  itemIcon: ann.EventBannerLogo,
-                  itemDesc: ann.Description,
-                  itemDate: ann.EventStartAt,      
-                  itemDistance: '3.5miles'
-      
-                })}>
-                <View
-             
-                style={{
-                  backgroundColor: 'white',
-                  borderRadius: 15,
-                  elevation: 10,
-                  shadowColor: '#000',
-                  shadowRadius: 10,
-                  shadowOpacity: 0.6,
-                  elevation: 8,
-                  shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  marginBottom: 10,
-                }}
-              >
-                <View style={{ flexDirection: 'row' }}>
+                  key={key}
+                  activeOpacity={1.0}
+                  onPress={() =>
+                    navigation.navigate('Announcementdetails', {
+                      itemTitle: ann.Title,
+                      itemIcon: ann.EventBannerLogo,
+                      itemDesc: ann.Description,
+                      itemDate: ann.EventStartAt,
+                      itemDistance: '3.5miles',
+                    })
+                  }
+                >
                   <View
                     style={{
-                      width: 10,
-                      backgroundColor: '#184461',
-                      borderTopLeftRadius: 10,
-                      borderBottomLeftRadius: 10,
-                    }}
-                  />
-                  <Image
-                    source={{
-                      uri: `data:image/png;base64,${ann.EventBannerLogo}`,
-                    }}
-                    style={{
-                      width: '40%',
-                      height: 115,
-                      resizeMode: 'cover',
-                    }}
-                  />
-
-                  <View
-                    style={{
-                      paddingVertical: 5,
-                      marginStart: 5,
-                      backgroundColor: '#fff',
-                      marginEnd: 5,
+                      backgroundColor: 'white',
+                      borderRadius: 15,
+                      elevation: 10,
+                      shadowColor: '#000',
+                      shadowRadius: 10,
+                      shadowOpacity: 0.6,
+                      elevation: 8,
+                      shadowOffset: {
+                        width: 0,
+                        height: 4,
+                      },
+                      marginBottom: 10,
                     }}
                   >
-                    <Text
-                      style={{
-                        color: '#184461',
-                        marginBottom: 2,
-                        flexWrap: 'wrap',
-                        fontWeight: 'bold',
-                        fontSize: orientation === 'PORTRAIT' ? 14 : 18,
-                      }}
-                    >
-                      {ann.Title}
-                    </Text>
-                  
-                    <Text
-                      style={{
-                        color: '#184461',
-                        flexWrap: 'wrap',
-                        width: orientation === 'PORTRAIT' ? 170 : '100%',
-                        fontSize: orientation === 'PORTRAIT' ? 12 : 16,
-                        numberOfLines:2,
-                      }}
-                    >
-                      {ann.Description}
-                    </Text>
-                    <View
-                      style={{
-                        paddingVertical: 5,
-                        backgroundColor: '#fff',
-                        marginEnd: 5,
-                      }}
-                    >
+                    <View style={{ flexDirection: 'row' }}>
                       <View
                         style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginBottom: 5,
+                          width: 10,
+                          backgroundColor: '#184461',
+                          borderTopLeftRadius: 10,
+                          borderBottomLeftRadius: 10,
+                        }}
+                      />
+                      <Image
+                        source={{
+                          uri: `data:image/png;base64,${ann.EventBannerLogo}`,
+                        }}
+                        style={{
+                          width: '40%',
+                          height: 115,
+                          resizeMode: 'cover',
+                        }}
+                      />
+
+                      <View
+                        style={{
+                          paddingVertical: 5,
+                          marginStart: 5,
+                          backgroundColor: '#fff',
+                          marginEnd: 5,
                         }}
                       >
                         <Text
                           style={{
                             color: '#184461',
-                            fontSize: orientation === 'PORTRAIT' ? 12 : 14,
-                          }}
-                        >
-                          {new Date(
-                            Number(
-                              ann.EventStartAt.replace(/\/date\(/gi, '')
-                                .replace(/\//gi, '')
-                                .replace(/\)/gi, ''),
-                            ),
-                          ).toLocaleString()}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Icon
-                          type="Ionicons"
-                          name="location"
-                          color="#184461"
-                          size={20}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
+                            marginBottom: 2,
                             flexWrap: 'wrap',
+                            fontWeight: 'bold',
+                            fontSize: orientation === 'PORTRAIT' ? 14 : 18,
                           }}
                         >
-                          3.5miles
+                          {ann.Title}
                         </Text>
+
+                        <Text
+                          style={{
+                            color: '#184461',
+                            flexWrap: 'wrap',
+                            width: orientation === 'PORTRAIT' ? 170 : '100%',
+                            fontSize: orientation === 'PORTRAIT' ? 12 : 16,
+                            
+                          }}
+                        >
+                          {ann.Description}
+                        </Text>
+                        <View
+                          style={{
+                            paddingVertical: 5,
+                            backgroundColor: '#fff',
+                            marginEnd: 5,
+                          }}
+                        >
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginBottom: 5,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: '#184461',
+                                fontSize: orientation === 'PORTRAIT' ? 12 : 14,
+                              }}
+                            >
+                              {new Date(
+                                Number(
+                                  ann.EventStartAt.replace(/\/date\(/gi, '')
+                                    .replace(/\//gi, '')
+                                    .replace(/\)/gi, ''),
+                                ),
+                              ).toLocaleString()}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Icon
+                              type="Ionicons"
+                              name="location"
+                              color="#184461"
+                              size={20}
+                            />
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                flexWrap: 'wrap',
+                              }}
+                            >
+                              3.5miles
+                            </Text>
+                          </View>
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              </View>
-                
                 </TouchableOpacity>
-             
               ))
             ) : (
               <View>

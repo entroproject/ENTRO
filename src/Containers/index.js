@@ -15,3 +15,4 @@ export { default as IndexAddBusinessCardContainer} from './AddBusinessCard/index
 export { default as IndexAnnouncmentContainer} from './AnnouncementDetail/Index'
 export { default as IndexAddVisitorContainer} from './AddVisitor/Index'
 export { default as IndexAddVisitDateTypeContainer} from './AddVisitDateType/Index'
+export { default as IndexUsersFaqContainer} from './Faq/Index'

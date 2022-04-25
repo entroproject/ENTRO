@@ -121,7 +121,7 @@ const IndexEditUserContainer = () => {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor:'#F1F1F1' }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
       <View
         style={{
           height: 90,
@@ -143,7 +143,7 @@ const IndexEditUserContainer = () => {
         </Text>
 
         <Image
-        source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
+          source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
           style={{
             width: 60,
             height: 60,
@@ -168,358 +168,400 @@ const IndexEditUserContainer = () => {
         </Text>
       </View>
       <ScrollView>
-
-      <DropShadow
-            style={{
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 3,
-                height: 1,
-              },
-              shadowOpacity: 1,
-              shadowRadius: 3,
-              marginTop: -5,
-            }}
-          >
-          <View
+        <DropShadow
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingBottom: 15,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 3,
+              height: 1,
+            },
+            shadowOpacity: 1,
+            shadowRadius: 3,
+            marginTop: -5,
           }}
         >
           <View
             style={{
-              width: "90%",
-              height: 430,
-              marginTop: 110,
-              borderRadius: 20,
-              backgroundColor: '#F1F1F1',
-              elevation: 10,
-              shadowColor: '0px 13px 15px rgba(0, 0, 0, 0.25)',
-              shadowRadius: 10,
-              shadowOpacity: 0.6,
-              marginVertical: 8,
-              shadowOffset: {
-                width: 0,
-                height: 4,
-              },
-            
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingBottom: 15,
             }}
           >
-            <View style={[Layout.center, { marginBottom: 30 }]}>
+            <View
+              style={{
+                width: '90%',
+                marginTop: 110,
+                borderRadius: 20,
+                backgroundColor: '#F1F1F1',
+                elevation: 10,
+                shadowColor: '0px 13px 15px rgba(0, 0, 0, 0.25)',
+                shadowRadius: 10,
+                shadowOpacity: 0.6,
+                marginVertical: 8,
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+              }}
+            >
+              <View style={[Layout.center, { marginBottom: 30 }]}>
+                <View
+                  style={[
+                    Layout.center,
+                    {
+                      width: orientation === 'PORTRAIT' ? 120 : 160,
+                      height: orientation === 'PORTRAIT' ? 120 : 160,
+                      position: 'absolute',
+                      borderRadius: orientation === 'PORTRAIT' ? 60 : 80,
+                      borderColor: '#184461',
+                      borderWidth: MetricsSizes.zero + 1,
+                      backgroundColor: '#C4c4c4',
+                      shadowColor: ' rgba(0, 0, 0, 0.25)',
+                    },
+                  ]}
+                >
+                  <Image
+                    source={photo ? { uri: photo.path } : Images.profilepic}
+                    style={{
+                      width: orientation === 'PORTRAIT' ? 110 : 150,
+                      height: orientation === 'PORTRAIT' ? 110 : 150,
+                      zIndex: 1,
+                      borderRadius: orientation === 'PORTRAIT' ? 60 : 75.5,
+                    }}
+                  />
+                </View>
+              </View>
               <View
                 style={[
                   Layout.center,
-                  {
-                    width: orientation === 'PORTRAIT' ? 120 : 160,
-                    height: orientation === 'PORTRAIT' ? 120 : 160,
-                    position: 'absolute',
-                    borderRadius: orientation === 'PORTRAIT' ? 60 : 80,
-                    borderColor: '#184461',
-                    borderWidth: MetricsSizes.zero + 1,
-                    backgroundColor: '#C4c4c4',
-                    shadowColor: ' rgba(0, 0, 0, 0.25)',
-                  },
+                  { marginLeft: orientation === 'PORTRAIT' ? 70 : 90 },
                 ]}
               >
-                <Image
-                  source={photo ? { uri: photo.path } : Images.profilepic}
+                <TouchableOpacity
+                  onPress={() => uploadPhoto()}
+                  activeOpacity={0.9}
+                  style={[
+                    Layout.center,
+                    {
+                      backgroundColor: '#184461',
+                      width: orientation === 'PORTRAIT' ? 35 : 40,
+                      height: orientation === 'PORTRAIT' ? 35 : 40,
+                      borderRadius: orientation === 'PORTRAIT' ? 15.5 : 20,
+                    },
+                  ]}
+                >
+                  <Icon name="camera" type="Feather" size={18} color="white" />
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={[Layout.center, { marginTop: 10, paddingVertical: 10 }]}
+              >
+                {/**full name starts here */}
+                <View>
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      color: '#184461',
+                      marginStart: 5,
+                      marginTop: 2,
+                    }}
+                  >
+                    Enter Full Name
+                  </Text>
+                  <DropShadow
+                    style={{
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 3,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 3,
+                      marginTop: -5,
+                    }}
+                  >
+                    <View
+                      style={[
+                        Layout.row,
+                        Layout.alignItemsCenter,
+                        {
+                          borderRadius: 16,
+                          marginVertical: MetricsSizes.small - 2,
+                          borderWidth: MetricsSizes.tiny - 4,
+                          borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                          borderWidth: 2,
+                          shadowColor: 'rgba(0, 0, 0, 0.25)',
+                          shadowOffset: { width: 5, height: 0 },
+                          shadowOpacity: 1,
+                          shadowRadius: 5,
+                          backgroundColor: Colors.white,
+                          elevation: 5,
+                        },
+                      ]}
+                    >
+                      <TextInput
+                        style={{
+                          fontSize: 14,
+                          padding: 10,
+                          width: '85%',
+                          fontWeight:'700',
+                         color:  fullName === 'Enter FullName' ? '#666666' : '#000',
+                        }}
+                        value={fullName}
+                        placeholder={placeholder.fullName}
+                        onChangeText={text => setFullName(text)}
+                        onEndEditing={() => validate('fullName')}
+                        onFocus={() => {
+                          setPlaceholder({ ...placeholder, fullName: '' })
+                        }}
+                        onBlur={() => {
+                          setPlaceholder({
+                            ...placeholder,
+                            fullName: 'Enter FullName',
+                          })
+                        }}
+                      />
+                    </View>
+                  </DropShadow>
+                  {/**full name ends here */}
+
+                  {/**email starts here */}
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      color: '#184461',
+                      marginStart: 5,
+                      marginTop: 2,
+                    }}
+                  >
+                    Enter Email Address
+                  </Text>
+                  <DropShadow
+                    style={{
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 3,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 3,
+                      marginTop: -5,
+                    }}
+                  >
+                    <View
+                      style={[
+                        Layout.row,
+                        Layout.alignItemsCenter,
+                        {
+                          borderRadius: 16,
+                          marginVertical: MetricsSizes.small - 2,
+                          borderWidth: MetricsSizes.tiny - 4,
+                          borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                          borderWidth: 2,
+                          shadowColor: 'rgba(0, 0, 0, 0.25)',
+                          shadowOffset: { width: 5, height: 0 },
+                          shadowOpacity: 1,
+                          shadowRadius: 5,
+                          backgroundColor: Colors.white,
+                          elevation: 5,
+                        },
+                      ]}
+                    >
+                      <TextInput
+                        style={{
+                          fontWeight: '700',
+                          fontSize: 14,
+                          padding: 10,
+                          width: '85%',
+                        }}
+                        value={emailAddress}
+                        placeholder={placeholder.emailAddress}
+                        autoCapitalize={'none'}
+                        onChangeText={text => setEmailAddress(text)}
+                        onEndEditing={() => validate('emailAddress')}
+                        onFocus={() => {
+                          setPlaceholder({ ...placeholder, emailAddress: '' })
+                        }}
+                        onBlur={() => {
+                          setPlaceholder({
+                            ...placeholder,
+                            emailAddress: 'Enter Email Address',
+                          })
+                        }}
+                      />
+                    </View>
+                  </DropShadow>
+                  {/**email ends here */}
+
+                  {/**Company name starts here */}
+                  <Text
+                    style={{
+                      fontWeight: '700',
+                      color: '#184461',
+                      marginStart: 5,
+                      marginTop: 2,
+                    }}
+                  >
+                    Enter Company Name
+                  </Text>
+                  <DropShadow
+                    style={{
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 3,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 3,
+                      marginTop: -5,
+                    }}
+                  >
+                    <View
+                      style={[
+                        Layout.row,
+                        Layout.alignItemsCenter,
+                        {
+                          borderRadius: 16,
+                          marginVertical: MetricsSizes.small - 2,
+                          borderWidth: MetricsSizes.tiny - 4,
+                          borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                          borderWidth: 2,
+                          shadowColor: 'rgba(0, 0, 0, 0.25)',
+                          shadowOffset: { width: 5, height: 0 },
+                          shadowOpacity: 1,
+                          shadowRadius: 5,
+                          backgroundColor: Colors.white,
+                          elevation: 5,
+                        },
+                      ]}
+                    >
+                      <TextInput
+                        style={{
+                          fontWeight: '700',
+                          fontSize: 14,
+                          padding: 10,
+                          width: '85%',
+                        }}
+                        value={companyName}
+                        placeholder={placeholder.companyName}
+                        onChangeText={text => setCompanyName(text)}
+                        onEndEditing={() => validate('companyName')}
+                        onFocus={() => {
+                          setPlaceholder({ ...placeholder, companyName: '' })
+                        }}
+                        onBlur={() => {
+                          setPlaceholder({
+                            ...placeholder,
+                            companyName: 'Enter Company Name',
+                          })
+                        }}
+                      />
+                    </View>
+                  </DropShadow>
+                  {/**Company name ends here */}
+
+                  {/**car plate number starts here */}
+                  <Text
                   style={{
-                    width: orientation === 'PORTRAIT' ? 110 : 150,
-                    height: orientation === 'PORTRAIT' ? 110 : 150,
-                    zIndex: 1,
-                    borderRadius: orientation === 'PORTRAIT' ? 60 : 75.5,
+                    fontWeight: '700',
+                    color: '#184461',
+                    marginStart: 5,
+                    marginTop: 2,
+                  }}
+                >
+                  Enter Plate Number
+                </Text>
+                  <DropShadow
+                    style={{
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 3,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 3,
+                      marginTop: -5,
+                    }}
+                  >
+                    <View
+                      style={[
+                        Layout.row,
+                        Layout.alignItemsCenter,
+                        {
+                          borderRadius: 16,
+                          marginVertical: MetricsSizes.small - 2,
+                          borderWidth: MetricsSizes.tiny - 4,
+                          borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                          borderWidth: 2,
+                          shadowColor: 'rgba(0, 0, 0, 0.25)',
+                          shadowOffset: { width: 5, height: 0 },
+                          shadowOpacity: 1,
+                          shadowRadius: 5,
+                          backgroundColor: Colors.white,
+                          elevation: 5,
+                        },
+                      ]}
+                    >
+                      <TextInput
+                        style={{
+                          fontWeight: '700',
+                          fontSize: 14,
+                          padding: 10,
+                          width: '85%',
+                        }}
+                        value={carPlateNum}
+                        placeholder={placeholder.carPlateNum}
+                        onChangeText={text => setCarPlateNum(text)}
+                        onEndEditing={() => validate('carPlateNum')}
+                        onFocus={() => {
+                          setPlaceholder({ ...placeholder, carPlateNum: '' })
+                        }}
+                        onBlur={() => {
+                          setPlaceholder({
+                            ...placeholder,
+                            carPlateNum: 'Enter Car Plate Number',
+                          })
+                        }}
+                      />
+                    </View>
+                  </DropShadow>
+                  {/**car plate number ends here */}
+                </View>
+
+                <PrimaryButttonComponent
+                  loading={loading}
+                  label="Submit"
+                  style={{
+                    width: orientation === 'PORTRAIT' ? 270 : 320,
+                    height: 40,
+                    marginTop: 20,
+                    marginBottom: 20,
+                  }}
+                  onPress={() => {
+                    validate('fullName')
+                    validate('emailAddress')
+                    validate('companyName')
+                    validate('carPlateNum')
+                    if (
+                      isValidFullName &&
+                      isValidEmailAddress &&
+                      isValidCompanyName &&
+                      isValidcarPlateNum
+                    ) {
+                      SubmitForm()
+                    } else {
+                      setHasError(true)
+                    }
                   }}
                 />
               </View>
             </View>
-            <View style={[Layout.center, { marginLeft: orientation === 'PORTRAIT' ? 70 : 90}]}>
-              <TouchableOpacity
-                onPress={() => uploadPhoto()}
-                activeOpacity={0.9}
-                style={[
-                  Layout.center,
-                  {
-                    backgroundColor: '#184461',
-                    width: orientation === 'PORTRAIT' ? 35 : 40,
-                    height: orientation === 'PORTRAIT' ? 35 : 40,
-                    borderRadius: orientation === 'PORTRAIT' ? 15.5 : 20,
-                  },
-                ]}
-              >
-                <Icon
-                  name="camera"
-                  type="Feather"
-                  size={18}
-                  color="white"
-                 
-                />
-              </TouchableOpacity>
-            </View>
-    
-            <View style={[Layout.center, { marginTop: 10, paddingVertical:20 }]}>
-              {/**full name starts here */}
-              <DropShadow
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 3,
-                    height: 1,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 3,
-                  marginTop: -5,
-                }}
-              >
-                <View
-                  style={[
-                    Layout.row,
-                    Layout.alignItemsCenter,
-                    {                   
-                      borderRadius: 16,
-                      marginVertical: MetricsSizes.small - 2,
-                      borderWidth: MetricsSizes.tiny - 4,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      borderWidth: 2,
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                    },
-                  ]}
-                >
-                  <TextInput
-                    style={{
-                      fontWeight: '700',
-                      fontSize: 14,
-                      padding: 10,
-                      width:'85%'
-                    }}
-                    value={fullName}
-                    placeholder={placeholder.fullName}
-                    onChangeText={text => setFullName(text)}
-                    onEndEditing={() => validate('fullName')}
-                    onFocus={() => {
-                      setPlaceholder({ ...placeholder, fullName: '' })
-                    }}
-                    onBlur={() => {
-                      setPlaceholder({
-                        ...placeholder,
-                        fullName: 'Enter FullName',
-                      })
-                    }}
-                  />
-                </View>
-              </DropShadow>
-              {/**full name ends here */}
-    
-              {/**email starts here */}
-              <DropShadow
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 3,
-                    height: 1,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 3,
-                  marginTop: -5,
-                }}
-              >
-                <View
-                  style={[
-                    Layout.row,
-                    Layout.alignItemsCenter,
-                    {
-                      borderRadius: 16,
-                      marginVertical: MetricsSizes.small - 2,
-                      borderWidth: MetricsSizes.tiny - 4,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      borderWidth: 2,
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                    },
-                  ]}
-                >
-                  <TextInput
-                    style={{
-                      fontWeight: '700',
-                      fontSize: 14,
-                      padding: 10,
-                      width:'85%'
-                    }}
-                    value={emailAddress}
-                    placeholder={placeholder.emailAddress}
-                    autoCapitalize={'none'}
-                    onChangeText={text => setEmailAddress(text)}
-                    onEndEditing={() => validate('emailAddress')}
-                    onFocus={() => {
-                      setPlaceholder({ ...placeholder, emailAddress: '' })
-                    }}
-                    onBlur={() => {
-                      setPlaceholder({
-                        ...placeholder,
-                        emailAddress: 'Enter Email Address',
-                      })
-                    }}
-                  />
-                </View>
-              </DropShadow>
-              {/**email ends here */}
-    
-              {/**Company name starts here */}
-              <DropShadow
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 3,
-                    height: 1,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 3,
-                  marginTop: -5,
-                }}
-              >
-                <View
-                  style={[
-                    Layout.row,
-                    Layout.alignItemsCenter,
-                    {
-                  
-                      borderRadius: 16,
-                      marginVertical: MetricsSizes.small - 2,
-                      borderWidth: MetricsSizes.tiny - 4,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      borderWidth: 2,
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                    },
-                  ]}
-                >
-                  <TextInput
-                    style={{
-                      fontWeight: '700',
-                      fontSize: 14,
-                      padding: 10,
-                      width:'85%'
-                    }}
-                    value={companyName}
-                    placeholder={placeholder.companyName}
-                    onChangeText={text => setCompanyName(text)}
-                    onEndEditing={() => validate('companyName')}
-                    onFocus={() => {
-                      setPlaceholder({ ...placeholder, companyName: '' })
-                    }}
-                    onBlur={() => {
-                      setPlaceholder({
-                        ...placeholder,
-                        companyName: 'Enter Company Name',
-                      })
-                    }}
-                  />
-                </View>
-              </DropShadow>
-              {/**Company name ends here */}
-    
-              {/**car plate number starts here */}
-              <DropShadow
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 3,
-                    height: 1,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 3,
-                  marginTop: -5,
-                }}
-              >
-                <View
-                  style={[
-                    Layout.row,
-                    Layout.alignItemsCenter,
-                    {
-                 
-                      borderRadius: 16,
-                      marginVertical: MetricsSizes.small - 2,
-                      borderWidth: MetricsSizes.tiny - 4,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      borderWidth: 2,
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                    },
-                  ]}
-                >
-                  <TextInput
-                    style={{
-                      fontWeight: '700',
-                      fontSize: 14,
-                      padding: 10,
-                      width:'85%'
-                    }}
-                    value={carPlateNum}
-                    placeholder={placeholder.carPlateNum}
-                    onChangeText={text => setCarPlateNum(text)}
-                    onEndEditing={() => validate('carPlateNum')}
-                    onFocus={() => {
-                      setPlaceholder({ ...placeholder, carPlateNum: '' })
-                    }}
-                    onBlur={() => {
-                      setPlaceholder({
-                        ...placeholder,
-                        carPlateNum: 'Enter Car Plate Number',
-                      })
-                    }}
-                  />
-                </View>
-              </DropShadow>
-              {/**car plate number ends here */}
-    
-              <PrimaryButttonComponent
-                loading={loading}
-                label="Submit"
-                style={{ width: orientation === 'PORTRAIT' ? 270 : 320, height: 40, marginTop: 20 }}
-                onPress={() => {
-                  validate('fullName')
-                  validate('emailAddress')
-                  validate('companyName')
-                  validate('carPlateNum')
-                  if (
-                    isValidFullName &&
-                    isValidEmailAddress &&
-                    isValidCompanyName &&
-                    isValidcarPlateNum
-                  ) {
-                    SubmitForm()
-                  } else {
-                    setHasError(true)
-                  }
-                }}
-              />
-            </View>
           </View>
-        </View>
-          </DropShadow>
-     
+        </DropShadow>
       </ScrollView>
     </ScrollView>
   )
 }
 
 export default IndexEditUserContainer
-

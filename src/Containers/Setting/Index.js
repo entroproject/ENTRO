@@ -13,6 +13,7 @@ import { useTheme } from '@/Hooks'
 import LottieView from 'lottie-react-native'
 import { logoutUser } from '@/Features/users'
 import { useDispatch } from 'react-redux'
+import { navigateAndSimpleReset } from '@/Navigators/utils'
 
 const IndexSettingContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
@@ -22,7 +23,8 @@ const IndexSettingContainer = () => {
   const buttonRef = useRef < LottieView > null
 
   const signOutApp = () => {
-    dispatch(logoutUser)
+    navigateAndSimpleReset("MainNav");
+    dispatch(logoutUser())
   }
 
   return (

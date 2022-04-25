@@ -17,6 +17,8 @@ import { ButtonGroup } from 'react-native-elements'
 import { getVisitors, getVisitorsHistory } from '@/api-utils'
 import * as Constants from '@/Assets/Constants'
 import DatePicker from 'react-native-date-picker'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+
 
 const IndexVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -36,13 +38,15 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
   const orientation = useOrientation()
+  const isFocused = useIsFocused()
+
 
   const [selectAllDialogView, setSelectAllDialogView] = useState(false)
   const [selectAllDialogViewAll, setSelectAllDialogViewAll] = useState(false)
   const [selectAllDialogViewAll2, setSelectAllDialogViewAll2] = useState(false)
 
 
-  const onchange = (selectedDate) => {
+  const onDateChange = (selectedDate) => {
       const currentDate = selectedDate;
       setDate(currentDate)
       const formattedDate = `${moment(selectedDate).format("MMM Do YY") }`
@@ -75,7 +79,9 @@ const IndexVisitorContainer = ({ navigation }) => {
       <TouchableOpacity
         style={[Layout.alignItemsStart]}
         key={index}
-        onPress={() => selectVisitorCheckInOrOut_reg(item)}
+        onPress={() => {
+          selectVisitorCheckInOrOut_reg(item)
+          }}
       >
         <Text
           style={{
@@ -112,17 +118,12 @@ const IndexVisitorContainer = ({ navigation }) => {
     )
   })
 
-  // checked in filter
-  const selectVisitorCheckInOrOut_reg = item => {
-    setFilterVisitorType(item);
-    setSelectAllDialogViewAll(false);
-  }
 
   const filterVisitorReg = () => {
     if(filterVisitorType.toLocaleLowerCase() === 'all') {
       return;
     }
-    const _filtered_visitors = customized_visitors.filter(c => {
+    const _filtered_visitors = allVisitors.filter(c => {
       if(c.VisitorStatus.toLocaleLowerCase().includes(filterVisitorType.toLocaleLowerCase())){
         return true;
       }
@@ -131,11 +132,6 @@ const IndexVisitorContainer = ({ navigation }) => {
     setCustomized_visitors(_filtered_visitors);
   }
 
-  // checked in filter
-  const selectVisitorCheckInOrOut_acc = item => {
-    setFilterVisitorType2(item);
-    setSelectAllDialogViewAll2(false);
-  }
 
   const filterVisitorAcc = () => {
     if(filterVisitorType2.toLocaleLowerCase() === 'all') {
@@ -149,6 +145,18 @@ const IndexVisitorContainer = ({ navigation }) => {
     });
     setCustomized_visitors(_filtered_visitors);
   }
+
+    // checked in filter
+    const selectVisitorCheckInOrOut_reg = item => {
+      setFilterVisitorType(item);
+      setSelectAllDialogViewAll(false);
+    }
+
+    // checked in filter
+    const selectVisitorCheckInOrOut_acc = item => {
+      setFilterVisitorType2(item);
+      setSelectAllDialogViewAll2(false);
+    }
 
   // first filter
   const selectAllVistors = item => {
@@ -166,23 +174,31 @@ const IndexVisitorContainer = ({ navigation }) => {
   }
 
   const handleSearchReg = () =>{
-    const _filtered_visitors = allVisitors.filter(c => {
-      if(c.VehicleNumber.toLocaleLowerCase().includes(searchVehicle.toLocaleLowerCase())){
-        return true;
-      }
-      return false;
-    });
-    setCustomized_visitors(_filtered_visitors);
+    if(searchVehicle.length > 0){
+      const _filtered_visitors = allVisitors.filter(c => {
+        if(c.VehicleNumber.toLocaleLowerCase().includes(searchVehicle.toLocaleLowerCase())){
+          return true;
+        }
+        return false;
+      });
+      setCustomized_visitors(_filtered_visitors);
+    }else{
+      setCustomized_visitors(allVisitors);
+    }
   }
 
   const handleSearchAcc = () =>{
-    const _filtered_visitors = allVisitorsHistory.filter(c => {
-      if(c.VehicleNumber.toLocaleLowerCase().includes(searchVehicle1.toLocaleLowerCase())){
-        return true;
-      }
-      return false;
-    });
-    setCustomized_visitors_history(_filtered_visitors);
+    if(searchVehicle1.length > 0){
+      const _filtered_visitors = allVisitorsHistory.filter(c => {
+        if(c.VehicleNumber.toLocaleLowerCase().includes(searchVehicle1.toLocaleLowerCase())){
+          return true;
+        }
+        return false;
+      });
+      setCustomized_visitors_history(_filtered_visitors);
+    }else{
+      setCustomized_visitors_history(allVisitorsHistory);
+    }
   }
 
   useEffect(() => {
@@ -192,8 +208,7 @@ const IndexVisitorContainer = ({ navigation }) => {
     if(searchVehicle.length > 0){
       handleSearchReg();
     }
-    filterVisitorReg();
-  }, [searchVehicle, filterVisitorType])
+  }, [searchVehicle])
 
   useEffect(() => {
     if(searchVehicle1.length < 1){
@@ -204,6 +219,9 @@ const IndexVisitorContainer = ({ navigation }) => {
     }
   }, [searchVehicle1])
 
+  useEffect(() => {
+    filterVisitorReg()
+  }, [filterVisitorType])
 
 
   // switch between tabs
@@ -220,7 +238,7 @@ const IndexVisitorContainer = ({ navigation }) => {
   useEffect(() => {
     getAllVisitors();
     getAllVisitorsHistory();
-  }, [])
+  }, [isFocused])
 
   const getAllVisitors = async () => {
     const req_vis = await getVisitors('')
@@ -408,7 +426,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                   onConfirm={(date) => {
                     setOpen(false)
                     setDate(date)
-                    onchange(date)
+                    onDateChange(date)
                   }}
                   onCancel={() => {
                     setOpen(false)

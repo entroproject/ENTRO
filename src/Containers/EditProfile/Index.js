@@ -95,7 +95,6 @@ const IndexEditUserContainer = () => {
       cropping: true,
     }).then(image => {
       setPhoto(image)
-      console.log(image)
     })
   }
 

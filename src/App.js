@@ -7,6 +7,7 @@ import { ApplicationNavigator } from './Navigators';
 import './Translations'
 import FlashMessage from "react-native-flash-message";
 
+
 const App = () => (
   <Provider store={store}>
     {/**

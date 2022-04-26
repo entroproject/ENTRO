@@ -989,7 +989,7 @@
     "@babel/types" "^7.4.4"
     "esutils" "^2.0.2"
 
-"@babel/preset-typescript@*", "@babel/preset-typescript@^7.1.0":
+"@babel/preset-typescript@^7.1.0", "@babel/preset-typescript@^7.16.7":
   "integrity" "sha512-WbVEmgXdIyvzB77AQjGBEyYPZx+8tTsO50XtfozQrkW8QB2rLJpH2lgx0TRw5EJrBxOZQ+wCcyPVQvS8tjEHpQ=="
   "resolved" "https://registry.npmjs.org/@babel/preset-typescript/-/preset-typescript-7.16.7.tgz"
   "version" "7.16.7"
@@ -6623,6 +6623,21 @@
   "resolved" "https://registry.npmjs.org/react-native-flipper/-/react-native-flipper-0.127.0.tgz"
   "version" "0.127.0"
 
+"react-native-floating-label-input@^1.3.14":
+  "integrity" "sha512-kZ0kJu3nEDX04uOxtBvgJAUo0TT6RzZ6kUh1/65u8/AtYBkEKKXoJ62ZiJPCFz7eJ7SUpBS8F2i8GrKZT2N3QQ=="
+  "resolved" "https://registry.npmjs.org/react-native-floating-label-input/-/react-native-floating-label-input-1.3.14.tgz"
+  "version" "1.3.14"
+
+"react-native-floating-label-text-input@^0.1.5":
+  "integrity" "sha512-/MCJn5f2s6BaL4KOTEYbDHj81bgXClXO4zXarCceO7jX1VaU1cMzijB8mpSOjnziEhbXjTuVL6hokfqyI+bHXQ=="
+  "resolved" "https://registry.npmjs.org/react-native-floating-label-text-input/-/react-native-floating-label-text-input-0.1.5.tgz"
+  "version" "0.1.5"
+
+"react-native-floating-labels@^1.1.9":
+  "integrity" "sha512-fTQ+hhxr8wzv7JAnY9wlPRMLsQEFHiMC7G1tIKuEabYJjkhfRODmjeBT0XOPc4CxnCs8P5PplPww22bfJoNhYA=="
+  "resolved" "https://registry.npmjs.org/react-native-floating-labels/-/react-native-floating-labels-1.1.9.tgz"
+  "version" "1.1.9"
+
 "react-native-fs-store@^0.1.7":
   "integrity" "sha512-OjXohq7jBoeemYWy+TOD5U0WnQIHPMf+2wN4CnWRPz91JKsqh1wgaCyQw4KOpAT3znJnYM9VlJvECPpIZEdf+Q=="
   "resolved" "https://registry.npmjs.org/react-native-fs-store/-/react-native-fs-store-0.1.7.tgz"
@@ -6638,7 +6653,7 @@
     "base-64" "^0.1.0"
     "utf8" "^3.0.0"
 
-"react-native-gesture-handler@*", "react-native-gesture-handler@^2.1.0", "react-native-gesture-handler@>= 1.0.0":
+"react-native-gesture-handler@^2.1.0", "react-native-gesture-handler@>= 1.0.0":
   "integrity" "sha512-ibcYWHMiDbioUcaAMuw3/Taz3mYn0fJz0q2KnGX1hWpLNz/x/E5/BzKB+T3ycwAm1dQEgPgHWpaZ8eqO/EVFlw=="
   "resolved" "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.3.2.tgz"
   "version" "2.3.2"
@@ -6701,16 +6716,16 @@
   dependencies:
     "lodash" "^4.17.15"
 
-"react-native-reanimated@^2.3.1":
-  "integrity" "sha512-TG7u0d1iTx6BRQXhUp9DKEW/9K6169qiX9vweC+qOcVffGSZvjDZ+OyyI0faXIDvcf5LRHAud3mNtO3ANaHRhQ=="
-  "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.6.0.tgz"
-  "version" "2.6.0"
+"react-native-reanimated@*", "react-native-reanimated@^2.3.1":
+  "integrity" "sha512-kJvf/UWLBMaGCs9X66MKq5zdFMgwx8D0nHnolbHR7s8ZnbLdb7TlQ/yuzIXqn/9wABfnwtNRI3CyaP1aHWMmZg=="
+  "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.8.0.tgz"
+  "version" "2.8.0"
   dependencies:
     "@babel/plugin-transform-object-assign" "^7.16.7"
+    "@babel/preset-typescript" "^7.16.7"
     "@types/invariant" "^2.2.35"
     "invariant" "^2.2.4"
     "lodash.isequal" "^4.5.0"
-    "react-native-screens" "^3.11.1"
     "setimmediate" "^1.0.5"
     "string-hash-64" "^1.0.3"
 
@@ -6733,7 +6748,7 @@
   dependencies:
     "dedent" "^0.6.0"
 
-"react-native-screens@^3.10.1", "react-native-screens@^3.11.1", "react-native-screens@>= 3.0.0":
+"react-native-screens@^3.10.1", "react-native-screens@>= 3.0.0":
   "integrity" "sha512-xcrnuUs0qUrGpc2gOTDY4VgHHADQwp80mwR1prU/Q0JqbZN5W3koLhuOsT6FkSRKjR5t40l+4LcjhHdpqRB2HA=="
   "resolved" "https://registry.npmjs.org/react-native-screens/-/react-native-screens-3.13.1.tgz"
   "version" "3.13.1"

@@ -14,7 +14,7 @@ import { ButtonGroup } from 'react-native-elements'
 import Icon from 'react-native-dynamic-vector-icons'
 import { useSelector } from 'react-redux'
 
-const IndexCommunityContainer = () => {
+const IndexCommunityContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [displaycontact, setDisplayContact] = useState(true)
@@ -38,28 +38,28 @@ const IndexCommunityContainer = () => {
           alignItems: 'center',
         }}
       >
+
+      <Icon
+      name="arrow-left"
+      type="Feather"
+      size={35}
+      color="#fff"
+      style={{ margin: 20, flex:1}}
+      onPress={() => {
+        navigation.navigate('MainHome')
+      }}/>
         <Text
           style={{
             color: Colors.white,
             fontWeight: '700',
-            marginLeft: 18,
-            flex: 2,
+            marginEnd: 10
+           
           }}
         >
           Emergency
         </Text>
 
-        <Image
-          source={{uri: `data:image/png;base64,${user.ProfileLogo}`}}
-          style={{
-            width: 60,
-            height: 60,
-            marginEnd: 20,
-            borderRadius: 30,
-            borderWidth: 2,
-            borderColor: '#FFFEFE',
-          }}
-        />
+       
       </View>
 
       <View style={{ marginTop: 20, marginLeft: 20 }}>

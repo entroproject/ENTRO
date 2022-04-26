@@ -20,7 +20,7 @@ import { addAnnouncement } from '@/Features/announcements'
 import ViewMoreText from 'react-native-view-more-text'
 
 const IndexHomeContainer = ({ navigation }) => {
-  const { Images } = useTheme()
+  const { Images, MetricsSizes, Layout } = useTheme()
   const orientation = useOrientation()
   const user = useSelector(user => user.user.profile)
   const [announcementsLoading, setAnnouncementLoading] = useState(true)
@@ -44,18 +44,10 @@ const IndexHomeContainer = ({ navigation }) => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
       {/* header start */}
-      <View style={styles.header}>
-        <Pressable onPress={()=>navigation.navigate("UserProfile")} style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Home</Text>
-          <Image
-            source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
-            style={styles.profileImage}
-          />
-        </Pressable>
-      </View>
+      <View style={{backgroundColor: '#184461',
+      height: 144,}}></View>
       {/* header end */}
       {/* card start */}
-
       <DropShadow
         style={{
           shadowColor: '#D3D3D3',
@@ -67,50 +59,135 @@ const IndexHomeContainer = ({ navigation }) => {
           shadowRadius: 3,
         }}
       >
-        <View style={styles.cardWrap}>
-          <View style={styles.cardContent}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <View
+            style={{
+              width: '85%',
+              marginTop: -50,
+              backgroundColor: '#D0F2EC',
+              shadowColor: '0px 13px 15px rgba(0, 0, 0, 0.25)',
+              shadowRadius: 10,
+              shadowOpacity: 0.6,
+              marginVertical: 0,
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              borderBottomLeftRadius: 8,
+              borderBottomRightRadius: 8,
+            }}
+          >
+            <View style={[Layout.center, { marginBottom: 30 }]}>
+              <View
+                style={[
+                  Layout.center,
+                  {
+                    width: 100,
+                    height: 100,
+                    position: 'absolute',
+                    borderRadius: 50,
+                    borderColor: '#184461',
+                    borderWidth: MetricsSizes.zero + 1,
+                    backgroundColor: '#C4c4c4',
+                    shadowColor: ' rgba(0, 0, 0, 0.25)',
+                  },
+                ]}
+              >
+                <Image
+                  source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
+                  style={{
+                    width: 110,
+                    height: 110,
+                    zIndex: 1,
+                    borderRadius: 75.5,
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                  }}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 20,
+              }}
+            >
               <Text style={{ color: '#184461', fontSize: 20 }}>
                 <Text style={{ fontSize: 30 }}>🤩</Text> Welcome
               </Text>
+
+              <Text
+                style={{
+                  fontSize: 23,
+                  fontWeight: 'bold',
+                  marginVertical: 8,
+                  color: '#184461',
+                  textAlign: 'center',
+                  textTransform: 'capitalize',
+                }}
+              >
+                {user.FirstName} {user.LastName}
+              </Text>
+              {/* divider start */}
+              <View
+                style={{
+                  width: '80%',
+                  height: 1,
+                  backgroundColor: '#000',
+                  alignSelf: 'center',
+                  marginVertical: 8,
+                }}
+              />
+              {/* divider end */}
+
+              <Text
+                style={{ color: '#184461', fontSize: 12, marginBottom: 10 }}
+              >
+                {' '}
+                Click the button below to
+              </Text>
+              <Text
+                style={{ color: '#184461', fontSize: 12, marginBottom: 10 }}
+              >
+                {' '}
+                register your visitor
+              </Text>
+
+              <PrimaryButttonComponent
+                label="Register Here"
+                iconRight={'user-plus'}
+                iconType={'FontAwesome'}
+                onPress={() => navigation.navigate('VistorsRecord')}
+                style={{ marginBottom: 10 }}
+              />
             </View>
-
-            <Text
-              style={{
-                fontSize: 23,
-                fontWeight: 'bold',
-                marginVertical: 8,
-                color: '#184461',
-                textAlign: 'center',
-                textTransform: 'capitalize',
-              }}
-            >
-              {user.FirstName} {user.LastName}
-            </Text>
-            {/* divider start */}
-            <View
-              style={{
-                width: '80%',
-                height: 1,
-                backgroundColor: '#000',
-                alignSelf: 'center',
-                marginVertical: 8,
-              }}
-            />
-            {/* divider end */}
-
-            <Text style={{ color: '#184461', fontSize: 12, marginBottom: 10 }}>
-              {' '}
-              Click the button below to register your visitor
-            </Text>
-            <PrimaryButttonComponent
-              label="Register Visitors"
-              iconRight={'user-plus'}
-              iconType={'FontAwesome'}
-              onPress={() => navigation.navigate('VistorsRecord')}
-            />
           </View>
-          <View style={styles.cardBottom}></View>
+          <View
+            style={{
+              width: 0,
+              height: 5,
+              backgroundColor: 'transparent',
+              borderStyle: 'solid',
+              borderLeftWidth: 155,
+              borderRightWidth: 155,
+              borderBottomWidth: 50,
+              borderLeftColor: 'transparent',
+              borderRightColor: 'transparent',
+              borderBottomColor: '#D0F2EC',
+              alignSelf: 'center',
+              transform: [{ rotate: '180deg' }],
+              marginBottom: 10,
+              marginTop: -3,
+            }}
+          ></View>
         </View>
       </DropShadow>
 
@@ -405,17 +482,44 @@ const IndexHomeContainer = ({ navigation }) => {
       </View>
       {/* menu end */}
 
-      {/* announcement start */}
-      <Text
+      <View
         style={{
-          fontWeight: 'bold',
-          fontSize: orientation === 'PORTRAIT' ? 20 : 24,
-          color: '#184461',
-          marginHorizontal: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 8,
         }}
       >
-        Announcement
-      </Text>
+        <View
+          style={{
+            width: '90%',
+
+            borderWidth: 1,
+            borderColor: '#184461',
+          }}
+        />
+      </View>
+
+      {/* announcement start */}
+
+      <View style={{flexDirection:'row', marginHorizontal: 20, marginVertical: 15}}>
+      <Text
+      style={{
+        fontWeight: 'bold',
+        fontSize: orientation === 'PORTRAIT' ? 20 : 24,
+        color: '#184461',
+       flex:2,
+      }}
+    >
+      Announcement
+    </Text>
+
+    <Text style={{color: '#4CA3A3',
+    }}>
+    view all
+    </Text>
+      
+      </View>
+     
 
       <View
         style={{
@@ -451,7 +555,6 @@ const IndexHomeContainer = ({ navigation }) => {
                   <View
                     style={{
                       backgroundColor: 'white',
-                      borderRadius: 15,
                       elevation: 10,
                       shadowColor: '#000',
                       shadowRadius: 10,
@@ -461,7 +564,7 @@ const IndexHomeContainer = ({ navigation }) => {
                         width: 0,
                         height: 4,
                       },
-                      marginBottom: 10,
+                      marginBottom: 15,
                     }}
                   >
                     <View style={{ flexDirection: 'row' }}>
@@ -469,8 +572,6 @@ const IndexHomeContainer = ({ navigation }) => {
                         style={{
                           width: 10,
                           backgroundColor: '#184461',
-                          borderTopLeftRadius: 10,
-                          borderBottomLeftRadius: 10,
                         }}
                       />
                       <Image
@@ -479,94 +580,119 @@ const IndexHomeContainer = ({ navigation }) => {
                         }}
                         style={{
                           width: '40%',
-                          height: 115,
+                          height: 110,
                           resizeMode: 'cover',
                         }}
                       />
 
+                      <View style={{flex:1}}>
+
+
                       <View
+                      style={{
+                        paddingVertical: 5,
+                        marginStart: 5,
+                        backgroundColor: '#fff',
+                        
+                      }}
+                    >
+                      <Text
                         style={{
-                          paddingVertical: 5,
-                          marginStart: 5,
-                          backgroundColor: '#fff',
-                          marginEnd: 5,
+                          color: '#184461',
+                          marginBottom: 2,
+                          flexWrap: 'wrap',
+                          fontWeight: 'bold',
+                          fontSize: orientation === 'PORTRAIT' ? 14 : 18,
                         }}
                       >
-                        <Text
-                          style={{
-                            color: '#184461',
-                            marginBottom: 2,
-                            flexWrap: 'wrap',
-                            fontWeight: 'bold',
-                            fontSize: orientation === 'PORTRAIT' ? 14 : 18,
-                          }}
-                        >
-                          {ann.Title}
-                        </Text>
+                        {ann.Title}
+                      </Text>
 
-                        <Text
-                          style={{
-                            color: '#184461',
-                            flexWrap: 'wrap',
-                            width: orientation === 'PORTRAIT' ? 170 : '100%',
-                            fontSize: orientation === 'PORTRAIT' ? 12 : 16,
-                            
-                          }}
-                        >
-                          {ann.Description}
-                        </Text>
-                        <View
-                          style={{
-                            paddingVertical: 5,
-                            backgroundColor: '#fff',
-                            marginEnd: 5,
-                          }}
-                        >
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              marginBottom: 5,
-                            }}
-                          >
-                            <Text
-                              style={{
-                                color: '#184461',
-                                fontSize: orientation === 'PORTRAIT' ? 12 : 14,
-                              }}
-                            >
-                              {new Date(
-                                Number(
-                                  ann.EventStartAt.replace(/\/date\(/gi, '')
-                                    .replace(/\//gi, '')
-                                    .replace(/\)/gi, ''),
-                                ),
-                              ).toLocaleString()}
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <Icon
-                              type="Ionicons"
-                              name="location"
-                              color="#184461"
-                              size={20}
-                            />
-                            <Text
-                              numberOfLines={1}
-                              style={{
-                                flexWrap: 'wrap',
-                              }}
-                            >
-                              3.5miles
-                            </Text>
-                          </View>
-                        </View>
+                      <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginBottom: 5,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: '#184461',
+                          fontSize: orientation === 'PORTRAIT' ? 12 : 14,
+                        }}
+                      >
+                        {new Date(
+                          Number(
+                            ann.EventStartAt.replace(/\/date\(/gi, '')
+                              .replace(/\//gi, '')
+                              .replace(/\)/gi, ''),
+                          ),
+                        ).toLocaleString()}
+                      </Text>
+                    </View>
+
+                    <View>
+                    <Text style={{ color: '#184461', fontSize: 12, fontWeight:'bold'}}>Event:</Text>
+                    <Text
+                    style={{
+                      color: '#184461',
+                      flexWrap: 'wrap',
+                      width: orientation === 'PORTRAIT' ? 170 : '100%',
+                      fontSize: orientation === 'PORTRAIT' ? 12 : 16,
+                      
+                    }}
+                    numberOfLines={1}
+                  >
+                    {ann.Description}
+                  </Text>
+                    </View>
+
+                    <View
+                    style={{
+                     
+                    }}
+                  >
+                  
+                  </View>
+                    </View>
+                      
+                    
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        backgroundColor:'#E7EBEA',
+                        marginTop:6,
+                        padding:2
+                        
+                      }}
+                    >
+                      <Icon
+                        type="Ionicons"
+                        name="location"
+                        color="#184461"
+                        size={12}
+                        marginHorizontal={5}
+                      />
+                      <Text
+                    style={{
+                      color: '#184461',
+                      flexWrap: 'wrap',
+                      width: orientation === 'PORTRAIT' ? 170 : '100%',
+                      fontSize: orientation === 'PORTRAIT' ? 10 : 12,
+                      
+                    }}
+                    numberOfLines={1}
+                  >
+                    3.5 miles. Gunung Ledang Johor
+                  </Text>
+                    </View>
+                      
                       </View>
+                    
+
+
+                     
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -593,7 +719,7 @@ const IndexHomeContainer = ({ navigation }) => {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#184461',
-    height: 120,
+    height: 144,
   },
   headerContent: {
     flexDirection: 'row',

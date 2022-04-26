@@ -29,5 +29,7 @@ export default function () {
     settingToggle: require('@/Assets/Images/SettingToggle.png'),
     groceryIcon: require('@/Assets/Images/grocery.jpg'),
     pexelsmeetupIcon: require('@/Assets/Images/Pexelsmeetup.jpg'),
+    bgRect: require('@/Assets/Images/BackgroundRectangle.png'),
+    goodMark: require('@/Assets/Images/CorrectMark.png'),
   }
 }

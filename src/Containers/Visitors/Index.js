@@ -266,17 +266,16 @@ const IndexVisitorContainer = ({ navigation }) => {
           alignItems: 'center',
         }}
       >
-        <Text
-          style={{
-            color: Colors.white,
-            fontWeight: '700',
-            marginLeft: 18,
-            flex: 2,
-            fontSize: orientation === 'PORTRAIT' ? 12 : 16,
-          }}
-        >
-          Vistors
-        </Text>
+      <Icon
+      name="arrow-left"
+      type="Feather"
+      size={35}
+      color="#fff"
+      style={{ margin: 20 }}
+      onPress={() => {
+        navigation.navigate('MainHome')
+      }}
+    />
         <View
           style={{
             flex: 1,
@@ -287,15 +286,9 @@ const IndexVisitorContainer = ({ navigation }) => {
         >
           <TouchableOpacity
             style={{ justifyContent: 'center', alignItems: 'center' }}
-            onPress={() => navigation.navigate('AddVistorInfo')}
+          
           >
-            <Icon
-              name="plus-circle"
-              type="Feather"
-              size={20}
-              color="#ffffff"
-              style={{}}
-            />
+          
             <Text
               style={{
                 fontSize: orientation === 'PORTRAIT' ? 12 : 16,
@@ -303,7 +296,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 color: '#ffffff',
               }}
             >
-              Add Visitor
+              Visitors
             </Text>
           </TouchableOpacity>
         </View>

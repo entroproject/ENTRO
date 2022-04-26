@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAnnouncements } from '@/api-utils'
 import { addAnnouncement } from '@/Features/announcements'
 import ViewMoreText from 'react-native-view-more-text'
+import Moment from 'react-moment'
 
 const IndexHomeContainer = ({ navigation }) => {
   const { Images } = useTheme()
@@ -38,7 +39,7 @@ const IndexHomeContainer = ({ navigation }) => {
   }
 
   useEffect(() => {
-    handleGetAnnouncements()
+    handleGetAnnouncements();
   }, [])
 
   return (

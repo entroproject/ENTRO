@@ -18,8 +18,8 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
 
   const [loading, setLoading] = useState(false)
   const [image, setImage] = useState('')
-  const [minutes, setMinutes] = useState('...');
-  const [seconds, setSeconds] = useState('...');
+  const [minutes, setMinutes] = useState('01');
+  const [seconds, setSeconds] = useState('59');
   const user = useSelector(user => user.user.profile)
   const height = Dimensions.get('screen').height
 
@@ -47,9 +47,9 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
         setSeconds(paddNum(seconds));        
         if (distance < 0) {
             clearInterval(x);
-            setSeconds("..");
-            setMinutes("..");
             getImage();
+            setMinutes("01");
+            setSeconds("59");
         }
     }, 1000);
     

@@ -17,7 +17,8 @@ import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage, hideMessage } from 'react-native-flash-message'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useOrientation } from '../useOrientation'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { FloatingLabelInput } from 'react-native-floating-label-input'
 
 const IndexEditUserContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -266,7 +267,7 @@ const IndexEditUserContainer = () => {
                       marginTop: 2,
                     }}
                   >
-                    Enter Full Name
+                    
                   </Text>
                   <DropShadow
                     style={{
@@ -299,43 +300,16 @@ const IndexEditUserContainer = () => {
                         },
                       ]}
                     >
-                      <TextInput
-                        style={{
-                          fontSize: 14,
-                          padding: 10,
-                          width: '85%',
-                          fontWeight:'700',
-                         color:  fullName === 'Enter FullName' ? '#666666' : '#000',
-                        }}
+                      <FloatingLabelInput
+                        label="Enter Full Name"
                         value={fullName}
-                        placeholder={placeholder.fullName}
                         onChangeText={text => setFullName(text)}
-                        onEndEditing={() => validate('fullName')}
-                        onFocus={() => {
-                          setPlaceholder({ ...placeholder, fullName: '' })
-                        }}
-                        onBlur={() => {
-                          setPlaceholder({
-                            ...placeholder,
-                            fullName: 'Enter FullName',
-                          })
-                        }}
                       />
                     </View>
                   </DropShadow>
                   {/**full name ends here */}
 
                   {/**email starts here */}
-                  <Text
-                    style={{
-                      fontWeight: '700',
-                      color: '#184461',
-                      marginStart: 5,
-                      marginTop: 2,
-                    }}
-                  >
-                    Enter Email Address
-                  </Text>
                   <DropShadow
                     style={{
                       shadowColor: '#000',
@@ -367,43 +341,16 @@ const IndexEditUserContainer = () => {
                         },
                       ]}
                     >
-                      <TextInput
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 14,
-                          padding: 10,
-                          width: '85%',
-                        }}
+                      <FloatingLabelInput
+                        label="Enter Email Address"
                         value={emailAddress}
-                        placeholder={placeholder.emailAddress}
-                        autoCapitalize={'none'}
                         onChangeText={text => setEmailAddress(text)}
-                        onEndEditing={() => validate('emailAddress')}
-                        onFocus={() => {
-                          setPlaceholder({ ...placeholder, emailAddress: '' })
-                        }}
-                        onBlur={() => {
-                          setPlaceholder({
-                            ...placeholder,
-                            emailAddress: 'Enter Email Address',
-                          })
-                        }}
                       />
                     </View>
                   </DropShadow>
                   {/**email ends here */}
 
                   {/**Company name starts here */}
-                  <Text
-                    style={{
-                      fontWeight: '700',
-                      color: '#184461',
-                      marginStart: 5,
-                      marginTop: 2,
-                    }}
-                  >
-                    Enter Company Name
-                  </Text>
                   <DropShadow
                     style={{
                       shadowColor: '#000',
@@ -435,42 +382,16 @@ const IndexEditUserContainer = () => {
                         },
                       ]}
                     >
-                      <TextInput
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 14,
-                          padding: 10,
-                          width: '85%',
-                        }}
+                      <FloatingLabelInput
+                        label="Enter Company Name"
                         value={companyName}
-                        placeholder={placeholder.companyName}
                         onChangeText={text => setCompanyName(text)}
-                        onEndEditing={() => validate('companyName')}
-                        onFocus={() => {
-                          setPlaceholder({ ...placeholder, companyName: '' })
-                        }}
-                        onBlur={() => {
-                          setPlaceholder({
-                            ...placeholder,
-                            companyName: 'Enter Company Name',
-                          })
-                        }}
                       />
                     </View>
                   </DropShadow>
                   {/**Company name ends here */}
 
                   {/**car plate number starts here */}
-                  <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 2,
-                  }}
-                >
-                  Enter Plate Number
-                </Text>
                   <DropShadow
                     style={{
                       shadowColor: '#000',
@@ -502,26 +423,10 @@ const IndexEditUserContainer = () => {
                         },
                       ]}
                     >
-                      <TextInput
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 14,
-                          padding: 10,
-                          width: '85%',
-                        }}
+                      <FloatingLabelInput
+                        label="Enter Car Plate Number"
                         value={carPlateNum}
-                        placeholder={placeholder.carPlateNum}
                         onChangeText={text => setCarPlateNum(text)}
-                        onEndEditing={() => validate('carPlateNum')}
-                        onFocus={() => {
-                          setPlaceholder({ ...placeholder, carPlateNum: '' })
-                        }}
-                        onBlur={() => {
-                          setPlaceholder({
-                            ...placeholder,
-                            carPlateNum: 'Enter Car Plate Number',
-                          })
-                        }}
                       />
                     </View>
                   </DropShadow>

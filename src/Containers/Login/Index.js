@@ -58,9 +58,10 @@ const IndexLoginContainer = () => {
     const res = await req.json();
     if(res.StatusCode === "200"){
       // send ot to phone number
-      // const _sentOtp = String(Math.random()).slice(2, 8);
-      setSentOtp("123456");
-      const otp_req = await sendOtp(phoneNumber, "123456"); 
+     //const _sentOtp = String(Math.random()).slice(2, 8);
+     // setSentOtp("123456");
+      setOtp(sentOtp)
+      const otp_req = await sendOtp(phoneNumber, sentOtp); 
       const otp_res = await otp_req.json();
       showMessage({
         message: 'We have sent you an OTP.',
@@ -223,7 +224,8 @@ const IndexLoginContainer = () => {
             style={styleSheet.otpView}
             codeInputFieldStyle={styleSheet.underlineStyleBase}
             onCodeFilled={value => {
-              setOtp(value)
+              setOtp(value),
+              setSentOtp(value)
             }}
           />
         </View>

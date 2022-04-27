@@ -1,4 +1,4 @@
-import React, {useState } from 'react'
+import React, {useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   Dimensions,
   useWindowDimensions,
   ScrollView,
+  BackHandler,
+  Alert,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PhoneInput from 'react-native-phone-number-input'
@@ -37,6 +39,7 @@ const IndexLoginContainer = () => {
   const [sentOtp, setSentOtp] = useState(false);
   const orientation = useOrientation();
   const dispatch = useDispatch();
+
 
   const submitPhoneNumber = async () => {
     try{

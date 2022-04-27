@@ -312,17 +312,20 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
         </View>
       </View>
       {/* header end */}
-
-      {showUploadScreen ? (
-        <CardUpload
-          cardFront={cardFront}
-          cardBack={cardBack}
-          handleAttachCard={handleAttachCard}
-          setShowUploadScreen={setShowUploadScreen}
-        />
-      ) : (
+      <>
+      <View style={{
+          display: showUploadScreen ? "flex" : "none"
+        }}>
+          <CardUpload
+            cardFront={cardFront}
+            cardBack={cardBack}
+            handleAttachCard={handleAttachCard}
+            setShowUploadScreen={setShowUploadScreen}
+          />
+        </View>
         <View
           style={{
+            display: showUploadScreen ? "none" : "flex",
             marginTop: 20,
             marginHorizontal: 20,
           }}
@@ -748,7 +751,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
 
           {/* form send */}
         </View>
-      )}
+      </>
     </ScrollView>
   )
 }

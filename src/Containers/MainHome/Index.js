@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Pressable,
+  BackHandler,
+  Alert,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
@@ -37,6 +39,7 @@ const IndexHomeContainer = ({ navigation }) => {
     dispatch(addAnnouncement(ann.Announcement))
     setAnnouncementLoading(false)
   }
+
 
   useEffect(() => {
     handleGetAnnouncements()

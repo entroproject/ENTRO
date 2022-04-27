@@ -23,13 +23,14 @@ import { addCard, setDefaultCard } from '@/Features/virtualCards'
 import { useDispatch } from 'react-redux'
 import FloatingLabel from 'react-native-floating-labels'
 
-const IndexRegisterCompanyUserContainer = () => {
+const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
   const [photo, setPhoto] = useState(null)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [emailAddress, setEmailAddress] = useState('')
   const [companyName, setCompanyName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [carPlateNum, setCarPlateNum] = useState('')
   const [loading, setLoading] = useState(false)
   const orientation = useOrientation()
@@ -42,7 +43,6 @@ const IndexRegisterCompanyUserContainer = () => {
       cropping: true,
     }).then(image => {
       setPhoto(image)
-      console.log(image)
     })
   }
 
@@ -72,7 +72,7 @@ const IndexRegisterCompanyUserContainer = () => {
       LastName: lastName,
       CompanyName: companyName,
       VehicleNo: carPlateNum,
-      MobileNo: '+3272722773',
+      MobileNo: phoneNumber,
     })
     const res_register = await req_register.json()
 
@@ -90,7 +90,11 @@ const IndexRegisterCompanyUserContainer = () => {
       dispatch(addCard(prof.VirtualKey))
       dispatch(setDefaultCard(prof.VirtualKey[0].VirtualKey))
       dispatch(loginUser(prof))
-      navigate('TutorialSlide')
+      console.log(prof);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'TutorialSlide' }],
+      })
     }
     setLoading(false)
   }

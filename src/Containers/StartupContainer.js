@@ -14,11 +14,6 @@ const StartupContainer = () => {
   const { t } = useTranslation()
 
   const init = async () => {
-    await new Promise(resolve =>
-      setTimeout(() => {
-        resolve(true)
-      }, 1000),
-    )
     await setDefaultTheme({ theme: 'default', darkMode: null }) 
     navigateAndSimpleReset(isLoggedIn ? "MainNav" : "Login")
   }
@@ -28,11 +23,8 @@ const StartupContainer = () => {
   })
 
   return (
-    <View style={[Layout.fill, Layout.colCenter]}>
-      <Brand />
-      <ActivityIndicator size={'large'} style={[Gutters.largeVMargin]} />
-      <Text style={Fonts.textCenter}>{t('welcome')}</Text>
-    </View>
+    <>
+    </>
   )
 }
 

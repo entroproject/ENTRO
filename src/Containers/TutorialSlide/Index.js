@@ -9,15 +9,16 @@ import {
   Text,
   ScrollView,
   useWindowDimensions,
+  BackHandler,
+  Alert,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
-import { navigate, navigateAndSimpleReset } from '@/Navigators/utils'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 
 const width = Dimensions.get("screen").width
 
 
-function IndexTutorialSlideContainer({}) {
+function IndexTutorialSlideContainer({navigation}) {
   const { Fonts, Images, Colors, Layout, Gutters } = useTheme()
   const [loading, setLoading] = useState(false)
   const SCREEN_WIDTH = useWindowDimensions().width
@@ -41,8 +42,9 @@ function IndexTutorialSlideContainer({}) {
         setCompleted(false)
       }
     })
-  }, [scrollX])
+  }, [scrollX]);
 
+  
   const onBoardings = [
     {
       title_slide_01: 'First Slide Title',
@@ -71,8 +73,11 @@ function IndexTutorialSlideContainer({}) {
             setLoading(true)
             setTimeout(() => {
               setLoading(false)
-              navigateAndSimpleReset('MainNav')
-            }, 3000)
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'MainNav' }],
+              })
+            }, 1000)
           }}
         />
       ),

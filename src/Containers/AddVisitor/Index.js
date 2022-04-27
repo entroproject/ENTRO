@@ -17,10 +17,11 @@ import * as Constants from '@/Assets/Constants'
 import DropShadow from 'react-native-drop-shadow'
 import { useOrientation } from '../useOrientation'
 import { useDispatch, useSelector } from 'react-redux'
-import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage, hideMessage } from 'react-native-flash-message'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import { inviteVisitors } from '@/api-utils'
+import FloatingLabel from 'react-native-floating-labels'
+import { set } from 'react-native-reanimated'
 
 const IndexAddVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -42,7 +43,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   const user = useSelector(user => user.user.profile)
 
   const [placeholder, setPlaceholder] = useState({
-    fullName: "Enter Full Name",
+    fullName: 'Enter Full Name',
   })
 
   const onchange = (selectedDate, type) => {
@@ -151,15 +152,15 @@ const IndexAddVisitorContainer = ({ navigation }) => {
           backgroundColor: 'green',
           duration: 3000,
         })
-        setFullName("");
-        setICNumber("");
-        setCarPlateNum("");
-        setChooseVisitStartDate("");
-        setChoosenVisitEndDate("");
-        setMobileNumber("");
-        setTimeout(()=> {
+        setFullName('')
+        setICNumber('')
+        setCarPlateNum('')
+        setChooseVisitStartDate('')
+        setChoosenVisitEndDate('')
+        setMobileNumber('')
+        setTimeout(() => {
           navigation.goBack()
-        },200)
+        }, 200)
       } else {
         setLoading(false)
         showMessage({
@@ -327,6 +328,243 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               }}
             >
               <View style={{ marginHorizontal: 20, marginVertical: 12 }}>
+                {/**first Name label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: fullName !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={fullName}
+                      onChangeText={text => setFullName(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: fullName !== '' ? 3 : 7,
+                      }}
+                    >
+                      Enter visitor name
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**first Name label ends here */}
+
+                {/**IC Number label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: ICNumber !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={ICNumber}
+                      onChangeText={text => setICNumber(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: ICNumber !== '' ? 3 : 7,
+                      }}
+                    >
+                      Enter visitor IC
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**IC Number label ends here */}
+
+                {/**MObile number label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: mobileNumber !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={mobileNumber}
+                      onChangeText={text => setMobileNumber(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: mobileNumber !== '' ? 3 : 7,
+                      }}
+                      keyboardType="number-pad"
+                    >
+                      Enter visitor phone No
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**IC Number label ends here */}
+
+                {/**vehicle label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: carPlateNum !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={carPlateNum}
+                      onChangeText={text => setCarPlateNum(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: carPlateNum !== '' ? 3 : 7,
+                      }}
+                    >
+                      Enter visitor vehicle No
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**vehicle label ends here */}
+
                 <Text
                   style={{
                     fontWeight: '700',
@@ -395,189 +633,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                   </View>
 
                   {/**visitor type ends here */}
-                </DropShadow>
-
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 7,
-                  }}
-                >
-                  Enter Full Name
-                </Text>
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <TextInput
-                    value={fullName}
-                    placeholder="Enter Full Name"
-                    keyboardType="default"
-                    onChangeText={text => setFullName(text)}
-                    style={{
-                      borderWidth: 1,
-                      paddingLeft: 15,
-                      color:  fullName === 'Enter Full Name' ? '#666666' : '#000',
-                      marginVertical: 2,
-                      borderRadius: 16,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                      fontWeight:'700'
-                    }}
-                  />
-                </DropShadow>
-
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 7,
-                  }}
-                >
-                  Enter IC Number
-                </Text>
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <TextInput
-                    placeholder="Enter IC Number"
-                    keyboardType="number-pad"
-                    onChangeText={text => setICNumber(text)}
-                    value={ICNumber}
-                    style={{
-                      borderWidth: 1,
-                      paddingLeft: 15,
-                      marginVertical: 2,
-                      borderRadius: 16,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                      fontWeight: '700',
-                      color:
-                      ICNumber === 'Enter Full Name' ? '#666666' : '#000',
-                    }}
-                  />
-                </DropShadow>
-
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 7,
-                  }}
-                >
-                  Enter Mobile Number
-                </Text>
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <TextInput
-                    placeholder="Enter Mobile Number"
-                    keyboardType="number-pad"
-                    onChangeText={text => setMobileNumber(text)}
-                    value={mobileNumber}
-                    style={{
-                      borderWidth: 1,
-                      paddingLeft: 15,
-                      marginVertical: 2,
-                      borderRadius: 16,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                      fontWeight: '700',
-                      color:
-                        mobileNumber === 'Enter Mobile Number'
-                          ? '#666666'
-                          : '#000',
-                    }}
-                  />
-                </DropShadow>
-
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 7,
-                  }}
-                >
-                  Enter Vehicle Number
-                </Text>
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <TextInput
-                    placeholder="Enter Vehicle Number"
-                    keyboardType="default"
-                    onChangeText={text => setCarPlateNum(text)}
-                    value={carPlateNum}
-                    style={{
-                      borderWidth: 1,
-                      paddingLeft: 15,
-                      marginVertical: 2,
-                      borderRadius: 16,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                      fontWeight: '700',
-                      color:
-                        carPlateNum === 'Enter Vehicle Number'
-                          ? '#666666'
-                          : '#000',
-                    }}
-                  />
                 </DropShadow>
 
                 {/**Visit Date starts here */}

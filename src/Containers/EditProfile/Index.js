@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Icon from 'react-native-dynamic-vector-icons'
 import {
   View,
@@ -6,7 +6,9 @@ import {
   ImageBackground,
   Image,
   ScrollView,
+  Animated,
   TextInput,
+  StyleSheet,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
@@ -18,76 +20,85 @@ import { showMessage, hideMessage } from 'react-native-flash-message'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useOrientation } from '../useOrientation'
 import { useSelector } from 'react-redux'
-import { FloatingLabelInput } from 'react-native-floating-label-input'
+import FloatingLabel from 'react-native-floating-labels'
 
 const IndexEditUserContainer = () => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
   const [photo, setPhoto] = useState(null)
-  const [fullName, setFullName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [emailAddress, setEmailAddress] = useState('')
   const [companyName, setCompanyName] = useState('')
   const [carPlateNum, setCarPlateNum] = useState('')
-  const [hasError, setHasError] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [isValidFullName, setIsValidFullName] = useState(true)
-  const [isValidEmailAddress, setIsValidEmailAddress] = useState(true)
-  const [isValidCompanyName, setIsValidCompanyName] = useState(true)
-  const [isValidcarPlateNum, setIsValidCarPlateNum] = useState(true)
   const user = useSelector(user => user.user.profile)
   const orientation = useOrientation()
-  const [placeholder, setPlaceholder] = useState({
-    fullName: 'Enter FullName',
-    emailAddress: 'Enter Email Address',
-    companyName: 'Enter Company Name',
-    carPlateNum: 'Enter Car Plate Number',
-  })
 
-  const validate = type => {
-    if (type === 'fullName') {
-      setIsValidFullName(!regexStr.name.test(fullName))
+  // const MyInput = props => {
+  //   const inEditing = useState(false)
+  //   const labelAnim = useRef(new Animated.Value(0)).current
+  //   const onFocus = e => {
+  //     Animated.spring(labelAnim, {
+  //       toValue: 1,
+  //       duration: 500,
+  //     }).start()
+  //   }
+  //   const onBlur = () => {
+  //     Animated.spring(labelAnim, {
+  //       toValue: 0,
+  //     }).start()
+  //   }
 
-      if (regexStr.name.test(fullName)) {
-        showMessage({
-          message: 'All field required to edit your profile!',
-          backgroundColor: 'red',
-          duration: 3000,
-        })
-      } else if (fullName === '') {
-        showMessage({
-          message: 'All field required to edit your profile!',
-          backgroundColor: 'red',
-          duration: 3000,
-        })
-      }
-    } else if (type === 'emailAddress') {
-      setIsValidEmailAddress(regexStr.email.test(emailAddress))
-      if (!regexStr.email.test(emailAddress)) {
-        showMessage({
-          message: 'All field required to edit your profile!',
-          backgroundColor: 'red',
-          duration: 3000,
-        })
-      }
-    } else if (type === 'companyName') {
-      setIsValidCompanyName(companyName !== '')
-      if (companyName === '') {
-        showMessage({
-          message: 'All field required to edit your profile!',
-          backgroundColor: 'red',
-          duration: 3000,
-        })
-      }
-    } else if (type === 'carPlateNum') {
-      setIsValidCarPlateNum(carPlateNum !== '')
-      if (carPlateNum === '') {
-        showMessage({
-          message: 'All field required to edit your profile!',
-          backgroundColor: 'red',
-          duration: 3000,
-        })
-      }
-    }
-  }
+  //   return (
+  //     <View style={styles.container}>
+  //       <Animated.Text
+  //         style={[
+  //           styles.label,
+  //           {
+  //             transform: [
+  //               {
+  //                 translateY: labelAnim.interpolate({
+  //                   inputRange: [0, 1],
+  //                   outputRange: [0, -20],
+  //                 }),
+  //               },
+  //             ],
+  //           },
+  //           {
+  //             fontSize: labelAnim.interpolate({
+  //               inputRange: [0, 2],
+  //               outputRange: [12, 15],
+  //             }),
+  //           },
+  //         ]}
+  //       >
+  //         {props.label}
+  //       </Animated.Text>
+  //       <Animated.View
+  //         style={[
+  //           {
+  //             flex: 1,
+  //             paddingTop: labelAnim.interpolate({
+  //               inputRange: [0, 1],
+  //               outputRange: [10, 3],
+  //             }),
+  //           },
+  //         ]}
+  //       >
+  //         <TextInput
+  //           style={[styles.input]}
+  //           autoCapitalize="none"
+  //           defaultValue={props.defaultValue}
+  //           onChangeText={props.onChangeText}
+  //           keyboardType={props.keyboardType}
+  //           editable={props.editable}
+  //           onFocus={onFocus}
+  //           onBlur={onBlur}
+  //         />
+  //       </Animated.View>
+  //     </View>
+  //   )
+  // }
 
   const uploadPhoto = () => {
     ImagePicker.openPicker({
@@ -101,17 +112,27 @@ const IndexEditUserContainer = () => {
 
   const SubmitForm = () => {
     if (
-      fullName === '' ||
-      emailAddress === '' ||
-      companyName === '' ||
-      carPlateNum === ''
+      !firstName ||
+      !lastName ||
+      !emailAddress ||
+      !companyName ||
+      !carPlateNum
     ) {
-      setLoading(true)
-      setTimeout(() => {
-        validate()
-        setLoading(false)
-      }, 2000)
-    } else {
+      showMessage({
+        message: 'All fields are required',
+        backgroundColor: 'red',
+        duration: 3000,
+      })
+      return false
+    }
+
+    if (
+      firstName !== '' ||
+      lastName !== '' ||
+      emailAddress !== '' ||
+      companyName !== '' ||
+      carPlateNum !== ''
+    ) {
       setLoading(true)
       setTimeout(() => {
         setLoading(false)
@@ -254,185 +275,305 @@ const IndexEditUserContainer = () => {
                 </TouchableOpacity>
               </View>
 
-              <View
-                style={[Layout.center, { marginTop: 10, paddingVertical: 10 }]}
-              >
-                {/**full name starts here */}
-                <View>
-                  <Text
-                    style={{
-                      fontWeight: '700',
-                      color: '#184461',
-                      marginStart: 5,
-                      marginTop: 2,
-                    }}
-                  >
-                    
-                  </Text>
-                  <DropShadow
-                    style={{
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 3,
-                        height: 1,
+              <View style={{ marginTop: 20, marginHorizontal: 20 }}>
+                {/**first Name label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
                       },
-                      shadowOpacity: 1,
-                      shadowRadius: 3,
-                      marginTop: -5,
-                    }}
+                    ]}
                   >
-                    <View
-                      style={[
-                        Layout.row,
-                        Layout.alignItemsCenter,
-                        {
-                          borderRadius: 16,
-                          marginVertical: MetricsSizes.small - 2,
-                          borderWidth: MetricsSizes.tiny - 4,
-                          borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                          borderWidth: 2,
-                          shadowColor: 'rgba(0, 0, 0, 0.25)',
-                          shadowOffset: { width: 5, height: 0 },
-                          shadowOpacity: 1,
-                          shadowRadius: 5,
-                          backgroundColor: Colors.white,
-                          elevation: 5,
-                        },
-                      ]}
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: firstName !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={firstName}
+                      onChangeText={text => setFirstName(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: firstName !== '' ? 3 : 7,
+                      }}
                     >
-                      <FloatingLabelInput
-                        label="Enter Full Name"
-                        value={fullName}
-                        onChangeText={text => setFullName(text)}
-                      />
-                    </View>
-                  </DropShadow>
-                  {/**full name ends here */}
+                      Enter first name
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**first Name label ends here */}
 
-                  {/**email starts here */}
-                  <DropShadow
-                    style={{
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 3,
-                        height: 1,
+                {/**last Name label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
                       },
-                      shadowOpacity: 1,
-                      shadowRadius: 3,
-                      marginTop: -5,
-                    }}
+                    ]}
                   >
-                    <View
-                      style={[
-                        Layout.row,
-                        Layout.alignItemsCenter,
-                        {
-                          borderRadius: 16,
-                          marginVertical: MetricsSizes.small - 2,
-                          borderWidth: MetricsSizes.tiny - 4,
-                          borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                          borderWidth: 2,
-                          shadowColor: 'rgba(0, 0, 0, 0.25)',
-                          shadowOffset: { width: 5, height: 0 },
-                          shadowOpacity: 1,
-                          shadowRadius: 5,
-                          backgroundColor: Colors.white,
-                          elevation: 5,
-                        },
-                      ]}
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: lastName !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={lastName}
+                      onChangeText={text => setLastName(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: lastName !== '' ? 3 : 7,
+                      }}
                     >
-                      <FloatingLabelInput
-                        label="Enter Email Address"
-                        value={emailAddress}
-                        onChangeText={text => setEmailAddress(text)}
-                      />
-                    </View>
-                  </DropShadow>
-                  {/**email ends here */}
+                      Enter last name
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**last Name label ends here */}
 
-                  {/**Company name starts here */}
-                  <DropShadow
-                    style={{
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 3,
-                        height: 1,
+                {/**email address label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
                       },
-                      shadowOpacity: 1,
-                      shadowRadius: 3,
-                      marginTop: -5,
-                    }}
+                    ]}
                   >
-                    <View
-                      style={[
-                        Layout.row,
-                        Layout.alignItemsCenter,
-                        {
-                          borderRadius: 16,
-                          marginVertical: MetricsSizes.small - 2,
-                          borderWidth: MetricsSizes.tiny - 4,
-                          borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                          borderWidth: 2,
-                          shadowColor: 'rgba(0, 0, 0, 0.25)',
-                          shadowOffset: { width: 5, height: 0 },
-                          shadowOpacity: 1,
-                          shadowRadius: 5,
-                          backgroundColor: Colors.white,
-                          elevation: 5,
-                        },
-                      ]}
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: emailAddress !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={emailAddress}
+                      onChangeText={text => setEmailAddress(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: emailAddress !== '' ? 3 : 7,
+                      }}
                     >
-                      <FloatingLabelInput
-                        label="Enter Company Name"
-                        value={companyName}
-                        onChangeText={text => setCompanyName(text)}
-                      />
-                    </View>
-                  </DropShadow>
-                  {/**Company name ends here */}
+                      Enter email address
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**email address label starts here */}
 
-                  {/**car plate number starts here */}
-                  <DropShadow
-                    style={{
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 3,
-                        height: 1,
+                {/** company name label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
                       },
-                      shadowOpacity: 1,
-                      shadowRadius: 3,
-                      marginTop: -5,
-                    }}
+                    ]}
                   >
-                    <View
-                      style={[
-                        Layout.row,
-                        Layout.alignItemsCenter,
-                        {
-                          borderRadius: 16,
-                          marginVertical: MetricsSizes.small - 2,
-                          borderWidth: MetricsSizes.tiny - 4,
-                          borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                          borderWidth: 2,
-                          shadowColor: 'rgba(0, 0, 0, 0.25)',
-                          shadowOffset: { width: 5, height: 0 },
-                          shadowOpacity: 1,
-                          shadowRadius: 5,
-                          backgroundColor: Colors.white,
-                          elevation: 5,
-                        },
-                      ]}
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: companyName !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={companyName}
+                      onChangeText={text => setCompanyName(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: companyName !== '' ? 3 : 7,
+                      }}
                     >
-                      <FloatingLabelInput
-                        label="Enter Car Plate Number"
-                        value={carPlateNum}
-                        onChangeText={text => setCarPlateNum(text)}
-                      />
-                    </View>
-                  </DropShadow>
-                  {/**car plate number ends here */}
-                </View>
+                      Enter company name
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**company label starts here */}
 
+                {/** car number label starts here */}
+                <DropShadow
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 3,
+                      height: 1,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 3,
+                  }}
+                >
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: carPlateNum !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={carPlateNum}
+                      onChangeText={text => setCarPlateNum(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: carPlateNum !== '' ? 3 : 7,
+                      }}
+                    >
+                      Enter vehicle number
+                    </FloatingLabel>
+                  </View>
+                </DropShadow>
+                {/**car number starts here */}
+              </View>
+
+              {/**submit form starts here */}
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <PrimaryButttonComponent
                   loading={loading}
                   label="Submit"
@@ -443,20 +584,7 @@ const IndexEditUserContainer = () => {
                     marginBottom: 20,
                   }}
                   onPress={() => {
-                    validate('fullName')
-                    validate('emailAddress')
-                    validate('companyName')
-                    validate('carPlateNum')
-                    if (
-                      isValidFullName &&
-                      isValidEmailAddress &&
-                      isValidCompanyName &&
-                      isValidcarPlateNum
-                    ) {
-                      SubmitForm()
-                    } else {
-                      setHasError(true)
-                    }
+                    SubmitForm()
                   }}
                 />
               </View>
@@ -469,3 +597,22 @@ const IndexEditUserContainer = () => {
 }
 
 export default IndexEditUserContainer
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 65,
+    backgroundColor: 'white',
+  },
+  labelInput: {
+    color: '#673AB7',
+    fontSize: 14,
+  },
+  formInput: {
+    borderWidth: 1,
+    borderColor: '#333',
+    borderRadius: 16,
+  },
+  input: {
+    borderWidth: 0,
+  },
+})

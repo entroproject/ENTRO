@@ -34,14 +34,14 @@ const Stack = createStackNavigator()
 const ApplicationNavigator = () => {
   const { Layout, darkMode, NavigationTheme } = useTheme()
   const { colors } = NavigationTheme
-  const isLogged = useSelector(user => user.user.isLoggedIn);
+  const isLogged = useSelector(user => user.user.isLoggedIn)
   console.log(isLogged)
   return (
     <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
       <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Startup" component={StartupContainer} /> 
+          <Stack.Screen name="Startup" component={StartupContainer} />
 
           <Stack.Screen
             name="Login"
@@ -67,140 +67,137 @@ const ApplicationNavigator = () => {
             }}
           />
 
-          {
-            isLogged
-            &&<Stack.Group>
-          <Stack.Screen
-            name="MainNav"
-            component={TabNavigation}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+          {isLogged && (
+            <Stack.Group>
+              <Stack.Screen
+                name="MainNav"
+                component={TabNavigation}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="MainHome"
-            component={IndexHomeContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="MainHome"
+                component={IndexHomeContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="UserProfile"
-            component={IndexUserProfileContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="UserProfile"
+                component={IndexUserProfileContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="EditUserProfile"
-            component={IndexEditUserContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="EditUserProfile"
+                component={IndexEditUserContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="BusinessCard"
-            component={IndexBusinessCardContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="BusinessCard"
+                component={IndexBusinessCardContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="AddBusinessCard"
-            component={IndexAddBusinessCardContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="AddBusinessCard"
+                component={IndexAddBusinessCardContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="EditBusinessCard"
-            component={IndexEditBusinessCardContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="EditBusinessCard"
+                component={IndexEditBusinessCardContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="TutorialSlide"
-            component={IndexTutorialSlideContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="TutorialSlide"
+                component={IndexTutorialSlideContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="VirtualAccessCard"
-            component={IndexVirtualAccessContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="VirtualAccessCard"
+                component={IndexVirtualAccessContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="VistorsRecord"
-            component={IndexVisitorContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="VistorsRecord"
+                component={IndexVisitorContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="CommunityContact"
-            component={IndexCommunityContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="CommunityContact"
+                component={IndexCommunityContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="Settings"
-            component={IndexSettingContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="Settings"
+                component={IndexSettingContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="Announcementdetails"
-            component={IndexAnnouncmentContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="Announcementdetails"
+                component={IndexAnnouncmentContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="AddVistorInfo"
-            component={IndexAddVisitorContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="AddVistorInfo"
+                component={IndexAddVisitorContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-            name="VisitDateType"
-            component={IndexAddVisitDateTypeContainer}
-            options={{
-              animationEnabled: false,
-            }}
-          />
+              <Stack.Screen
+                name="VisitDateType"
+                component={IndexAddVisitDateTypeContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
 
-          <Stack.Screen
-          name="FaqAnswer"
-          component={IndexUsersFaqContainer}
-          options={{
-            animationEnabled: false,
-          }}
-        />
-
-          </Stack.Group>
-          }
-
+              <Stack.Screen
+                name="FaqAnswer"
+                component={IndexUsersFaqContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
+            </Stack.Group>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

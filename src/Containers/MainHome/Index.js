@@ -39,14 +39,13 @@ const IndexHomeContainer = ({ navigation }) => {
   }
 
   useEffect(() => {
-    handleGetAnnouncements();
+    handleGetAnnouncements()
   }, [])
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
       {/* header start */}
-      <View style={{backgroundColor: '#184461',
-      height: 144,}}></View>
+      <View style={{ backgroundColor: '#184461', height: 144 }}></View>
       {/* header end */}
       {/* card start */}
       <DropShadow
@@ -166,7 +165,7 @@ const IndexHomeContainer = ({ navigation }) => {
                 label="Register Here"
                 iconRight={'user-plus'}
                 iconType={'FontAwesome'}
-                onPress={() => navigation.navigate('VistorsRecord')}
+                onPress={() => navigation.navigate('AddVistorInfo')}
                 style={{ marginBottom: 10 }}
               />
             </View>
@@ -502,25 +501,26 @@ const IndexHomeContainer = ({ navigation }) => {
 
       {/* announcement start */}
 
-      <View style={{flexDirection:'row', marginHorizontal: 20, marginVertical: 15}}>
-      <Text
-      style={{
-        fontWeight: 'bold',
-        fontSize: orientation === 'PORTRAIT' ? 20 : 24,
-        color: '#184461',
-       flex:2,
-      }}
-    >
-      Announcement
-    </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginHorizontal: 20,
+          marginVertical: 15,
+        }}
+      >
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: orientation === 'PORTRAIT' ? 20 : 24,
+            color: '#184461',
+            flex: 2,
+          }}
+        >
+          Announcement
+        </Text>
 
-    <Text style={{color: '#4CA3A3',
-    }}>
-    view all
-    </Text>
-      
+        <Text style={{ color: '#4CA3A3' }}>view all</Text>
       </View>
-     
 
       <View
         style={{
@@ -586,114 +586,105 @@ const IndexHomeContainer = ({ navigation }) => {
                         }}
                       />
 
-                      <View style={{flex:1}}>
+                      <View style={{ flex: 1 }}>
+                        <View
+                          style={{
+                            paddingVertical: 5,
+                            marginStart: 5,
+                            backgroundColor: '#fff',
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: '#184461',
+                              marginBottom: 2,
+                              flexWrap: 'wrap',
+                              fontWeight: 'bold',
+                              fontSize: orientation === 'PORTRAIT' ? 14 : 18,
+                            }}
+                          >
+                            {ann.Title}
+                          </Text>
 
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginBottom: 5,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: '#184461',
+                                fontSize: orientation === 'PORTRAIT' ? 12 : 14,
+                              }}
+                            >
+                              {new Date(
+                                Number(
+                                  ann.EventStartAt.replace(/\/date\(/gi, '')
+                                    .replace(/\//gi, '')
+                                    .replace(/\)/gi, ''),
+                                ),
+                              ).toLocaleString()}
+                            </Text>
+                          </View>
 
-                      <View
-                      style={{
-                        paddingVertical: 5,
-                        marginStart: 5,
-                        backgroundColor: '#fff',
-                        
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: '#184461',
-                          marginBottom: 2,
-                          flexWrap: 'wrap',
-                          fontWeight: 'bold',
-                          fontSize: orientation === 'PORTRAIT' ? 14 : 18,
-                        }}
-                      >
-                        {ann.Title}
-                      </Text>
+                          <View>
+                            <Text
+                              style={{
+                                color: '#184461',
+                                fontSize: 12,
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              Event:
+                            </Text>
+                            <Text
+                              style={{
+                                color: '#184461',
+                                flexWrap: 'wrap',
+                                width:
+                                  orientation === 'PORTRAIT' ? 170 : '100%',
+                                fontSize: orientation === 'PORTRAIT' ? 12 : 16,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {ann.Description}
+                            </Text>
+                          </View>
 
-                      <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginBottom: 5,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: '#184461',
-                          fontSize: orientation === 'PORTRAIT' ? 12 : 14,
-                        }}
-                      >
-                        {new Date(
-                          Number(
-                            ann.EventStartAt.replace(/\/date\(/gi, '')
-                              .replace(/\//gi, '')
-                              .replace(/\)/gi, ''),
-                          ),
-                        ).toLocaleString()}
-                      </Text>
-                    </View>
+                          <View style={{}}></View>
+                        </View>
 
-                    <View>
-                    <Text style={{ color: '#184461', fontSize: 12, fontWeight:'bold'}}>Event:</Text>
-                    <Text
-                    style={{
-                      color: '#184461',
-                      flexWrap: 'wrap',
-                      width: orientation === 'PORTRAIT' ? 170 : '100%',
-                      fontSize: orientation === 'PORTRAIT' ? 12 : 16,
-                      
-                    }}
-                    numberOfLines={1}
-                  >
-                    {ann.Description}
-                  </Text>
-                    </View>
-
-                    <View
-                    style={{
-                     
-                    }}
-                  >
-                  
-                  </View>
-                    </View>
-                      
-                    
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        backgroundColor:'#E7EBEA',
-                        marginTop:6,
-                        padding:2
-                        
-                      }}
-                    >
-                      <Icon
-                        type="Ionicons"
-                        name="location"
-                        color="#184461"
-                        size={12}
-                        marginHorizontal={5}
-                      />
-                      <Text
-                    style={{
-                      color: '#184461',
-                      flexWrap: 'wrap',
-                      width: orientation === 'PORTRAIT' ? 170 : '100%',
-                      fontSize: orientation === 'PORTRAIT' ? 10 : 12,
-                      
-                    }}
-                    numberOfLines={1}
-                  >
-                    3.5 miles. Gunung Ledang Johor
-                  </Text>
-                    </View>
-                      
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            backgroundColor: '#E7EBEA',
+                            marginTop: 6,
+                            padding: 2,
+                          }}
+                        >
+                          <Icon
+                            type="Ionicons"
+                            name="location"
+                            color="#184461"
+                            size={12}
+                            marginHorizontal={5}
+                          />
+                          <Text
+                            style={{
+                              color: '#184461',
+                              flexWrap: 'wrap',
+                              width: orientation === 'PORTRAIT' ? 170 : '100%',
+                              fontSize: orientation === 'PORTRAIT' ? 10 : 12,
+                            }}
+                            numberOfLines={1}
+                          >
+                            3.5 miles. Gunung Ledang Johor
+                          </Text>
+                        </View>
                       </View>
-                    
-
-
-                     
                     </View>
                   </View>
                 </TouchableOpacity>

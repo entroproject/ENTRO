@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { useTheme } from '@/Hooks'
+import FloatingLabel from 'react-native-floating-labels'
 
 const CardUpload = ({
   cardFront,
@@ -291,7 +292,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={{backgroundColor:'#F1F1F1', flex: 1}}>
+    <ScrollView style={{ backgroundColor: '#F1F1F1', flex: 1 }}>
       {/* header start */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
@@ -359,182 +360,242 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
               }}
             >
               <View style={{ marginHorizontal: 12, marginVertical: 12 }}>
-              <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 7,
-                  }}
-                >
-                  Enter Full Name
-                  </Text>
+                {/** business person starts here */}
                 <DropShadow
                   style={{
                     shadowColor: '#000',
                     shadowOffset: {
-                      width: 0,
-                      height: 0,
+                      width: 3,
+                      height: 1,
                     },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   }}
                 >
-                  <TextInput
-                    placeholder="Enter Full Name"
-                    keyboardType="default"
-                    onChangeText={text => setFname(text)}
-                    value={fname}
-                    style={{
-                      borderWidth: 1,
-                      paddingLeft: 15,
-                      color:  fname === 'Enter Full Name' ? '#666666' : '#000',
-                      marginVertical: 2,
-                      borderRadius: 16,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                      fontWeight:'700'
-                    }}
-                  />
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: fname !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={fname}
+                      onChangeText={text => setFname(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: fname !== '' ? 3 : 7,
+                      }}
+                    >
+                      Enter complete name
+                    </FloatingLabel>
+                  </View>
                 </DropShadow>
+                {/**business person name  starts here */}
 
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 7,
-                  }}
-                >
-                  Enter Business Name
-                  </Text>
+                {/** business name starts here */}
                 <DropShadow
                   style={{
                     shadowColor: '#000',
                     shadowOffset: {
-                      width: 0,
-                      height: 0,
+                      width: 3,
+                      height: 1,
                     },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   }}
                 >
-                  <TextInput
-                    placeholder="Business Name"
-                    keyboardType="default"
-                    onChangeText={text => setBname(text)}
-                    value={bname}
-                    style={{
-                      borderWidth: 1,
-                      paddingLeft: 15,
-                      color:  bname === 'Business Name' ? '#666666' : '#000',
-                      marginVertical: 2,
-                      borderRadius: 16,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                      fontWeight:'700'
-                    }}
-                  />
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: bname !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={bname}
+                      onChangeText={text => setBname(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: bname !== '' ? 3 : 7,
+                      }}
+                    >
+                      Enter business name
+                    </FloatingLabel>
+                  </View>
                 </DropShadow>
+                {/**business name name  starts here */}
 
-                <Text
-                style={{
-                  fontWeight: '700',
-                  color: '#184461',
-                  marginStart: 5,
-                  marginTop: 7,
-                }}
-              >
-                Enter Business Website
-                </Text>
+                {/** business website starts here */}
                 <DropShadow
                   style={{
                     shadowColor: '#000',
                     shadowOffset: {
-                      width: 0,
-                      height: 0,
+                      width: 3,
+                      height: 1,
                     },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   }}
                 >
-                  <TextInput
-                    placeholder="Business Website"
-                    keyboardType="url"
-                    onChangeText={text => setBwebsite(text)}
-                    value={bwebsite}
-                    style={{
-                      borderWidth: 1,
-                      paddingLeft: 15,
-                      color:  bwebsite === 'Business Website' ? '#666666' : '#000',
-                      marginVertical: 2,
-                      borderRadius: 16,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                      fontWeight:'700'
-                    }}
-                  />
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: bwebsite !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={bwebsite}
+                      onChangeText={text => setBwebsite(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: bwebsite !== '' ? 3 : 7,
+                      }}
+                    >
+                      Enter business website
+                    </FloatingLabel>
+                  </View>
                 </DropShadow>
+                {/**business name name  starts here */}
 
-                <Text
-                style={{
-                  fontWeight: '700',
-                  color: '#184461',
-                  marginStart: 5,
-                  marginTop: 7,
-                }}
-              >
-                Enter Business Phone Number
-                </Text>
+                {/** business website starts here */}
                 <DropShadow
                   style={{
                     shadowColor: '#000',
                     shadowOffset: {
-                      width: 0,
-                      height: 0,
+                      width: 3,
+                      height: 1,
                     },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   }}
                 >
-                  <TextInput
-                    placeholder="Business Phone Number"
-                    keyboardType="phone-pad"
-                    onChangeText={text => setPhone(text)}
-                    value={phone}
-                    style={{
-                      borderWidth: 1,
-                      paddingLeft: 15,
-                      color:  phone === 'Business Phone Number' ? '#666666' : '#000',
-                      marginVertical: 2,
-                      borderRadius: 16,
-                      borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                      shadowColor: 'rgba(0, 0, 0, 0.25)',
-                      shadowOffset: { width: 5, height: 0 },
-                      shadowOpacity: 1,
-                      shadowRadius: 5,
-                      backgroundColor: Colors.white,
-                      elevation: 5,
-                      fontWeight:'700',
-                      
-                    }}
-                  />
+                  <View
+                    style={[
+                      {
+                        borderRadius: 16,
+                        marginVertical: MetricsSizes.small - 4,
+                        borderWidth: MetricsSizes.tiny - 4,
+                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
+                        borderWidth: 2,
+                        shadowColor: 'rgba(0, 0, 0, 0.25)',
+                        shadowOffset: { width: 5, height: 0 },
+                        shadowOpacity: 1,
+                        shadowRadius: 5,
+                        elevation: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        height: 55,
+                        padding: 5,
+                      },
+                    ]}
+                  >
+                    <FloatingLabel
+                      labelStyle={{
+                        color: '#A6A2A2',
+                        fontSize: 14,
+                        fontWeight: '500',
+                        padding: phone !== '' ? 5 : 3,
+                      }}
+                      inputStyle={{
+                        borderWidth: 0,
+                        fontSize: 14,
+                        fontWeight: '700',
+                        color: '#000',
+                      }}
+                      Value={phone}
+                      onChangeText={text => setPhone(text)}
+                      style={{
+                        fontWeight: '700',
+                        fontSize: 14,
+                        padding: phone !== '' ? 3 : 7,
+                      }}
+                      keyboardType="phone-pad"
+                    >
+                      Enter business phone-no
+                    </FloatingLabel>
+                  </View>
                 </DropShadow>
+                {/**business name name  starts here */}
 
                 <View
                   style={{
@@ -543,7 +604,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                     alignItems: 'center',
                     paddingRight: 20,
                     marginBottom: 10,
-                    marginTop: 7
+                    marginTop: 7,
                   }}
                 >
                   <DropShadow
@@ -585,7 +646,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                           marginTop: 5,
                           borderRadius: 10,
                           borderWidth: 2,
-                          borderColor:'#184461',
+                          borderColor: '#184461',
                         }}
                       />
                     ) : null}
@@ -633,7 +694,6 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                       <View
                         style={{
                           flexDirection: 'row',
-                          
                         }}
                       >
                         <Image

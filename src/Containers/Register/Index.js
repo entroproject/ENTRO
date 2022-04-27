@@ -106,7 +106,7 @@ const IndexRegisterContainer = () => {
       >
       <ScrollView>
         <Image
-          source={Images.logoGreesn}
+          source={Images.logoGreen}
           style={{ width: 230, height: 55, marginTop: 57, marginLeft: 20 }}
         />
         <View style={{ marginLeft: 32 }}>

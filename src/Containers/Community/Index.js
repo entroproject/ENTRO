@@ -46,7 +46,7 @@ const IndexCommunityContainer = ({ navigation }) => {
       color="#fff"
       style={{ margin: 20, flex:1}}
       onPress={() => {
-        navigation.navigate('MainHome')
+        navigation.goBack();
       }}/>
         <Text
           style={{

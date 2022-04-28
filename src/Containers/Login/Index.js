@@ -44,7 +44,7 @@ const IndexLoginContainer = () => {
   const submitPhoneNumber = async () => {
     try{
       setLoading(true)
-      if(phoneNumber.length < 13 || phoneNumber.length > 14){
+      if(phoneNumber.length < 9 || phoneNumber.length > 14){
         showMessage({
         message: 'Please enter a valid phone number',
         backgroundColor: 'red',
@@ -55,7 +55,9 @@ const IndexLoginContainer = () => {
       }
     // make api call to validate phone number
     const req = await validateNumber(phoneNumber);
+    console.log(req)
     const res = await req.json();
+    console.log(res)
     if(res.StatusCode === "200"){
       // send ot to phone number
      //const _sentOtp = String(Math.random()).slice(2, 8);
@@ -63,6 +65,7 @@ const IndexLoginContainer = () => {
       setOtp(sentOtp)
       const otp_req = await sendOtp(phoneNumber, sentOtp); 
       const otp_res = await otp_req.json();
+      console.log(otp_res)
       showMessage({
         message: 'We have sent you an OTP.',
         backgroundColor: 'green',

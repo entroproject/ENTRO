@@ -38,7 +38,7 @@ const IndexRegisterContainer = () => {
   const submitPhoneNumber = async () => {
     try{
       setLoading(true)
-      if(phoneNumber.length < 13 || phoneNumber.length > 14){
+      if(phoneNumber.length < 9 || phoneNumber.length > 14){
         showMessage({
         message: 'Please enter a valid phone number',
         backgroundColor: 'red',

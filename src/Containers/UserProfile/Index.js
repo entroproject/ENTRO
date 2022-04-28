@@ -39,7 +39,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
           color="#fff"
           style={{ margin: 20 }}
           onPress={() => {
-            navigation.navigate('MainHome')
+            navigation.goBack();
           }}
         />
       </View>

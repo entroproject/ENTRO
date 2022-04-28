@@ -124,9 +124,9 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
               marginTop: 35
             }}>
               <Text style={{
-                fontSize: 30,
+                fontSize: 50,
                 fontWeight: "bold",
-                color: "#000",
+                color: "#184461",
                 textAlign: "center"
               }}>
                 {minutes}:{seconds}

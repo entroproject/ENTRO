@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-import Icon from 'react-native-dynamic-vector-icons'
 import {
   View,
   Text,
-  Button,
   Image,
   ScrollView,
   TextInput,
-  Modal,
   TouchableOpacity,
 } from 'react-native'
 import moment from 'moment'
@@ -15,13 +12,12 @@ import { useTheme } from '@/Hooks'
 import DatePicker from 'react-native-date-picker'
 import * as Constants from '@/Assets/Constants'
 import DropShadow from 'react-native-drop-shadow'
-import { useOrientation } from '../useOrientation'
-import { useDispatch, useSelector } from 'react-redux'
+import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage, hideMessage } from 'react-native-flash-message'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import { inviteVisitors } from '@/api-utils'
-import FloatingLabel from 'react-native-floating-labels'
-import { set } from 'react-native-reanimated'
+import Icon from 'react-native-dynamic-vector-icons'
+import { Dropdown } from 'react-native-element-dropdown'
 
 const IndexAddVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -30,78 +26,60 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   const [mobileNumber, setMobileNumber] = useState('')
   const [carPlateNum, setCarPlateNum] = useState('')
   const [loading, setLoading] = useState(false)
-  const [date, setDate] = useState(new Date())
-  const [enddate, setenddate] = useState(new Date())
-  const [open, setOpen] = useState(false)
-  const [openEndDate, setOpenEndDate] = useState(false)
-  const [vistor, setVisitor] = useState('Select Visitor Type')
-  const [chooseVisitStartDate, setChooseVisitStartDate] =
-    useState('Visit Start Date')
-  const [choosenVisitEndDate, setChoosenVisitEndDate] =
-    useState('Visit End Date')
-  const [isVisitorDialogVisible, setIsVisitorDialogVisible] = useState(false)
-  const user = useSelector(user => user.user.profile)
+  const [photo, setPhoto] = useState(null)
+  //for start visit
+  const [visitStartDate, setVisitStartDate] = useState('00-00-0000')
+  const [startVisitDate_Picked, setStartVisitDate__Picked] = useState(new Date())
+  const [openStartVisit, setOpenStartVisit] = useState(false)
+
+  //for departure visit
+  const [visitEndDate, setVisitEndDate] = useState('00-00-0000')
+  const [endVisitDate_Picked, setEndVisitDate__Picked] = useState(new Date())
+  const [openEndVisit, setOpenEndVisit] = useState(false)
 
   const [placeholder, setPlaceholder] = useState({
-    fullName: 'Enter Full Name',
+    fullName: 'Full Name',
+    ICNumber: '0000000000',
+    carPlateNum: 'ABC 12345',
+    mobileNumber: '000 00000000',
   })
+
+  const data = [
+    { label: 'Contractor', value: '1' },
+    { label: 'Visitor', value: '2' },
+    { label: 'Delivery', value: '3' },
+    { label: 'Meeting', value: '4' },
+  ]
+
+  const [value, setValue] = useState(null)
+  const [isFocus, setIsFocus] = useState(false)
 
   const onchange = (selectedDate, type) => {
     if (type === 'startDate') {
-      const currentDate = selectedDate || date
-      setDate(currentDate)
+      const currentDate = selectedDate || startVisitDate
+      setStartVisitDate__Picked(currentDate)
       const formattedDate = `${moment(currentDate).format(
         'YYYY-MM-DD',
       )} ${moment(currentDate).format('HH:mm:ss A')}`
-      setChooseVisitStartDate(formattedDate)
+      setVisitStartDate(formattedDate)
     } else if (type === 'endDate') {
-      const currenEndDate = selectedDate || enddate
-      setenddate(currenEndDate)
-      const formattedDate1 = `${moment(currenEndDate).format(
+      const currentDate = selectedDate || setVisitEndDate
+      setEndVisitDate__Picked(currentDate)
+      const formattedDate = `${moment(currentDate).format(
         'YYYY-MM-DD',
-      )} ${moment(currenEndDate).format('HH:mm:ss A')}`
-      setChoosenVisitEndDate(formattedDate1)
+      )} ${moment(currentDate).format('HH:mm:ss A')}`
+      setVisitEndDate(formattedDate)
     }
-
-    // let tempDate = new Date(currentDate);
-    // let fDate =
-    //   tempDate.getFullYear() +
-    //   '-' +
-    //   (tempDate.getMonth() + 1) +
-    //   '-' +
-    //   tempDate.getDate()
-
-    //   let fTime =
-    //   tempDate.getHours() + ':' + tempDate.getMinutes() + ':'+ tempDate.getSeconds();
-
-    //   let am_pm = 'AM';
-    //  {tempDate.getHours() >= 12 ? am_pm = 'PM' : 'AM'}
   }
 
-  const optionVisitor = Constants.visitorType.map((item, index) => {
-    return (
-      <TouchableOpacity
-        style={[Layout.alignItemsStart]}
-        key={index}
-        onPress={() => selectVisitingPerson(item)}
-      >
-        <Text
-          style={{
-            color: Colors.bodyText,
-            fontSize: 16,
-            margin: 5,
-            fontWeight: '500',
-          }}
-        >
-          {item}
-        </Text>
-      </TouchableOpacity>
-    )
-  })
-
-  const selectVisitingPerson = item => {
-    setVisitor(item)
-    setIsVisitorDialogVisible(false)
+  const goPhotoGallery = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      setPhoto(image)
+    })
   }
 
   const SubmitForm = async () => {
@@ -135,13 +113,13 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       const req_invite = await inviteVisitors('', {
         accessId: 'ea204301348a34b8695319778667d311',
         BuildingName: 'Plaza33',
-        Visitortype: vistor,
+        Visitortype: value,
         VisitorName: fullName,
         DocumentNumber: ICNumber,
         MobileNumber: mobileNumber,
         VehicleNumber: carPlateNum,
-        StartDateTime: chooseVisitStartDate,
-        EndDateTime: choosenVisitEndDate,
+        StartDateTime: visitStartDate,
+        EndDateTime: visitEndDate,
       })
       const resp = await req_invite.json()
 
@@ -155,8 +133,8 @@ const IndexAddVisitorContainer = ({ navigation }) => {
         setFullName('')
         setICNumber('')
         setCarPlateNum('')
-        setChooseVisitStartDate('')
-        setChoosenVisitEndDate('')
+        setVisitStartDate('')
+        setVisitEndDate('')
         setMobileNumber('')
         setTimeout(() => {
           navigation.goBack()
@@ -174,7 +152,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
-      <View style={{ height: 90, backgroundColor: '#184461' }}>
+      <View style={{ height: 51, backgroundColor: '#184461' }}>
         <View
           style={{
             flexDirection: 'row',
@@ -183,636 +161,432 @@ const IndexAddVisitorContainer = ({ navigation }) => {
             padding: 10,
           }}
         >
+          <Icon
+            name="arrow-left"
+            type="Feather"
+            size={30}
+            color="#fff"
+            onPress={() => {
+              navigation.goBack()
+            }}
+            style={{}}
+          />
           <Text
             style={{
               color: Colors.white,
-              fontWeight: '700',
-              marginLeft: 18,
+              fontWeight: '600',
+              marginLeft: 15,
             }}
           >
-            Add Contact Visitor
+            Visitor Registration
           </Text>
-
-          <Image
-            source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
-            style={{
-              width: 60,
-              height: 60,
-              marginEnd: 20,
-              borderRadius: 30,
-              borderWidth: 2,
-              borderColor: '#FFFEFE',
-            }}
+          <Icon
+            name="x"
+            type="Feather"
+            size={30}
+            color="#fff"
+            onPress={() => {}}
           />
         </View>
       </View>
-      <View style={{ alignItems: 'center' }}>
-        {/* for Vsitor type  Modal here*/}
-        <View style={Layout.center}>
-          <Modal
-            visible={isVisitorDialogVisible}
-            transparent={true}
-            onDismiss={() => setIsVisitorDialogVisible(!isVisitorDialogVisible)}
-            onRequestClose={() => setIsVisitorDialogVisible(false)}
-            animationType="slide"
+
+      <View style={{ marginTop: 50, marginHorizontal: 42, marginBottom: 40 }}>
+        <View style={{}}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#184461',
+              fontWeight: '500',
+              marginStart: 4,
+              marginBottom: 10,
+            }}
           >
-            <View
+            Name
+          </Text>
+          <TextInput
+            style={{
+              borderBottomWidth: 1,
+              borderColor: '#45969A',
+              fontSize: 20,
+              color: fullName === 'Full Name' ? '#C4C3C9' : '#457C9A',
+              fontWeight: '900',
+              paddingBottom: 0,
+            }}
+            value={fullName}
+            placeholder={placeholder.fullName}
+            onChangeText={text => setFullName(text)}
+            onFocus={() => {
+              setPlaceholder({ ...placeholder, fullName: '' })
+            }}
+            onBlur={() => {
+              setPlaceholder({
+                ...placeholder,
+                fullName: 'Full Name',
+              })
+            }}
+          />
+        </View>
+
+        <View style={{ marginTop: 30 }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#184461',
+              fontWeight: '500',
+              marginStart: 4,
+              marginBottom: 10,
+            }}
+          >
+            Identification Number
+          </Text>
+          <TextInput
+            style={{
+              borderBottomWidth: 1,
+              borderColor: '#45969A',
+              fontSize: 20,
+              color: ICNumber === '0000000000' ? '#C4C3C9' : '#457C9A',
+              fontWeight: '900',
+              paddingBottom: 0,
+            }}
+            value={ICNumber}
+            placeholder={placeholder.ICNumber}
+            keyboardType={'number-pad'}
+            onChangeText={text => setICNumber(text)}
+            onFocus={() => {
+              setPlaceholder({ ...placeholder, ICNumber: '' })
+            }}
+            onBlur={() => {
+              setPlaceholder({
+                ...placeholder,
+                ICNumber: '0000000000',
+              })
+            }}
+          />
+        </View>
+
+        <View style={{ marginTop: 30 }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#184461',
+              fontWeight: '500',
+              marginStart: 4,
+              marginBottom: 10,
+            }}
+          >
+            Vehicle Number
+          </Text>
+          <TextInput
+            style={{
+              borderBottomWidth: 1,
+              borderColor: '#45969A',
+              fontSize: 20,
+              color: carPlateNum === 'ABC 12345' ? '#C4C3C9' : '#457C9A',
+              fontWeight: '900',
+              paddingBottom: 0,
+            }}
+            value={carPlateNum}
+            placeholder={placeholder.carPlateNum}
+            onChangeText={text => setCarPlateNum(text)}
+            onFocus={() => {
+              setPlaceholder({ ...placeholder, carPlateNum: '' })
+            }}
+            onBlur={() => {
+              setPlaceholder({
+                ...placeholder,
+                carPlateNum: 'ABC 12345',
+              })
+            }}
+          />
+        </View>
+
+        <View style={{ marginTop: 30 }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#184461',
+              fontWeight: '500',
+              marginStart: 4,
+              marginBottom: 10,
+            }}
+          >
+            Phone Number
+          </Text>
+          <TextInput
+            style={{
+              borderBottomWidth: 1,
+              borderColor: '#45969A',
+              fontSize: 20,
+              color: mobileNumber === '000 00000000' ? '#C4C3C9' : '#457C9A',
+              fontWeight: '900',
+              paddingBottom: 0,
+            }}
+            value={mobileNumber}
+            placeholder={placeholder.mobileNumber}
+            keyboardType={'number-pad'}
+            onChangeText={text => setMobileNumber(text)}
+            onFocus={() => {
+              setPlaceholder({ ...placeholder, mobileNumber: '' })
+            }}
+            onBlur={() => {
+              setPlaceholder({
+                ...placeholder,
+                mobileNumber: '000 00000000',
+              })
+            }}
+          />
+        </View>
+
+        <View style={{ marginTop: 30 }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#184461',
+              fontWeight: '500',
+              marginStart: 4,
+              marginBottom: 10,
+            }}
+          >
+            Visitor Type
+          </Text>
+          <View
+            style={{ padding: 5, borderBottomWidth: 1, borderColor: '#45969A' }}
+          >
+            <Dropdown
+              placeholderStyle={{
+                fontSize: 20,
+                fontWeight: '900',
+                color: '#989898',
+              }}
+              selectedTextStyle={{
+                fontSize: 20,
+                fontWeight: '900',
+                color: '#457C9A',
+              }}
+              inputSearchStyle={{ height: 40, fontSize: 16 }}
+              data={data}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Select Visitor Type' : '...'}
+              searchPlaceholder="Search..."
+              value={value}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                setValue(item.value)
+                setIsFocus(false)
+              }}
+            />
+          </View>
+        </View>
+
+        <View style={{ marginTop: 30 }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#184461',
+              fontWeight: '500',
+              marginStart: 4,
+              marginBottom: 10,
+            }}
+          >
+            Select visit date and time
+          </Text>
+          <View
+            style={{ padding: 5, borderBottomWidth: 1, borderColor: '#45969A' }}
+          >
+            <Text
+              onPress={() => {
+                setOpenStartVisit(true)
+              }}
               style={[
-                Layout.center,
                 {
-                  flex: 1,
-                  backgroundColor: '#00000099',
+                  flexWrap: 'wrap',
+                  flexShrink: 1,
+                  fontSize: 20,
+                  padding: 5,
+                  color:
+                    visitStartDate === '00-00-0000' ? '#A6A2A2' : '#457C9A',
+                  fontWeight: '900',
                 },
               ]}
             >
-              <View
-                style={{
-                  width: 250,
-                  height: 250,
-                  backgroundColor: Colors.white,
-                  borderRadius: MetricsSizes.medium,
-                }}
-              >
-                <View
-                  style={[
-                    Layout.center,
-
-                    {
-                      height: 48,
-                      backgroundColor: '#184461',
-                      borderTopRightRadius: MetricsSizes.medium,
-                      borderTopLeftRadius: MetricsSizes.medium,
-                    },
-                  ]}
-                >
-                  <View style={[Layout.row, Layout.center]}>
-                    <View style={{ flex: 3, alignItems: 'flex-end' }}>
-                      <Text style={{ color: '#fff', fontWeight: '700' }}>
-                        {' '}
-                        Please Select Visitor
-                      </Text>
-                    </View>
-
-                    <View style={{ flex: 1, alignItems: 'center' }}>
-                      <Image
-                        source={Images.logolight}
-                        style={{
-                          width: 40,
-                          height: 40,
-                          zIndex: 1,
-                          borderRadius: 60,
-                        }}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                  }}
-                >
-                  <ScrollView
-                    style={{
-                      backgroundColor: Colors.white,
-                      borderBottomLeftRadius: MetricsSizes.medium,
-                      borderBottomRightRadius: MetricsSizes.medium,
-                      marginHorizontal: MetricsSizes.small,
-                      marginBottom: MetricsSizes.small,
-                    }}
-                  >
-                    {optionVisitor}
-                  </ScrollView>
-                </View>
-              </View>
-            </View>
-          </Modal>
+              {visitStartDate}
+            </Text>
+          </View>
         </View>
-        {/* for   pVsitor type modal ends  here*/}
-      </View>
 
-      <View>
-        <DropShadow
-          style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 3,
-              height: 1,
-            },
-            shadowOpacity: 1,
-            shadowRadius: 3,
-            marginTop: -5,
+        <DatePicker
+          modal
+          open={openStartVisit}
+          date={startVisitDate_Picked}
+          mode={'datetime'}
+          onConfirm={date => {
+            setOpenStartVisit(false)
+            setStartVisitDate__Picked(date)
+            onchange(date, 'startDate')
           }}
-        >
-          <View
+          onCancel={() => {
+            setOpenStartVisit(false)
+          }}
+        />
+
+        <View style={{ marginTop: 30 }}>
+          <Text
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingBottom: 15,
+              fontSize: 15,
+              color: '#184461',
+              fontWeight: '500',
+              marginStart: 4,
+              marginBottom: 10,
             }}
           >
-            <View
-              style={{
-                width: '90%',
-                marginTop: 30,
-                borderRadius: 20,
-                backgroundColor: '#F1F1F1',
-                elevation: 10,
-                shadowColor: '0px 13px 15px rgba(0, 0, 0, 0.25)',
-                shadowRadius: 10,
-                shadowOpacity: 0.6,
-                marginVertical: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
+            Select departure date and time
+          </Text>
+          <View
+            style={{ padding: 5, borderBottomWidth: 1, borderColor: '#45969A' }}
+          >
+            <Text
+              onPress={() => {
+                setOpenEndVisit(true)
+              }}
+              style={[
+                {
+                  flexWrap: 'wrap',
+                  flexShrink: 1,
+                  fontSize: 20,
+                  padding: 5,
+                  color: visitEndDate === '00-00-0000' ? '#A6A2A2' : '#457C9A',
+                  fontWeight: '900',
                 },
+              ]}
+            >
+              {visitEndDate}
+            </Text>
+          </View>
+        </View>
+
+        <DatePicker
+          modal
+          open={openEndVisit}
+          date={endVisitDate_Picked}
+          mode={'datetime'}
+          onConfirm={date => {
+            setOpenEndVisit(false)
+            setEndVisitDate__Picked(date)
+            onchange(date, 'endDate')
+          }}
+          onCancel={() => {
+            setOpenEndVisit(false)
+          }}
+        />
+
+        <View style={{ marginTop: 30 }}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#184461',
+              fontWeight: '500',
+              marginStart: 4,
+              marginBottom: 10,
+            }}
+          >
+            Attach Image
+          </Text>
+          <View
+            style={{
+              padding: 5,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <View>
+            <DropShadow
+            style={{
+              shadowColor: '#282828',
+              shadowOffset: {
+                width: 1,
+                height: 2,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          >
+            <TouchableOpacity
+              onPress={goPhotoGallery}
+              style={{
+                borderWidth: 1,
+                borderColor: '#184461',
+                padding: 10,
+                borderRadius: 15,
+                width: 125,
+                backgroundColor: '#F0F0F0',
               }}
             >
-              <View style={{ marginHorizontal: 20, marginVertical: 12 }}>
-                {/**first Name label starts here */}
+              <Text style={{ color: '#000000', textAlign: 'center' }}>
+                Visitor Image
+              </Text>
+            </TouchableOpacity>
+          </DropShadow>
+
+           
+            </View>
+
+            {photo === null ? (
+              <View style={{}}>
                 <DropShadow
                   style={{
                     shadowColor: '#000',
                     shadowOffset: {
-                      width: 3,
+                      width: 2,
                       height: 1,
                     },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   }}
                 >
-                  <View
-                    style={[
-                      {
-                        borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 4,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        height: 55,
-                        padding: 5,
-                      },
-                    ]}
-                  >
-                    <FloatingLabel
-                      labelStyle={{
-                        color: '#A6A2A2',
-                        fontSize: 14,
-                        fontWeight: '500',
-                        padding: fullName !== '' ? 5 : 3,
-                      }}
-                      inputStyle={{
-                        borderWidth: 0,
-                        fontSize: 14,
-                        fontWeight: '700',
-                        color: '#000',
-                      }}
-                      Value={fullName}
-                      onChangeText={text => setFullName(text)}
-                      style={{
-                        fontWeight: '700',
-                        fontSize: 14,
-                        padding: fullName !== '' ? 3 : 7,
-                      }}
-                    >
-                      Enter visitor name
-                    </FloatingLabel>
-                  </View>
+                  <Icon
+                    type="Feather"
+                    name="camera"
+                    size={45}
+                    color="green"
+                  />
                 </DropShadow>
-                {/**first Name label ends here */}
-
-                {/**IC Number label starts here */}
-                <DropShadow
+              </View>
+            ) : (
+              <View>
+                <Image
+                  source={photo ? { uri: photo.path } : Images.profilepic}
                   style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 3,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
+                    width: 80,
+                    height: 80,
+                    zIndex: 1,
+                    borderRadius: 40,
                   }}
-                >
-                  <View
-                    style={[
-                      {
-                        borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 4,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        height: 55,
-                        padding: 5,
-                      },
-                    ]}
-                  >
-                    <FloatingLabel
-                      labelStyle={{
-                        color: '#A6A2A2',
-                        fontSize: 14,
-                        fontWeight: '500',
-                        padding: ICNumber !== '' ? 5 : 3,
-                      }}
-                      inputStyle={{
-                        borderWidth: 0,
-                        fontSize: 14,
-                        fontWeight: '700',
-                        color: '#000',
-                      }}
-                      Value={ICNumber}
-                      onChangeText={text => setICNumber(text)}
-                      style={{
-                        fontWeight: '700',
-                        fontSize: 14,
-                        padding: ICNumber !== '' ? 3 : 7,
-                      }}
-                    >
-                      Enter visitor IC
-                    </FloatingLabel>
-                  </View>
-                </DropShadow>
-                {/**IC Number label ends here */}
-
-                {/**MObile number label starts here */}
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 3,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <View
-                    style={[
-                      {
-                        borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 4,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        height: 55,
-                        padding: 5,
-                      },
-                    ]}
-                  >
-                    <FloatingLabel
-                      labelStyle={{
-                        color: '#A6A2A2',
-                        fontSize: 14,
-                        fontWeight: '500',
-                        padding: mobileNumber !== '' ? 5 : 3,
-                      }}
-                      inputStyle={{
-                        borderWidth: 0,
-                        fontSize: 14,
-                        fontWeight: '700',
-                        color: '#000',
-                      }}
-                      Value={mobileNumber}
-                      onChangeText={text => setMobileNumber(text)}
-                      style={{
-                        fontWeight: '700',
-                        fontSize: 14,
-                        padding: mobileNumber !== '' ? 3 : 7,
-                      }}
-                      keyboardType="number-pad"
-                    >
-                      Enter visitor phone No
-                    </FloatingLabel>
-                  </View>
-                </DropShadow>
-                {/**IC Number label ends here */}
-
-                {/**vehicle label starts here */}
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 3,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <View
-                    style={[
-                      {
-                        borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 4,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        height: 55,
-                        padding: 5,
-                      },
-                    ]}
-                  >
-                    <FloatingLabel
-                      labelStyle={{
-                        color: '#A6A2A2',
-                        fontSize: 14,
-                        fontWeight: '500',
-                        padding: carPlateNum !== '' ? 5 : 3,
-                      }}
-                      inputStyle={{
-                        borderWidth: 0,
-                        fontSize: 14,
-                        fontWeight: '700',
-                        color: '#000',
-                      }}
-                      Value={carPlateNum}
-                      onChangeText={text => setCarPlateNum(text)}
-                      style={{
-                        fontWeight: '700',
-                        fontSize: 14,
-                        padding: carPlateNum !== '' ? 3 : 7,
-                      }}
-                    >
-                      Enter visitor vehicle No
-                    </FloatingLabel>
-                  </View>
-                </DropShadow>
-                {/**vehicle label ends here */}
-
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 5,
-                  }}
-                >
-                  Select Visitor
-                </Text>
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  {/**Visitor type starts here */}
-
-                  <View
-                    style={[
-                      Layout.row,
-                      Layout.alignItemsCenter,
-                      {
-                        borderWidth: 1,
-                        paddingLeft: 15,
-                        color: '#000',
-                        marginVertical: 2,
-                        borderRadius: 16,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        backgroundColor: Colors.white,
-                        elevation: 5,
-                      },
-                    ]}
-                  >
-                    <Text
-                      onPress={() => {
-                        setIsVisitorDialogVisible(true)
-                      }}
-                      style={[
-                        {
-                          width: '85%',
-                          height: 48,
-                          flexWrap: 'wrap',
-                          flexShrink: 1,
-                          fontSize: 14,
-                          color:
-                            vistor === 'Select Visitor Type'
-                              ? '#A6A2A2'
-                              : '#000',
-                          paddingTop: 12,
-                          fontWeight: '700',
-                        },
-                      ]}
-                    >
-                      {vistor}
-                    </Text>
-                  </View>
-
-                  {/**visitor type ends here */}
-                </DropShadow>
-
-                {/**Visit Date starts here */}
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 7,
-                  }}
-                >
-                  Enter Start Date
-                </Text>
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <View
-                    style={[
-                      Layout.row,
-                      Layout.alignItemsCenter,
-                      {
-                        borderRadius: 16,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        backgroundColor: Colors.white,
-                        elevation: 5,
-                      },
-                    ]}
-                  >
-                    <Text
-                      onPress={() => {
-                        setOpen(true)
-                      }}
-                      style={[
-                        {
-                          width: '85%',
-                          height: 48,
-                          flexWrap: 'wrap',
-                          flexShrink: 1,
-                          fontSize: 14,
-                          padding: 12,
-                          color:
-                            chooseVisitStartDate === 'Visit Start Date'
-                              ? '#A6A2A2'
-                              : '#000',
-                          fontWeight: '700',
-                        },
-                      ]}
-                    >
-                      {chooseVisitStartDate}
-                    </Text>
-                  </View>
-                </DropShadow>
-                {/**Visit visitor type ends here */}
-
-                {/**Visit end Date starts here */}
-                <Text
-                  style={{
-                    fontWeight: '700',
-                    color: '#184461',
-                    marginStart: 5,
-                    marginTop: 7,
-                  }}
-                >
-                  Enter End Date
-                </Text>
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 0,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <View
-                    style={[
-                      Layout.row,
-                      Layout.alignItemsCenter,
-                      {
-                        borderRadius: 16,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        backgroundColor: Colors.white,
-                        elevation: 5,
-                      },
-                    ]}
-                  >
-                    <Text
-                      onPress={() => {
-                        setOpenEndDate(true)
-                      }}
-                      style={[
-                        {
-                          width: '85%',
-                          height: 48,
-                          flexWrap: 'wrap',
-                          flexShrink: 1,
-                          fontSize: 14,
-                          padding: 12,
-                          color:
-                            choosenVisitEndDate === 'Visit End Date'
-                              ? '#A6A2A2'
-                              : '#000',
-                          fontWeight: '700',
-                        },
-                      ]}
-                    >
-                      {choosenVisitEndDate}
-                    </Text>
-                  </View>
-                </DropShadow>
-                {/**Visit visitor end date ends here */}
-
-                <DatePicker
-                  modal
-                  open={openEndDate}
-                  date={enddate}
-                  androidVariant={'iosClone'}
-                  mode={'datetime'}
-                  onConfirm={enddate => {
-                    setOpenEndDate(false)
-                    setenddate(enddate)
-                    onchange(enddate, 'endDate')
-                  }}
-                  onCancel={() => {
-                    setOpenEndDate(false)
-                  }}
-                />
-
-                <DatePicker
-                  modal
-                  open={open}
-                  date={date}
-                  androidVariant={'iosClone'}
-                  mode={'datetime'}
-                  onConfirm={date => {
-                    setOpen(false)
-                    setDate(date)
-                    onchange(date, 'startDate')
-                  }}
-                  onCancel={() => {
-                    setOpen(false)
-                  }}
-                />
-
-                <PrimaryButttonComponent
-                  loading={loading}
-                  label="Submit"
-                  style={{
-                    height: 40,
-                    marginTop: 20,
-                    marginBottom: 10,
-                  }}
-                  onPress={() => SubmitForm()}
                 />
               </View>
-            </View>
+            )}
           </View>
-        </DropShadow>
+        </View>
+
+        <View
+          style={[Layout.center, { marginHorizontal: 20, marginVertical: 25 }]}
+        >
+          <PrimaryButttonComponent
+            loading={loading}
+            label="Save"
+            style={{
+              height: 40,
+              marginTop: 20,
+              marginBottom: 10,
+              width: 280,
+            }}
+            onPress={() => SubmitForm()}
+          />
+        </View>
       </View>
     </ScrollView>
   )

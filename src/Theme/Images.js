@@ -31,5 +31,6 @@ export default function () {
     pexelsmeetupIcon: require('@/Assets/Images/Pexelsmeetup.jpg'),
     bgRect: require('@/Assets/Images/BackgroundRectangle.png'),
     goodMark: require('@/Assets/Images/CorrectMark.png'),
+    addBtnBiz: require('@/Assets/Images/Addbutton.png'),
   }
 }

@@ -35,8 +35,8 @@ const IndexLoginContainer = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [numValidated, setNumValidated] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [otp, setOtp] = useState(false);
-  const [sentOtp, setSentOtp] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [sentOtp, setSentOtp] = useState('');
   const orientation = useOrientation();
   const dispatch = useDispatch();
 
@@ -225,6 +225,9 @@ const IndexLoginContainer = () => {
           <OTPInputView
             pinCount={6}
             style={styleSheet.otpView}
+            code={otp}
+            autoFocusOnLoad
+            onCodeChanged={val => setOtp(val)}
             codeInputFieldStyle={styleSheet.underlineStyleBase}
             onCodeFilled={value => {
               setOtp(value),

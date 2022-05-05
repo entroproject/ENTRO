@@ -11,14 +11,14 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { useTheme } from '@/Hooks'
-import Icon from 'react-native-dynamic-vector-icons'
 import { useOrientation } from '../useOrientation'
 import { ButtonGroup } from 'react-native-elements'
 import { getVisitors, getVisitorsHistory } from '@/api-utils'
 import * as Constants from '@/Assets/Constants'
 import DatePicker from 'react-native-date-picker'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
-
+import Icon from 'react-native-dynamic-vector-icons'
+import DropShadow from 'react-native-drop-shadow'
 
 const IndexVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -30,28 +30,38 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [selectFilterDate, setselectFilterDate] = useState('Select Date')
   const [searchVehicle, setSearchVehicle] = useState('')
   const [searchVehicle1, setSearchVehicle1] = useState('')
-  const [allVisitors, setAllVisitors] = useState([])
-  const [customized_visitors, setCustomized_visitors] = useState([])
+
+  const [allRegisteredVisitor, setAllRegisteredVisitor] = useState([])
   const [allVisitorsHistory, setAllVisitorsHistory] = useState([])
-  const [customized_visitors_history, setCustomized_visitors_history] = useState([])
+  const [customized_visitors, setCustomized_visitors] = useState([])
+  const [customized_visitors_history, setCustomized_visitors_history] =
+    useState([])
   const [loading, setLoading] = useState(true)
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
   const orientation = useOrientation()
   const isFocused = useIsFocused()
 
-
   const [selectAllDialogView, setSelectAllDialogView] = useState(false)
   const [selectAllDialogViewAll, setSelectAllDialogViewAll] = useState(false)
   const [selectAllDialogViewAll2, setSelectAllDialogViewAll2] = useState(false)
 
-
-  const onDateChange = (selectedDate) => {
-      const currentDate = selectedDate;
-      setDate(currentDate)
-      const formattedDate = `${moment(selectedDate).format("MMM Do YY") }`
-      setselectFilterDate(formattedDate)
+  const onDateChange = selectedDate => {
+    const currentDate = selectedDate
+    setDate(currentDate)
+    const formattedDate = `${moment(selectedDate).format('MMM Do YY')}`
+    setselectFilterDate(formattedDate)
   }
+
+  const [openSearch, setOpenSearch] = useState(false)
+  const [openSearchCalendar, setOpenSearchCalendar] = useState(false)
+
+  const [searchRegisterVisitor, setSearchRegisterVisitor] = useState('')
+  const [searchHistoryVisitor, setSearchHistoryVisitor] = useState('')
+
+  const [displayRegisterVisitor, setDisplayRegisterVisitor] = useState(true)
+
+  const [currentIndex, setCurrentIndex] = useState(false)
 
   const optionVisitor = Constants.visitorAll.map((item, index) => {
     return (
@@ -74,89 +84,99 @@ const IndexVisitorContainer = ({ navigation }) => {
     )
   })
 
-  const optionVisitorCheckInOrOut = Constants.visitorStatusType.map((item, index) => {
-    return (
-      <TouchableOpacity
-        style={[Layout.alignItemsStart]}
-        key={index}
-        onPress={() => {
-          selectVisitorCheckInOrOut_reg(item)
-          }}
-      >
-        <Text
-          style={{
-            color: Colors.bodyText,
-            fontSize: 16,
-            margin: 5,
-            fontWeight: '500',
+  const optionVisitorCheckInOrOut = Constants.visitorStatusType.map(
+    (item, index) => {
+      return (
+        <TouchableOpacity
+          style={[Layout.alignItemsStart]}
+          key={index}
+          onPress={() => {
+            selectVisitorCheckInOrOut_reg(item)
           }}
         >
-          {item}
-        </Text>
-      </TouchableOpacity>
-    )
-  })
+          <Text
+            style={{
+              color: Colors.bodyText,
+              fontSize: 16,
+              margin: 5,
+              fontWeight: '500',
+            }}
+          >
+            {item}
+          </Text>
+        </TouchableOpacity>
+      )
+    },
+  )
 
-  const optionVisitorCheckInOrOut2 = Constants.visitorSelectionType.map((item, index) => {
-    return (
-      <TouchableOpacity
-        style={[Layout.alignItemsStart]}
-        key={index}
-        onPress={() => selectVisitorCheckInOrOut_acc(item)}
-      >
-        <Text
-          style={{
-            color: Colors.bodyText,
-            fontSize: 16,
-            margin: 5,
-            fontWeight: '500',
-          }}
+  const optionVisitorCheckInOrOut2 = Constants.visitorSelectionType.map(
+    (item, index) => {
+      return (
+        <TouchableOpacity
+          style={[Layout.alignItemsStart]}
+          key={index}
+          onPress={() => selectVisitorCheckInOrOut_acc(item)}
         >
-          {item}
-        </Text>
-      </TouchableOpacity>
-    )
-  })
-
+          <Text
+            style={{
+              color: Colors.bodyText,
+              fontSize: 16,
+              margin: 5,
+              fontWeight: '500',
+            }}
+          >
+            {item}
+          </Text>
+        </TouchableOpacity>
+      )
+    },
+  )
 
   const filterVisitorReg = () => {
-    if(filterVisitorType.toLocaleLowerCase() === 'all') {
-      return;
+    if (filterVisitorType.toLocaleLowerCase() === 'all') {
+      return
     }
     const _filtered_visitors = allVisitors.filter(c => {
-      if(c.VisitorStatus.toLocaleLowerCase().includes(filterVisitorType.toLocaleLowerCase())){
-        return true;
+      if (
+        c.VisitorStatus.toLocaleLowerCase().includes(
+          filterVisitorType.toLocaleLowerCase(),
+        )
+      ) {
+        return true
       }
-      return false;
-    });
-    setCustomized_visitors(_filtered_visitors);
+      return false
+    })
+    setCustomized_visitors(_filtered_visitors)
   }
-
 
   const filterVisitorAcc = () => {
-    if(filterVisitorType2.toLocaleLowerCase() === 'all') {
-      return;
+    if (filterVisitorType2.toLocaleLowerCase() === 'all') {
+      return
     }
     const _filtered_visitors = customized_visitors.filter(c => {
-      if(c.VisitorStatus.toLocaleLowerCase().includes(filterVisitorType2.toLocaleLowerCase())){
-        return true;
+      if (
+        c.VisitorStatus.toLocaleLowerCase().includes(
+          filterVisitorType2.toLocaleLowerCase(),
+        )
+      ) {
+        return true
       }
-      return false;
-    });
-    setCustomized_visitors(_filtered_visitors);
+      return false
+    })
+    setCustomized_visitors(_filtered_visitors)
   }
 
-    // checked in filter
-    const selectVisitorCheckInOrOut_reg = item => {
-      setFilterVisitorType(item);
-      setSelectAllDialogViewAll(false);
-    }
+  // checked in filter
+  const selectVisitorCheckInOrOut_reg = item => {
+    setFilterVisitorType(item)
+    setSelectAllDialogViewAll(false)
+  }
 
-    // checked in filter
-    const selectVisitorCheckInOrOut_acc = item => {
-      setFilterVisitorType2(item);
-      setSelectAllDialogViewAll2(false);
-    }
+  // checked in filter
+  const selectVisitorCheckInOrOut_acc = item => {
+    setFilterVisitorType2(item)
+    setSelectAllDialogViewAll2(false)
+  }
 
   // first filter
   const selectAllVistors = item => {
@@ -164,86 +184,88 @@ const IndexVisitorContainer = ({ navigation }) => {
     setSelectAllDialogView(false)
   }
 
-  // reset visitors lists
-  const resetAcc = () => {
-    setCustomized_visitors_history(allVisitorsHistory);
+  const resetRegVisitor = () => {
+    setCustomized_visitors(allRegisteredVisitor)
   }
 
-  const resetReg = () => {
-    setCustomized_visitors(allVisitors);
+  const resetVisitorHistory = () => {
+    setCustomized_visitors_history(allVisitorsHistory)
   }
 
-  const handleSearchReg = () =>{
-    if(searchVehicle.length > 0){
-      const _filtered_visitors = allVisitors.filter(c => {
-        if(c.VehicleNumber.toLocaleLowerCase().includes(searchVehicle.toLocaleLowerCase())){
-          return true;
+  const handleRegVisitor = () => {
+    if (searchRegisterVisitor.length > 0) {
+      const _filtered_visitors = allRegisteredVisitor.filter(c => {
+        if (
+          c.VisitorName.toLocaleLowerCase().includes(
+            searchRegisterVisitor.toLocaleLowerCase(),
+          )
+        ) {
+          return true
         }
-        return false;
-      });
-      setCustomized_visitors(_filtered_visitors);
-    }else{
-      setCustomized_visitors(allVisitors);
+        return false
+      })
+      setCustomized_visitors(_filtered_visitors)
+    } else {
+      setCustomized_visitors(allRegisteredVisitor)
     }
   }
 
-  const handleSearchAcc = () =>{
-    if(searchVehicle1.length > 0){
-      const _filtered_visitors = allVisitorsHistory.filter(c => {
-        if(c.VehicleNumber.toLocaleLowerCase().includes(searchVehicle1.toLocaleLowerCase())){
-          return true;
+  const handleVisitorHistory = () => {
+    if (searchHistoryVisitor.length > 0) {
+      const _filtered_visitors_history = allVisitorsHistory.filter(c => {
+        if (
+          c.VehicleNumber.toLocaleLowerCase().includes(
+            searchHistoryVisitor.toLocaleLowerCase(),
+          )  ||   c.VisitorStatus.toLocaleLowerCase().includes(
+            searchHistoryVisitor.toLocaleLowerCase())
+        ) {
+          return true
         }
-        return false;
-      });
-      setCustomized_visitors_history(_filtered_visitors);
-    }else{
-      setCustomized_visitors_history(allVisitorsHistory);
+        return false
+      })
+      setCustomized_visitors_history(_filtered_visitors_history)
+    } else {
+      setCustomized_visitors_history(allVisitorsHistory)
     }
   }
 
   useEffect(() => {
-    if(searchVehicle.length < 1){
-      resetReg();
+    if (searchHistoryVisitor.length < 1) {
+      resetVisitorHistory()
     }
-    if(searchVehicle.length > 0){
-      handleSearchReg();
+    if (searchHistoryVisitor.length > 0) {
+      handleVisitorHistory()
     }
-  }, [searchVehicle])
+  }, [searchHistoryVisitor])
 
   useEffect(() => {
-    if(searchVehicle1.length < 1){
-      resetAcc();
+    if (searchRegisterVisitor.length < 1) {
+      resetRegVisitor()
     }
-    if(searchVehicle1.length > 0){
-      handleSearchAcc();
+    if (searchRegisterVisitor.length > 0) {
+      handleRegVisitor()
     }
-  }, [searchVehicle1])
-
-  useEffect(() => {
-    filterVisitorReg()
-  }, [filterVisitorType])
-
+  }, [searchRegisterVisitor])
 
   // switch between tabs
   useEffect(() => {
     if (selectedIndex === 0) {
-      setDisplayContact(true)
+      setDisplayRegisterVisitor(true)
     } else {
-      setDisplayContact(false)
+      setDisplayRegisterVisitor(false)
     }
   }, [selectedIndex])
 
-
   // make api request to get all visitors and access
   useEffect(() => {
-    getAllVisitors();
-    getAllVisitorsHistory();
+    getAllVisitors()
+    getAllVisitorsHistory()
   }, [isFocused])
 
   const getAllVisitors = async () => {
     const req_vis = await getVisitors('')
     const visitors = await req_vis.json()
-    setAllVisitors(visitors.Visitors)
+    setAllRegisteredVisitor(visitors.Visitors)
     setCustomized_visitors(visitors.Visitors)
     setLoading(false)
   }
@@ -258,932 +280,1173 @@ const IndexVisitorContainer = ({ navigation }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
-      <View
-        style={{
-          height: 70,
-          backgroundColor: '#184461',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
-      <Icon
-      name="arrow-left"
-      type="Feather"
-      size={35}
-      color="#fff"
-      style={{ margin: 20 }}
-      onPress={() => {
-        navigation.goBack();
-      }}
-    />
+      <View>
         <View
           style={{
-            flex: 1,
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-            marginEnd: 10,
+            height: 144,
+            backgroundColor: '#184461',
           }}
         >
-          <TouchableOpacity
-            style={{ justifyContent: 'center', alignItems: 'center' }}
-          
-          >
-          
-            <Text
-              style={{
-                fontSize: orientation === 'PORTRAIT' ? 12 : 16,
-                fontWeight: 'bold',
-                color: '#ffffff',
-              }}
+          {/**search calendar area starts here */}
+          {!openSearchCalendar ? (
+            <TouchableOpacity
+              activeOpacity={1.2}
+              onPress={() => setOpenSearchCalendar(true)}
             >
-              Visitors
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={{ backgroundColor: '#184461', height: 35 }}>
-        <ButtonGroup
-          buttons={['Visitor Registration', 'Access History']}
-          selectedIndex={selectedIndex}
-          onPress={value => {
-            setSelectedIndex(value)
-          }}
-          containerStyle={{
-            marginBottom: 20,
-            height: 40,
-            marginTop: -5,
-            borderColor: '#184461',
-          }}
-          buttonContainerStyle={{ backgroundColor: '#184461' }}
-          innerBorderStyle={{ color: 'transparent' }}
-          textStyle={{
-            textAlign: 'center',
-            color: '#CED4DA',
-            fontWeight: 'bold',
-          }}
-          selectedButtonStyle={{ backgroundColor: '#184461' }}
-          selectedTextStyle={{ color: 'white', fontSize: 16 }}
-        />
-      </View>
-
-      <View style={{ alignItems: 'center' }}>
-        {/* for Vsitor type  Modal here visitor registration*/}
-        <View style={Layout.center}>
-          <Modal
-            visible={selectAllDialogView}
-            transparent={true}
-            onDismiss={() => setSelectAllDialogView(!selectAllDialogView)}
-            onRequestClose={() => setSelectAllDialogView(false)}
-            animationType="slide"
-          >
-            <View
-              style={[
-                Layout.center,
-                {
-                  flex: 1,
-                  backgroundColor: '#00000099',
-                },
-              ]}
-            >
-              <View
+              <DropShadow
                 style={{
-                  width: 250,
-                  height: 250,
-                  backgroundColor: Colors.white,
-                  borderRadius: MetricsSizes.medium,
+                  shadowColor: '#282828',
+                  shadowOffset: {
+                    width: 1,
+                    height: 2,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 2,
                 }}
               >
                 <View
-                  style={[
-                    Layout.center,
-
-                    {
-                      height: 48,
-                      backgroundColor: '#184461',
-                      borderTopRightRadius: MetricsSizes.medium,
-                      borderTopLeftRadius: MetricsSizes.medium,
+                  style={{
+                    marginTop: 27,
+                    backgroundColor: '#fff',
+                    height: 40,
+                    marginHorizontal: 20,
+                    borderRadius: 7,
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    shadowColor: '#000',
+                    shadowRadius: 10,
+                    shadowOpacity: 0.6,
+                    elevation: 8,
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
                     },
-                  ]}
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                  }}
                 >
-                  <View style={[Layout.row, Layout.center]}>
-                    <View style={{ flex: 3, alignItems: 'flex-end' }}>
-                      <Text style={{ color: '#fff', fontWeight: '700' }}>
-                        {' '}
-                        Please Select Filter
+                  <DropShadow
+                    style={{
+                      shadowColor: '#282828',
+                      shadowOffset: {
+                        width: 0,
+                        height: 3,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 2,
+                    }}
+                  >
+                    <Icon
+                      type="Feathers"
+                      name="search"
+                      color="#184461"
+                      size={27}
+                    />
+                  </DropShadow>
+
+                  <Text
+                    style={{
+                      color: '#184461',
+                      fontWeight: '700',
+                      fontSize: 12,
+                    }}
+                  >
+                    calendar
+                  </Text>
+                </View>
+              </DropShadow>
+            </TouchableOpacity>
+          ) : (
+            <DropShadow
+              style={{
+                shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                shadowOffset: {
+                  width: 1,
+                  height: 2,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 2,
+              }}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <View
+                  style={{
+                    marginTop: 27,
+                    backgroundColor: '#fff',
+                    height: 40,
+                    marginHorizontal: 27,
+                    borderRadius: 7,
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    elevation: 10,
+                    shadowColor: '#000',
+                    shadowRadius: 10,
+                    shadowOpacity: 0.6,
+                    elevation: 8,
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <TextInput
+                    placeholder={'Search register here'}
+                    returnKeyType={'search'}
+                    keyboardType={'web-search'}
+                    placeholderTextColor={'#666666'}
+                    value={searchRegisterVisitor}
+                    onChangeText={text => setSearchRegisterVisitor(text)}
+                    // onBlur={()=> setOpenSearch(false)}
+                    // blurOnSubmit={()=> setOpenSearch(false)}
+                    // onSubmitEditing={()=> setOpenSearch(false)}
+                    autoFocus={true}
+                    style={{
+                      width: '90%',
+                      fontSize: 12,
+                    }}
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setOpenSearchCalendar(false)
+                    }}
+                  >
+                    <Icon
+                      type="Feather"
+                      name="x-circle"
+                      size={25}
+                      color="#184461"
+                      style={{}}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </DropShadow>
+          )}
+          {/**search calendar area ends here */}
+
+          {/**search bar area starts here */}
+          {!openSearch ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                alignContent: 'center',
+                flex: 1,
+              }}
+            >
+              <View style={{ flex: 3 }}>
+                <TouchableOpacity
+                  activeOpacity={1.2}
+                  onPress={() => setOpenSearch(true)}
+                >
+                  <DropShadow
+                    style={{
+                      shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                      shadowOffset: {
+                        width: 1,
+                        height: 2,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 2,
+                    }}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: '#fff',
+                        height: 40,
+                        borderRadius: 7,
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        marginStart: 20,
+                      }}
+                    >
+                      <DropShadow
+                        style={{
+                          shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 1,
+                          shadowRadius: 2,
+                        }}
+                      >
+                        <Icon
+                          type="Feathers"
+                          name="search"
+                          color="#184461"
+                          size={27}
+                        />
+                      </DropShadow>
+
+                      <Text
+                        style={{
+                          color: '#184461',
+                          fontWeight: '700',
+                          fontSize: 12,
+                        }}
+                      >
+                        Search
                       </Text>
                     </View>
+                  </DropShadow>
+                </TouchableOpacity>
+              </View>
 
-                    <View style={{ flex: 1, alignItems: 'center' }}>
-                      <Image
-                        source={Images.logolight}
+              <View style={{ flex: 1 }}>
+                <TouchableOpacity
+                  activeOpacity={1.2}
+                  onPress={() => setOpenSearch(true)}
+                >
+                  <DropShadow
+                    style={{
+                      shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                      shadowOffset: {
+                        width: 1,
+                        height: 2,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 2,
+                    }}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: '#fff',
+                        height: 40,
+                        borderRadius: 7,
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        marginEnd: 20,
+                        marginStart: 12,
+                      }}
+                    >
+                      <DropShadow
                         style={{
-                          width: 40,
-                          height: 40,
-                          zIndex: 1,
-                          borderRadius: 60,
+                          shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 1,
+                          shadowRadius: 2,
                         }}
+                      >
+                        <Icon
+                          name={'sort-amount-asc'}
+                          type={'FontAwesome'}
+                          color="#184461"
+                          size={20}
+                        />
+                      </DropShadow>
+                    </View>
+                  </DropShadow>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : selectedIndex === 0 ? (
+            <DropShadow
+              style={{
+                shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                shadowOffset: {
+                  width: 1,
+                  height: 2,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 2,
+              }}
+            >
+              <View
+                style={{
+                  marginTop: 15,
+                  backgroundColor: '#fff',
+                  height: 40,
+                  marginHorizontal: 27,
+                  borderRadius: 7,
+                  borderWidth: 1,
+                  borderColor: '#184461',
+                  elevation: 10,
+                  shadowColor: '#000',
+                  shadowRadius: 10,
+                  shadowOpacity: 0.6,
+                  elevation: 8,
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}
+              >
+                <TextInput
+                  placeholder={'Search register visitor'}
+                  returnKeyType={'search'}
+                  keyboardType={'web-search'}
+                  placeholderTextColor={'#666666'}
+                  value={searchRegisterVisitor}
+                  onChangeText={text => setSearchRegisterVisitor(text)}
+                  // onBlur={()=> setOpenSearch(false)}
+                  // blurOnSubmit={()=> setOpenSearch(false)}
+                  // onSubmitEditing={()=> setOpenSearch(false)}
+                  autoFocus={true}
+                  style={{
+                    width: '90%',
+                    fontSize: 12,
+                  }}
+                />
+
+                <TouchableOpacity
+                  onPress={() => {
+                    setOpenSearch(false)
+                  }}
+                >
+                  <Icon
+                    type="Feather"
+                    name="x-circle"
+                    size={25}
+                    color="#184461"
+                  />
+                </TouchableOpacity>
+              </View>
+            </DropShadow>
+          ) : (
+            <DropShadow
+              style={{
+                shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                shadowOffset: {
+                  width: 1,
+                  height: 2,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 2,
+              }}
+            >
+              <View
+                style={{
+                  marginTop: 15,
+                  backgroundColor: '#fff',
+                  height: 40,
+                  marginHorizontal: 27,
+                  borderRadius: 7,
+                  borderWidth: 1,
+                  borderColor: '#184461',
+                  elevation: 10,
+                  shadowColor: '#000',
+                  shadowRadius: 10,
+                  shadowOpacity: 0.6,
+                  elevation: 8,
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}
+              >
+                <TextInput
+                  placeholder={'Search visitor history'}
+                  returnKeyType={'search'}
+                  keyboardType={'web-search'}
+                  placeholderTextColor={'#666666'}
+                  value={searchHistoryVisitor}
+                  onChangeText={text => setSearchHistoryVisitor(text)}
+                  // onBlur={()=> setOpenSearch(false)}
+                  // blurOnSubmit={()=> setOpenSearch(false)}
+                  // onSubmitEditing={()=> setOpenSearch(false)}
+                  autoFocus={true}
+                  style={{
+                    width: '90%',
+                    fontSize: 12,
+                  }}
+                />
+
+                <TouchableOpacity
+                  onPress={() => {
+                    setOpenSearch(false)
+                  }}
+                >
+                  <Icon
+                    type="Feather"
+                    name="x-circle"
+                    size={25}
+                    color="#184461"
+                  />
+                </TouchableOpacity>
+              </View>
+            </DropShadow>
+          )}
+          {/**search bar area ends here */}
+        </View>
+      </View>
+
+      <View style={{}}>
+        <DropShadow
+          style={{
+            shadowColor: '#282828',
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
+            shadowOpacity: 1,
+            shadowRadius: 2,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              borderRadius: 7,
+              margin: 7,
+              justifyContent: 'center',
+            }}
+            activeOpacity={1.0}
+          >
+            <ButtonGroup
+              buttons={['Register Visitor', 'History Visitor']}
+              selectedIndex={selectedIndex}
+              onPress={value => {
+                setSelectedIndex(value)
+              }}
+              containerStyle={{
+                borderRadius: 7,
+                elevation: 10,
+              }}
+              selectedButtonStyle={{
+                backgroundColor: '#184461',
+                borderTopRightRadius: 7,
+                borderBottomRightRadius: 7,
+                borderBottomLeftRadius: 7,
+                borderTopLeftRadius: 7,
+                elevation: 10,
+              }}
+              textStyle={{
+                textAlign: 'center',
+                color: '#000',
+                fontWeight: 'bold',
+              }}
+              buttonContainerStyle={{ backgroundColor: '#fff' }}
+              innerBorderStyle={{ color: 'transparent' }}
+              activeOpacity={1.0}
+            />
+          </TouchableOpacity>
+        </DropShadow>
+      </View>
+
+      <View>
+        {loading ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              height: 500,
+            }}
+          >
+            <ActivityIndicator
+              size={50}
+              color={'#184461'}
+              style={{
+                alignSelf: 'center',
+              }}
+            />
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#000',
+                fontSize: 16,
+                marginTop: 10,
+              }}
+            >
+              Please wait...
+            </Text>
+          </View>
+        ) : displayRegisterVisitor ? (
+          <View>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+            >
+              {customized_visitors.map(v => (
+                <View
+                  key={v.VisitorName}
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 10,
+                  }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={1.0}
+                    onPress={() => {
+                      setCurrentIndex(
+                        v.VisitorName === currentIndex ? null : v.VisitorName,
+                      )
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: '93%',
+                        backgroundColor: '#fff',
+                        borderRadius: 10,
+                        elevation: 10,
+                        marginTop: 5,
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                      }}
+                    >
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          marginStart: 20,
+                          marginEnd: 20,
+                          marginVertical: 14,
+                        }}
+                      >
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                          }}
+                        >
+                          <View style={{}}>
+                            <Image
+                              source={{
+                                uri: `data:image/png;base64,${v.VisitorImageLogo}`,
+                              }}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                borderRadius: 21,
+                              }}
+                              resizeMode={'cover'}
+                            />
+                          </View>
+
+                          <View style={{ marginStart: 15, width: '70%' }}>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '700',
+                                color: '#184461',
+                                flexWrap: 'wrap',
+                              }}
+                              numberOfLines={2}
+                            >
+                              {v.VisitorName}
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 11,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginTop: 3,
+                              }}
+                            >
+                              {new Date(
+                                Number(
+                                  v.StartDateTime.replace(/\/date\(/gi, '')
+                                    .replace(/\//gi, '')
+                                    .replace(/\)/gi, ''),
+                                ),
+                              ).toLocaleString()}
+                            </Text>
+                          </View>
+
+                          <View style={{ flex: 1, marginStart: 10 }}>
+                            <Icon
+                              name={'ellipsis-v'}
+                              type={'FontAwesome'}
+                              size={30}
+                              color={'#000'}
+                              style={{}}
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+
+                    {v.VisitorName === currentIndex ? (
+                      <DropShadow
+                        style={{
+                          shadowColor: '#F0F0F0',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 1,
+                          shadowRadius: 2,
+                        }}
+                      >
+                        <View
+                          style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: 1,
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: '90%',
+                              height: 130,
+                              backgroundColor: '#fff',
+                              elevation: 10,
+                              marginBottom: 10,
+                              shadowColor: '#000',
+                              shadowOpacity: 0.6,
+                              elevation: 8,
+                              shadowOffset: {
+                                width: 2,
+                                height: 4,
+                              },
+                              borderBottomLeftRadius: 10,
+                              borderBottomRightRadius: 10,
+                            }}
+                          >
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                marginStart: 20,
+                                marginEnd: 8,
+                                marginTop: 14,
+                              }}
+                            >
+                              <View style={{ justifyContent: 'center' }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                  <View style={{ width: 80 }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Location
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Purpose of visit
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Badge No
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Vehicle No
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Status
+                                    </Text>
+                                  </View>
+
+                                  <View style={{ marginHorizontal: 5 }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                  </View>
+
+                                  <View style={{ marginHorizontal: 5 }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Suria KLCC
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      {v.Visitortype}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      CA2014
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      {v.VehicleNumber}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      {v.VisitorStatus}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </View>
+
+                              <View style={{ flex: 1 }}>
+                                <Image
+                                  source={Images.KlccLogo}
+                                  style={{
+                                    width: 80,
+                                    height: 48,
+                                    alignSelf: 'flex-end',
+                                    marginTop: 20,
+                                  }}
+                                  resizeMode={'contain'}
+                                />
+                              </View>
+                            </View>
+                          </View>
+                        </View>
+                      </DropShadow>
+                    ) : null}
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : (
+          <View>
+            {customized_visitors_history.map((v, key) => (
+              <View
+                key={key}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 10,
+                }}
+              >
+                <View
+                  style={{
+                    width: '93%',
+                    height: 166,
+                    backgroundColor: '#fff',
+                    borderRadius: 15,
+                    elevation: 10,
+                    marginBottom: 10,
+                    marginTop: 5,
+                    shadowColor: '#000',
+                    shadowRadius: 10,
+                    shadowOpacity: 0.6,
+                    elevation: 8,
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginStart: 22,
+                      marginEnd: 8,
+                      marginTop: 14,
+                    }}
+                  >
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: '700',
+                          color: '#184461',
+                        }}
+                      >
+                        {v.VisitorName}
+                      </Text>
+
+                      <View style={{ flexDirection: 'row' }}>
+                        <View style={{ width: 80 }}>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '400',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            Start Date
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '400',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            End Date
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '400',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            Location
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '400',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            Purpose of visit
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '400',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            Badge No
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '400',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            Vehicle No
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '400',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            Status
+                          </Text>
+                        </View>
+
+                        <View style={{ marginHorizontal: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 'bold',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            :
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 'bold',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            :
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 'bold',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            :
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 'bold',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            :
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 'bold',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            :
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 'bold',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            :
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 'bold',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            :
+                          </Text>
+                        </View>
+
+                        <View style={{ marginHorizontal: 5 }}>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '700',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            {new Date(
+                              Number(
+                                v.StartDateTime.replace(/\/date\(/gi, '')
+                                  .replace(/\//gi, '')
+                                  .replace(/\)/gi, ''),
+                              ),
+                            ).toLocaleString()}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '700',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            {new Date(
+                              Number(
+                                v.EndDateTime.replace(/\/date\(/gi, '')
+                                  .replace(/\//gi, '')
+                                  .replace(/\)/gi, ''),
+                              ),
+                            ).toLocaleString()}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '700',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            Suria KLCC
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '700',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            {v.Visitortype}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '700',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            CA2014
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '700',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            {v.VehicleNumber}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 11,
+                              fontWeight: '700',
+                              color: '#184461',
+                              marginVertical: 1,
+                            }}
+                          >
+                            {v.VisitorStatus}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={{ flex: 1 }}>
+                      <Image
+                        source={{
+                          uri: `data:image/png;base64,${v.VisitorImageLogo}`,
+                        }}
+                        style={{
+                          width: 58,
+                          height: 58,
+                          borderRadius: 29,
+                          borderWidth: 2,
+                          borderColor: '#184461',
+                          alignSelf: 'flex-end',
+                        }}
+                        resizeMode={'cover'}
+                      />
+
+                      <Image
+                        source={Images.Plaza33Logo}
+                        style={{
+                          width: 80,
+                          height: 48,
+                          alignSelf: 'flex-end',
+                          marginTop: 20,
+                        }}
+                        resizeMode={'contain'}
                       />
                     </View>
                   </View>
                 </View>
-                <View
-                  style={{
-                    flex: 1,
-                  }}
-                >
-                  <ScrollView
-                    style={{
-                      backgroundColor: Colors.white,
-                      borderBottomLeftRadius: MetricsSizes.medium,
-                      borderBottomRightRadius: MetricsSizes.medium,
-                      marginHorizontal: MetricsSizes.small,
-                      marginBottom: MetricsSizes.small,
-                    }}
-                  >
-                    {optionVisitor}
-                  </ScrollView>
-                </View>
-              </View>
-            </View>
-          </Modal>
-        </View>
-        {/* for   pVsitor type modal ends  here visitor registration*/}
-      </View>
-
-      <DatePicker
-                  modal
-                  open={open}
-                  date={date}
-                  androidVariant={'iosClone'}
-                  mode={'datetime'}
-                  onConfirm={(date) => {
-                    setOpen(false)
-                    setDate(date)
-                    onDateChange(date)
-                  }}
-                  onCancel={() => {
-                    setOpen(false)
-                  }}
-                />
-
-      <View style={{ alignItems: 'center' }}>
-      {/* for select  filter visitor registration*/}
-      <View style={Layout.center}>
-        <Modal
-          visible={selectAllDialogViewAll}
-          transparent={true}
-          onDismiss={() => setSelectAllDialogViewAll(!selectAllDialogViewAll)}
-          onRequestClose={() => setSelectAllDialogViewAll(false)}
-          animationType="slide"
-        >
-          <View
-            style={[
-              Layout.center,
-              {
-                flex: 1,
-                backgroundColor: '#00000099',
-              },
-            ]}
-          >
-            <View
-              style={{
-                width: 250,
-                height: 250,
-                backgroundColor: Colors.white,
-                borderRadius: MetricsSizes.medium,
-              }}
-            >
-              <View
-                style={[
-                  Layout.center,
-
-                  {
-                    height: 48,
-                    backgroundColor: '#184461',
-                    borderTopRightRadius: MetricsSizes.medium,
-                    borderTopLeftRadius: MetricsSizes.medium,
-                  },
-                ]}
-              >
-                <View style={[Layout.row, Layout.center]}>
-                  <View style={{ flex: 3, alignItems: 'flex-end' }}>
-                    <Text style={{ color: '#fff', fontWeight: '700' }}>
-                      {' '}
-                      Please Select Filter
-                    </Text>
-                  </View>
-
-                  <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Image
-                      source={Images.logolight}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        zIndex: 1,
-                        borderRadius: 60,
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                }}
-              >
-                <ScrollView
-                  style={{
-                    backgroundColor: Colors.white,
-                    borderBottomLeftRadius: MetricsSizes.medium,
-                    borderBottomRightRadius: MetricsSizes.medium,
-                    marginHorizontal: MetricsSizes.small,
-                    marginBottom: MetricsSizes.small,
-                  }}
-                >
-                  {optionVisitorCheckInOrOut}
-                </ScrollView>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
-       {/* for select  filter visitor registration*/}
-      {/* for select  filter visitor registration*/}
-      <View style={Layout.center}>
-        <Modal
-          visible={selectAllDialogViewAll2}
-          transparent={true}
-          onDismiss={() => setSelectAllDialogViewAll(!selectAllDialogViewAll2)}
-          onRequestClose={() => setSelectAllDialogViewAll2(false)}
-          animationType="slide"
-        >
-          <View
-            style={[
-              Layout.center,
-              {
-                flex: 1,
-                backgroundColor: '#00000099',
-              },
-            ]}
-          >
-            <View
-              style={{
-                width: 250,
-                height: 250,
-                backgroundColor: Colors.white,
-                borderRadius: MetricsSizes.medium,
-              }}
-            >
-              <View
-                style={[
-                  Layout.center,
-
-                  {
-                    height: 48,
-                    backgroundColor: '#184461',
-                    borderTopRightRadius: MetricsSizes.medium,
-                    borderTopLeftRadius: MetricsSizes.medium,
-                  },
-                ]}
-              >
-                <View style={[Layout.row, Layout.center]}>
-                  <View style={{ flex: 3, alignItems: 'flex-end' }}>
-                    <Text style={{ color: '#fff', fontWeight: '700' }}>
-                      {' '}
-                      Please Select Filter
-                    </Text>
-                  </View>
-
-                  <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Image
-                      source={Images.logolight}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        zIndex: 1,
-                        borderRadius: 60,
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                }}
-              >
-                <ScrollView
-                  style={{
-                    backgroundColor: Colors.white,
-                    borderBottomLeftRadius: MetricsSizes.medium,
-                    borderBottomRightRadius: MetricsSizes.medium,
-                    marginHorizontal: MetricsSizes.small,
-                    marginBottom: MetricsSizes.small,
-                  }}
-                >
-                  {optionVisitorCheckInOrOut2}
-                </ScrollView>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
-       {/* for select  filter visitor registration*/}
-    </View>
-
-      {loading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            height: 500,
-          }}
-        >
-          <ActivityIndicator
-            size={50}
-            color={'#184461'}
-            style={{
-              alignSelf: 'center',
-            }}
-          />
-          <Text
-            style={{
-              textAlign: 'center',
-              color: '#000',
-              fontSize: 16,
-              marginTop: 10,
-            }}
-          >
-            Please wait...
-          </Text>
-        </View>
-      ) : displaycontact ? (
-        <ScrollView>
-          <View style={{ backgroundColor: '#D0F2EC' }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginHorizontal: 5,
-                marginTop: 10,
-              }}
-            >
-              {/**select all starts here dialog filter */}
-              <View
-                style={{
-                  backgroundColor: '#fff',
-                  justifyContent: 'center',
-                  flex: 1,
-                  marginEnd: 2,
-                }}
-              >
-                <TouchableOpacity
-                  style={[{ flexDirection: 'row' }]}
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    setSelectAllDialogView(true)
-                  }}
-                >
-                  <Icon
-                    name={'filter'}
-                    type={'FontAwesome'}
-                    size={16}
-                    color={'#000'}
-                    style={{ paddingHorizontal: 4 }}
-                  />
-
-                  <Text
-                    style={[
-                      {
-                        fontSize: 12,
-                      },
-                    ]}
-                  >
-                    {chooseAll}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              {/**select all ends here dialog filter */}
-
-              {/**vehcicle search starts here */}
-              <View
-                style={[
-                  Layout.row,
-                  Layout.alignItemsCenter,
-
-                  {
-                    backgroundColor: Colors.white,
-                    marginStart: 2,
-                    flex: 1,
-                  },
-                ]}
-              >
-                <TextInput
-                  style={{
-                    fontSize: 12,
-                    padding: 5,
-                  }}
-                  value={searchVehicle}
-                  placeholder={'Vehicle Number'}
-                  onChangeText={text => setSearchVehicle(text)}
-                />
-              </View>
-              {/**vehcicle search ends here */}
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                marginHorizontal: 5,
-                marginTop: 3,
-                marginBottom: 5,
-              }}
-            >
-              {/**select check out and check out Visitor  starts here */}
-              <View
-                style={{
-                  backgroundColor: '#fff',
-                  justifyContent: 'center',
-                  flex: 1,
-                  marginEnd: 2,
-                  height: 39,
-                }}
-              >
-                <TouchableOpacity
-                  style={[{ flexDirection: 'row' }]}
-                  activeOpacity={0.7}
-                  onPress={()=> setSelectAllDialogViewAll(true)}
-                >
-                  <Icon
-                    name={'sort-amount-desc'}
-                    type={'FontAwesome'}
-                    size={16}
-                    color={'#000'}
-                    style={{ paddingHorizontal: 4 }}
-                  />
-
-                  <Text
-                    style={[
-                      {
-                        fontSize: 12,
-                      },
-                    ]}
-                  >
-                    {filterVisitorType}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              {/**select check out and check in Visitor  starts here */}
-              <View
-                style={{
-                  backgroundColor: '#fff',
-                  justifyContent: 'center',
-                  flex: 1,
-                  marginStart: 2,
-                }}
-              >
-                <TouchableOpacity
-                  style={[{ flexDirection: 'row' }]}
-                  activeOpacity={0.7}
-                  onPress={()=> setOpen(true)}
-                >
-                  <Icon
-                    name={'calendar'}
-                    type={'FontAwesome'}
-                    size={16}
-                    color={'#000'}
-                    style={{ paddingHorizontal: 4 }}
-                  />
-
-                  <Text
-                    style={[
-                      {
-                        fontSize: 12,
-                      },
-                    ]}
-                  >
-                    {selectFilterDate}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          {/**Card start from here Vistor registration */}
-
-          <View style={{ marginVertical: 15 }}>
-            <View style={{ flex: 1, marginHorizontal: 16 }}>
-              {customized_visitors.map((v, key) => (
-                <TouchableOpacity
-                  key={key}
-                  style={{
-                    width: '100%',
-                    alignSelf: 'center',
-                  }}
-                  activeOpacity={1.0}
-                >
-                  <View style={[{ marginTop: 5, marginBottom: 10 }]}>
-                    <View
-                      style={{
-                        backgroundColor: 'white',
-                        borderRadius: 15,
-                        elevation: 10,
-                        shadowColor: '#000',
-                        shadowRadius: 10,
-                        shadowOpacity: 0.6,
-                        elevation: 8,
-                        shadowOffset: {
-                          width: 0,
-                          height: 4,
-                        },
-                      }}
-                    >
-                      <View style={{ flexDirection: 'row' }}>
-                        <View
-                          style={{
-                            width: 10,
-                            backgroundColor: '#184461',
-                            borderTopLeftRadius: 10,
-                            borderBottomLeftRadius: 10,
-                          }}
-                        />
-
-                        <View style={{ flex: 3 }}>
-                          <Text
-                            style={{
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginTop: 5,
-                              marginLeft: 2,
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            }}
-                          >
-                            Start Date:{' '}
-                            <Text>
-                              {new Date(
-                                Number(
-                                  v.StartDateTime.replace(/\/date\(/gi, '')
-                                    .replace(/\//gi, '')
-                                    .replace(/\)/gi, ''),
-                                ),
-                              ).toLocaleString()}
-                            </Text>
-                          </Text>
-                          <Text
-                            style={{
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginTop: 2,
-                              marginLeft: 2,
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            }}
-                          >
-                            End Date:{' '}
-                            <Text>
-                              {new Date(
-                                Number(
-                                  v.EndDateTime.replace(/\/date\(/gi, '')
-                                    .replace(/\//gi, '')
-                                    .replace(/\)/gi, ''),
-                                ),
-                              ).toLocaleString()}
-                            </Text>
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginLeft: 2,
-                              marginTop: 1,
-                            }}
-                          >
-                            Location: <Text>Plaza33</Text>
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginLeft: 2,
-                              marginTop: 1,
-                            }}
-                          >
-                            Vehicle No: <Text>{v.VehicleNumber}</Text>
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginLeft: 2,
-                              marginTop: 1,
-                            }}
-                          >
-                            Vistor Name: <Text>{v.VisitorName}</Text>
-                          </Text>
-
-                          <Text
-                            style={{
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginLeft: 2,
-                              marginTop: 1,
-                              marginBottom: 3,
-                            }}
-                          >
-                            Status: <Text>{v.VisitorStatus}</Text>
-                          </Text>
-                        </View>
-
-                        <View style={{ justifyContent: 'center', flex: 1 }}>
-                          <Image
-                            source={{
-                              uri: `data:image/png;base64,${v.VisitorImageLogo}`,
-                            }}
-                            style={{
-                              width: orientation === 'PORTRAIT' ? 70 : 90,
-                              height: orientation === 'PORTRAIT' ? 70 : 90,
-                              marginEnd: 3,
-                              borderRadius:
-                                orientation === 'PORTRAIT' ? 35 : 45,
-                              alignSelf: 'flex-end',
-                            }}
-                            resizeMode={'cover'}
-                          />
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-          {/**Card start from here Vistor registration */}
-        </ScrollView>
-      ) : (
-        <ScrollView>
-          <View style={{ backgroundColor: '#D0F2EC' }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginHorizontal: 5,
-                marginTop: 10,
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: '#fff',
-                  justifyContent: 'center',
-                  flex: 1,
-                  marginEnd: 2,
-                }}
-              >
-                <TouchableOpacity
-                  style={[{ flexDirection: 'row' }]}
-                  activeOpacity={0.7}
-                >
-                  <Icon
-                    name={'filter'}
-                    type={'FontAwesome'}
-                    size={16}
-                    color={'#000'}
-                    style={{ paddingHorizontal: 4 }}
-                  />
-
-                  <Text
-                    style={[
-                      {
-                        fontSize: 12,
-                      },
-                    ]}
-                  >
-                    {chooseAll}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              <View
-                style={[
-                  Layout.row,
-                  Layout.alignItemsCenter,
-
-                  {
-                    backgroundColor: Colors.white,
-                    marginStart: 2,
-                    flex: 1,
-                  },
-                ]}
-              >
-                <TextInput
-                  style={{
-                    fontSize: 12,
-                    padding: 5,
-                  }}
-                  value={searchVehicle1}
-                  placeholder={'Vehicle Number'}
-                  onChangeText={text => setSearchVehicle1(text)}
-                />
-              </View>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                marginHorizontal: 5,
-                marginTop: 3,
-                marginBottom: 5,
-              }}
-            >
-              {/**select check out and check out Visitor  starts here */}
-              <View
-                style={{
-                  backgroundColor: '#fff',
-                  justifyContent: 'center',
-                  flex: 1,
-                  marginEnd: 2,
-                  height: 39,
-                }}
-              >
-                <TouchableOpacity
-                  style={[{ flexDirection: 'row' }]}
-                  activeOpacity={0.7}
-                  onPress={()=> setSelectAllDialogViewAll2(true)}
-                >
-                  <Icon
-                    name={'sort-amount-desc'}
-                    type={'FontAwesome'}
-                    size={16}
-                    color={'#000'}
-                    style={{ paddingHorizontal: 4 }}
-                  />
-
-                  <Text
-                    style={[
-                      {
-                        fontSize: 12,
-                      },
-                    ]}
-                  >
-                    {filterVisitorType2}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              {/**select check out and check in Visitor  starts here */}
-              <View
-                style={{
-                  backgroundColor: '#fff',
-                  justifyContent: 'center',
-                  flex: 1,
-                  marginStart: 2,
-                }}
-              >
-                <TouchableOpacity
-                  style={[{ flexDirection: 'row' }]}
-                  activeOpacity={0.7}
-                  onPress={()=> setOpen(true)}
-                >
-                  <Icon
-                    name={'calendar'}
-                    type={'FontAwesome'}
-                    size={16}
-                    color={'#000'}
-                    style={{ paddingHorizontal: 4 }}
-                  />
-
-                  <Text
-                    style={[
-                      {
-                        fontSize: 12,
-                      },
-                    ]}
-                  >
-                    {selectFilterDate}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          <View style={{ marginVertical: 15 }}>
-            {customized_visitors_history.map((v, key) => (
-              <View key={key} style={{ flex: 1, marginHorizontal: 16 }}>
-                <TouchableOpacity
-                  style={{
-                    width: '100%',
-                    alignSelf: 'center',
-                  }}
-                  activeOpacity={1.0}
-                >
-                  <View style={[{ marginTop: 5, marginBottom: 10 }]}>
-                    <View
-                      style={{
-                        backgroundColor: 'white',
-                        borderRadius: 15,
-                        elevation: 10,
-                        shadowColor: '#000',
-                        shadowRadius: 10,
-                        shadowOpacity: 0.6,
-                        elevation: 8,
-                        shadowOffset: {
-                          width: 0,
-                          height: 4,
-                        },
-                      }}
-                    >
-                      <View style={{ flexDirection: 'row' }}>
-                        <View
-                          style={{
-                            width: 10,
-                            backgroundColor: '#184461',
-                            borderTopLeftRadius: 10,
-                            borderBottomLeftRadius: 10,
-                          }}
-                        />
-
-                        <View style={{ flex: 3 }}>
-                          <Text
-                            style={{
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginTop: 5,
-                              marginLeft: 2,
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                            }}
-                          >
-                            Date:{' '}
-                            <Text>
-                              {new Date(
-                                Number(
-                                  v.StartDateTime.replace(/\/date\(/gi, '')
-                                    .replace(/\//gi, '')
-                                    .replace(/\)/gi, ''),
-                                ),
-                              ).toLocaleString()}
-                            </Text>
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginLeft: 2,
-                              marginTop: 3,
-                            }}
-                          >
-                            Location: <Text>Plaza33</Text>
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginLeft: 2,
-                              marginTop: 3,
-                            }}
-                          >
-                            Vehicle No: <Text>{v.VehicleNumber}</Text>
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: orientation === 'PORTRAIT' ? 13 : 16,
-                              fontWeight: '500',
-                              color: '#184461',
-                              marginLeft: 2,
-                              marginTop: 3,
-                              marginBottom: 3,
-                            }}
-                          >
-                            Vistor Name: <Text>{v.VisitorName}</Text>
-                          </Text>
-                        </View>
-
-                        <View style={{ justifyContent: 'center', flex: 2 }}>
-                          <Image
-                            source={{
-                              uri: `data:image/png;base64,${v.VisitorImageLogo}`,
-                            }}
-                            style={{
-                              width: orientation === 'PORTRAIT' ? 70 : 90,
-                              height: orientation === 'PORTRAIT' ? 70 : 90,
-                              marginEnd: 3,
-                              borderRadius:
-                                orientation === 'PORTRAIT' ? 35 : 45,
-                              alignSelf: 'flex-end',
-                              marginEnd: 20,
-                            }}
-                            resizeMode={'cover'}
-                          />
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
               </View>
             ))}
           </View>
-        </ScrollView>
-      )}
+        )}
+      </View>
     </ScrollView>
   )
 }

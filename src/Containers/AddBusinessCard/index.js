@@ -173,6 +173,13 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
   const [showUploadScreen, setShowUploadScreen] = useState(false)
 
+  const [placeholder, setPlaceholder] = useState({
+    fname: 'Mohamad Faisal',
+    bname: 'Servo Security Sdn Bhd',
+    bwebsite: 'www.servosecurity.my',
+    phone: '60176143035',
+  })
+
   const handleAttachLogo = () => {
     launchImageLibrary(
       {
@@ -294,8 +301,16 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
   return (
     <ScrollView style={{ backgroundColor: '#F1F1F1', flex: 1 }}>
       {/* header start */}
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
+
+      <View style={{ height: 51, backgroundColor: '#184461' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}
+        >
           <TouchableOpacity
             onPress={() =>
               showUploadScreen
@@ -303,19 +318,35 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 : navigation.goBack()
             }
           >
-            <Icon type="Ionicons" name="arrow-back" size={30} color="#fff" />
+            <Icon name="arrow-left" type="Feather" size={30} color="#fff" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Business Card</Text>
-          <TouchableOpacity>
-            <Icon type="FontAwesome" name="search" size={25} color="#fff" />
-          </TouchableOpacity>
+
+          <Text
+            style={{
+              color: Colors.white,
+              fontWeight: '600',
+              marginLeft: 15,
+            }}
+          >
+            Business Card
+          </Text>
+          <Icon
+            name="x"
+            type="Feather"
+            size={30}
+            color="#fff"
+            onPress={() => {}}
+          />
         </View>
       </View>
+
       {/* header end */}
       <>
-      <View style={{
-          display: showUploadScreen ? "flex" : "none"
-        }}>
+        <View
+          style={{
+            display: showUploadScreen ? 'flex' : 'none',
+          }}
+        >
           <CardUpload
             cardFront={cardFront}
             cardBack={cardBack}
@@ -325,429 +356,363 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
         </View>
         <View
           style={{
-            display: showUploadScreen ? "none" : "flex",
+            display: showUploadScreen ? 'none' : 'flex',
             marginTop: 20,
             marginHorizontal: 20,
           }}
         >
-          <Text
-            style={{
-              color: '#184461',
-              fontWeight: '500',
-              marginVertical: 15,
-            }}
-          >
-            Please fill up your business card information
-          </Text>
           {/* form start */}
-          <DropShadow
-            style={{
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 3,
-                height: 1,
-              },
-              shadowOpacity: 2,
-              shadowRadius: 5,
-            }}
-          >
+
+          <View style={{ marginHorizontal: 12, marginVertical: 12 }}>
+            {/** business person starts here */}
+
+            <View style={{}}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: '#184461',
+                  fontWeight: '500',
+                  marginStart: 4,
+                  marginBottom: 10,
+                }}
+              >
+                Name
+              </Text>
+              <TextInput
+                style={{
+                  borderBottomWidth: 1,
+                  borderColor: '#45969A',
+                  fontSize: 20,
+                  color: fname === 'Mohamad Faisal' ? '#C4C3C9' : '#457C9A',
+                  fontWeight: '900',
+                  paddingBottom: 0,
+                }}
+                value={fname}
+                placeholder={placeholder.fname}
+                onChangeText={text => setFname(text)}
+                onFocus={() => {
+                  setPlaceholder({ ...placeholder, fname: '' })
+                }}
+                onBlur={() => {
+                  setPlaceholder({
+                    ...placeholder,
+                    fname: 'Mohamad Faisal',
+                  })
+                }}
+              />
+            </View>
+
+            {/**business person name  starts here */}
+
+            {/** business name starts here */}
+            <View style={{ marginTop: 20 }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: '#184461',
+                  fontWeight: '500',
+                  marginStart: 4,
+                  marginBottom: 10,
+                }}
+              >
+                Business Name
+              </Text>
+              <TextInput
+                style={{
+                  borderBottomWidth: 1,
+                  borderColor: '#45969A',
+                  fontSize: 20,
+                  color:
+                    bname === 'Servo Security Sdn Bhd' ? '#C4C3C9' : '#457C9A',
+                  fontWeight: '900',
+                  paddingBottom: 0,
+                }}
+                value={bname}
+                placeholder={placeholder.bname}
+                onChangeText={text => setBname(text)}
+                onFocus={() => {
+                  setPlaceholder({ ...placeholder, bname: '' })
+                }}
+                onBlur={() => {
+                  setPlaceholder({
+                    ...placeholder,
+                    bname: 'Servo Security Sdn Bhd',
+                  })
+                }}
+              />
+            </View>
+            {/**business name name  starts here */}
+
+            {/** business website starts here */}
+            <View style={{ marginTop: 20 }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: '#184461',
+                  fontWeight: '500',
+                  marginStart: 4,
+                  marginBottom: 10,
+                }}
+              >
+                Business Website
+              </Text>
+              <TextInput
+                style={{
+                  borderBottomWidth: 1,
+                  borderColor: '#45969A',
+                  fontSize: 20,
+                  color:
+                    bwebsite === 'www.servosecurity.my' ? '#C4C3C9' : '#457C9A',
+                  fontWeight: '900',
+                  paddingBottom: 0,
+                }}
+                value={bwebsite}
+                placeholder={placeholder.bwebsite}
+                onChangeText={text => setBwebsite(text)}
+                onFocus={() => {
+                  setPlaceholder({ ...placeholder, bwebsite: '' })
+                }}
+                onBlur={() => {
+                  setPlaceholder({
+                    ...placeholder,
+                    bwebsite: 'www.servosecurity.my',
+                  })
+                }}
+              />
+            </View>
+            {/**business name name  starts here */}
+
+            {/** business website starts here */}
+            <View style={{ marginTop: 20 }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: '#184461',
+                  fontWeight: '500',
+                  marginStart: 4,
+                  marginBottom: 10,
+                }}
+              >
+                Phone Number
+              </Text>
+              <TextInput
+                style={{
+                  borderBottomWidth: 1,
+                  borderColor: '#45969A',
+                  fontSize: 20,
+                  color: phone === '60176143035' ? '#C4C3C9' : '#457C9A',
+                  fontWeight: '900',
+                  paddingBottom: 0,
+                }}
+                value={phone}
+                placeholder={placeholder.phone}
+                keyboardType={'number-pad'}
+                onChangeText={text => setPhone(text)}
+                onFocus={() => {
+                  setPlaceholder({ ...placeholder, phone: '' })
+                }}
+                onBlur={() => {
+                  setPlaceholder({
+                    ...placeholder,
+                    phone: '60176143035',
+                  })
+                }}
+              />
+            </View>
+            {/**bphone number ends  here */}
+
             <View
               style={{
-                borderWidth: 2,
-                borderColor: '#45969A',
-                padding: 10,
-                borderRadius: 20,
-                backgroundColor: '#F1F1F1',
-                marginBottom: 20,
+                justifyContent: 'space-between',
+
+                paddingRight: 20,
+                marginBottom: 10,
                 marginTop: 20,
               }}
             >
-              <View style={{ marginHorizontal: 12, marginVertical: 12 }}>
-                {/** business person starts here */}
-                <DropShadow
+              <DropShadow
+                style={{
+                  shadowColor: '#282828',
+                  shadowOffset: {
+                    width: 1,
+                    height: 2,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 3,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={handleAttachLogo}
                   style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 3,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    width: 125,
+                    backgroundColor: '#F0F0F0',
                   }}
                 >
-                  <View
-                    style={[
-                      {
-                        borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 4,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        height: 55,
-                        padding: 5,
-                      },
-                    ]}
-                  >
-                    <FloatingLabel
-                      labelStyle={{
-                        color: '#A6A2A2',
-                        fontSize: 14,
-                        fontWeight: '500',
-                        padding: fname !== '' ? 5 : 3,
-                      }}
-                      inputStyle={{
-                        borderWidth: 0,
-                        fontSize: 14,
-                        fontWeight: '700',
-                        color: '#000',
-                      }}
-                      Value={fname}
-                      onChangeText={text => setFname(text)}
-                      style={{
-                        fontWeight: '700',
-                        fontSize: 14,
-                        padding: fname !== '' ? 3 : 7,
-                      }}
-                    >
-                      Enter complete name
-                    </FloatingLabel>
-                  </View>
-                </DropShadow>
-                {/**business person name  starts here */}
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    Attach Logo
+                  </Text>
+                </TouchableOpacity>
+              </DropShadow>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: '900',
+                  color: '#184461',
+                  marginTop: 5,
+                  marginStart: 3,
+                }}
+              >
+                Images.jpg
+              </Text>
 
-                {/** business name starts here */}
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 3,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <View
-                    style={[
-                      {
-                        borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 4,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        height: 55,
-                        padding: 5,
-                      },
-                    ]}
-                  >
-                    <FloatingLabel
-                      labelStyle={{
-                        color: '#A6A2A2',
-                        fontSize: 14,
-                        fontWeight: '500',
-                        padding: bname !== '' ? 5 : 3,
-                      }}
-                      inputStyle={{
-                        borderWidth: 0,
-                        fontSize: 14,
-                        fontWeight: '700',
-                        color: '#000',
-                      }}
-                      Value={bname}
-                      onChangeText={text => setBname(text)}
-                      style={{
-                        fontWeight: '700',
-                        fontSize: 14,
-                        padding: bname !== '' ? 3 : 7,
-                      }}
-                    >
-                      Enter business name
-                    </FloatingLabel>
-                  </View>
-                </DropShadow>
-                {/**business name name  starts here */}
-
-                {/** business website starts here */}
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 3,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <View
-                    style={[
-                      {
-                        borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 4,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        height: 55,
-                        padding: 5,
-                      },
-                    ]}
-                  >
-                    <FloatingLabel
-                      labelStyle={{
-                        color: '#A6A2A2',
-                        fontSize: 14,
-                        fontWeight: '500',
-                        padding: bwebsite !== '' ? 5 : 3,
-                      }}
-                      inputStyle={{
-                        borderWidth: 0,
-                        fontSize: 14,
-                        fontWeight: '700',
-                        color: '#000',
-                      }}
-                      Value={bwebsite}
-                      onChangeText={text => setBwebsite(text)}
-                      style={{
-                        fontWeight: '700',
-                        fontSize: 14,
-                        padding: bwebsite !== '' ? 3 : 7,
-                      }}
-                    >
-                      Enter business website
-                    </FloatingLabel>
-                  </View>
-                </DropShadow>
-                {/**business name name  starts here */}
-
-                {/** business website starts here */}
-                <DropShadow
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 3,
-                      height: 1,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 3,
-                  }}
-                >
-                  <View
-                    style={[
-                      {
-                        borderRadius: 16,
-                        marginVertical: MetricsSizes.small - 4,
-                        borderWidth: MetricsSizes.tiny - 4,
-                        borderColor: '4px 4px rgba(0, 0, 0, 0.15)',
-                        borderWidth: 2,
-                        shadowColor: 'rgba(0, 0, 0, 0.25)',
-                        shadowOffset: { width: 5, height: 0 },
-                        shadowOpacity: 1,
-                        shadowRadius: 5,
-                        elevation: 5,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        height: 55,
-                        padding: 5,
-                      },
-                    ]}
-                  >
-                    <FloatingLabel
-                      labelStyle={{
-                        color: '#A6A2A2',
-                        fontSize: 14,
-                        fontWeight: '500',
-                        padding: phone !== '' ? 5 : 3,
-                      }}
-                      inputStyle={{
-                        borderWidth: 0,
-                        fontSize: 14,
-                        fontWeight: '700',
-                        color: '#000',
-                      }}
-                      Value={phone}
-                      onChangeText={text => setPhone(text)}
-                      style={{
-                        fontWeight: '700',
-                        fontSize: 14,
-                        padding: phone !== '' ? 3 : 7,
-                      }}
-                      keyboardType="phone-pad"
-                    >
-                      Enter business phone-no
-                    </FloatingLabel>
-                  </View>
-                </DropShadow>
-                {/**business name name  starts here */}
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingRight: 20,
-                    marginBottom: 10,
-                    marginTop: 7,
-                  }}
-                >
+              <View style={{ marginTop: 6, alignItems: 'flex-end' }}>
+                {logo ? (
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${logo}` }}
+                    style={{
+                      resizeMode: 'cover',
+                      width: 100,
+                      height: 80,
+                      marginTop: 5,
+                      borderRadius: 10,
+                      borderWidth: 2,
+                      borderColor: '#184461',
+                    }}
+                  />
+                ) : (
                   <DropShadow
                     style={{
                       shadowColor: '#000',
                       shadowOffset: {
-                        width: 0,
-                        height: 0,
+                        width: 2,
+                        height: 1,
                       },
                       shadowOpacity: 1,
                       shadowRadius: 3,
                     }}
                   >
-                    <TouchableOpacity
-                      onPress={handleAttachLogo}
-                      style={{
-                        borderWidth: 2,
-                        borderColor: '#184461',
-                        padding: 15,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: Colors.white,
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        Attach Logo
-                      </Text>
-                    </TouchableOpacity>
+                    <Icon
+                      type="Feather"
+                      name="camera"
+                      size={45}
+                      color="green"
+                    />
                   </DropShadow>
-
-                  <View>
-                    {logo ? (
-                      <Image
-                        source={{ uri: `data:image/jpeg;base64,${logo}` }}
-                        style={{
-                          resizeMode: 'cover',
-                          width: 100,
-                          height: 80,
-                          marginTop: 5,
-                          borderRadius: 10,
-                          borderWidth: 2,
-                          borderColor: '#184461',
-                        }}
-                      />
-                    ) : null}
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingRight: 20,
-                    marginBottom: 10,
-                  }}
-                >
-                  <DropShadow
-                    style={{
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 0,
-                        height: 0,
-                      },
-                      shadowOpacity: 1,
-                      shadowRadius: 3,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => setShowUploadScreen(true)}
-                      style={{
-                        borderWidth: 2,
-                        borderColor: '#184461',
-                        padding: 15,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: Colors.white,
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        Business Card
-                      </Text>
-                    </TouchableOpacity>
-                  </DropShadow>
-
-                  <View>
-                    {cardFront ? (
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                        }}
-                      >
-                        <Image
-                          source={{
-                            uri: `data:image/jpeg;base64,${cardFront}`,
-                          }}
-                          style={{
-                            resizeMode: 'cover',
-                            width: 60,
-                            height: 50,
-                          }}
-                        />
-                        <Image
-                          source={{ uri: `data:image/jpeg;base64,${cardBack}` }}
-                          style={{
-                            resizeMode: 'cover',
-                            width: 60,
-                            height: 50,
-                          }}
-                        />
-                      </View>
-                    ) : (
-                      <DropShadow
-                        style={{
-                          shadowColor: '#000',
-                          shadowOffset: {
-                            width: 2,
-                            height: 1,
-                          },
-                          shadowOpacity: 1,
-                          shadowRadius: 3,
-                        }}
-                      >
-                        <Icon
-                          type="Feather"
-                          name="camera"
-                          size={45}
-                          color="green"
-                        />
-                      </DropShadow>
-                    )}
-                  </View>
-                </View>
-                <PrimaryButttonComponent
-                  label="Save"
-                  loading={loading}
-                  onPress={handleSaveCard}
-                />
+                )}
               </View>
             </View>
-          </DropShadow>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                paddingRight: 20,
+                marginBottom: 10,
+                marginTop: 20,
+              }}
+            >
+              <DropShadow
+                style={{
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 2,
+                    height: 1,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 3,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => setShowUploadScreen(true)}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    width: 125,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    Business Card
+                  </Text>
+                </TouchableOpacity>
+              </DropShadow>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: '900',
+                  color: '#184461',
+                  marginTop: 5,
+                  marginStart: 3,
+                }}
+              >
+                Images.jpg
+              </Text>
+              <View
+                style={{
+                  marginTop: 20,
+                  alignItems: 'flex-end',
+                  marginBottom: 20,
+                }}
+              >
+                {cardFront ? (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <Image
+                      source={{
+                        uri: `data:image/jpeg;base64,${cardFront}`,
+                      }}
+                      style={{
+                        resizeMode: 'cover',
+                        width: 50,
+                        height: 80,
+                        marginEnd: 2,
+                      }}
+                    />
+                    <Image
+                      source={{ uri: `data:image/jpeg;base64,${cardBack}` }}
+                      style={{
+                        resizeMode: 'cover',
+                        width: 50,
+                        height: 80,
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <DropShadow
+                    style={{
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 2,
+                        height: 1,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 3,
+                    }}
+                  >
+                    <Icon
+                      type="Feather"
+                      name="camera"
+                      size={45}
+                      color="green"
+                    />
+                  </DropShadow>
+                )}
+              </View>
+            </View>
+            <PrimaryButttonComponent
+              label="Save"
+              loading={loading}
+              onPress={handleSaveCard}
+              style={{ marginBottom: 20 }}
+            />
+          </View>
 
           {/* form send */}
         </View>

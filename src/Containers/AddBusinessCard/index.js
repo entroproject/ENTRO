@@ -383,13 +383,14 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   borderBottomWidth: 1,
                   borderColor: '#45969A',
                   fontSize: 20,
-                  color: fname === 'Mohamad Faisal' ? '#C4C3C9' : '#457C9A',
                   fontWeight: '900',
                   paddingBottom: 0,
+                  color:'#457C9A'
                 }}
                 value={fname}
                 placeholder={placeholder.fname}
                 onChangeText={text => setFname(text)}
+                placeholderTextColor={'#A6A2A2'}
                 onFocus={() => {
                   setPlaceholder({ ...placeholder, fname: '' })
                 }}
@@ -422,14 +423,14 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   borderBottomWidth: 1,
                   borderColor: '#45969A',
                   fontSize: 20,
-                  color:
-                    bname === 'Servo Security Sdn Bhd' ? '#C4C3C9' : '#457C9A',
                   fontWeight: '900',
                   paddingBottom: 0,
+                  color:'#457C9A'
                 }}
                 value={bname}
                 placeholder={placeholder.bname}
                 onChangeText={text => setBname(text)}
+                placeholderTextColor={'#A6A2A2'}
                 onFocus={() => {
                   setPlaceholder({ ...placeholder, bname: '' })
                 }}
@@ -461,14 +462,14 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   borderBottomWidth: 1,
                   borderColor: '#45969A',
                   fontSize: 20,
-                  color:
-                    bwebsite === 'www.servosecurity.my' ? '#C4C3C9' : '#457C9A',
                   fontWeight: '900',
                   paddingBottom: 0,
+                  color:'#457C9A'
                 }}
                 value={bwebsite}
                 placeholder={placeholder.bwebsite}
                 onChangeText={text => setBwebsite(text)}
+                placeholderTextColor={'#A6A2A2'}
                 onFocus={() => {
                   setPlaceholder({ ...placeholder, bwebsite: '' })
                 }}
@@ -500,14 +501,16 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   borderBottomWidth: 1,
                   borderColor: '#45969A',
                   fontSize: 20,
-                  color: phone === '60176143035' ? '#C4C3C9' : '#457C9A',
                   fontWeight: '900',
                   paddingBottom: 0,
+                  color:'#457C9A'
+                 
                 }}
                 value={phone}
                 placeholder={placeholder.phone}
                 keyboardType={'number-pad'}
                 onChangeText={text => setPhone(text)}
+                placeholderTextColor={'#A6A2A2'}
                 onFocus={() => {
                   setPlaceholder({ ...placeholder, phone: '' })
                 }}
@@ -557,17 +560,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </DropShadow>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: '900',
-                  color: '#184461',
-                  marginTop: 5,
-                  marginStart: 3,
-                }}
-              >
-                Images.jpg
-              </Text>
+             
 
               <View style={{ marginTop: 6, alignItems: 'flex-end' }}>
                 {logo ? (
@@ -640,17 +633,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </DropShadow>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: '900',
-                  color: '#184461',
-                  marginTop: 5,
-                  marginStart: 3,
-                }}
-              >
-                Images.jpg
-              </Text>
+            
               <View
                 style={{
                   marginTop: 20,

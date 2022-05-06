@@ -13,176 +13,66 @@ import moment from 'moment'
 import { useTheme } from '@/Hooks'
 import { useOrientation } from '../useOrientation'
 import { ButtonGroup } from 'react-native-elements'
-import { getVisitors, getVisitorsHistory } from '@/api-utils'
-import * as Constants from '@/Assets/Constants'
-import DatePicker from 'react-native-date-picker'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
-import Icon from 'react-native-dynamic-vector-icons'
-import DropShadow from 'react-native-drop-shadow'
+import { getVisitors, getVisitorsHistory } from '@/api-utils';
+import * as Constants from '@/Assets/Constants';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-dynamic-vector-icons';
+import DropShadow from 'react-native-drop-shadow';
+import {Picker} from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 const IndexVisitorContainer = ({ navigation }) => {
-  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [displaycontact, setDisplayContact] = useState(true)
-  const [chooseAll, setChooseAll] = useState('Select All')
-  const [filterVisitorType, setFilterVisitorType] = useState('Select')
-  const [filterVisitorType2, setFilterVisitorType2] = useState('Select')
-  const [selectFilterDate, setselectFilterDate] = useState('Select Date')
-  const [searchVehicle, setSearchVehicle] = useState('')
-  const [searchVehicle1, setSearchVehicle1] = useState('')
-
-  const [allRegisteredVisitor, setAllRegisteredVisitor] = useState([])
-  const [allVisitorsHistory, setAllVisitorsHistory] = useState([])
-  const [customized_visitors, setCustomized_visitors] = useState([])
+  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [allRegisteredVisitor, setAllRegisteredVisitor] = useState([]);
+  const [allVisitorsHistory, setAllVisitorsHistory] = useState([]);
+  const [customized_visitors, setCustomized_visitors] = useState([]);
   const [customized_visitors_history, setCustomized_visitors_history] =
-    useState([])
-  const [loading, setLoading] = useState(true)
-  const [date, setDate] = useState(new Date())
-  const [open, setOpen] = useState(false)
-  const orientation = useOrientation()
-  const isFocused = useIsFocused()
+    useState([]);
+  const [loading, setLoading] = useState(true);
+  const orientation = useOrientation();
+  const isFocused = useIsFocused();
 
-  const [selectAllDialogView, setSelectAllDialogView] = useState(false)
-  const [selectAllDialogViewAll, setSelectAllDialogViewAll] = useState(false)
-  const [selectAllDialogViewAll2, setSelectAllDialogViewAll2] = useState(false)
+  const [selectedSortType, setSelectedSortType] = useState(true);
 
-  const onDateChange = selectedDate => {
-    const currentDate = selectedDate
-    setDate(currentDate)
-    const formattedDate = `${moment(selectedDate).format('MMM Do YY')}`
-    setselectFilterDate(formattedDate)
-  }
+  const [openSearch, setOpenSearch] = useState(false);
+  const [openSearchCalendar, setOpenSearchCalendar] = useState(false);
 
-  const [openSearch, setOpenSearch] = useState(false)
-  const [openSearchCalendar, setOpenSearchCalendar] = useState(false)
+  const [searchRegisterVisitor, setSearchRegisterVisitor] = useState('');
+  const [searchHistoryVisitor, setSearchHistoryVisitor] = useState('');
 
-  const [searchRegisterVisitor, setSearchRegisterVisitor] = useState('')
-  const [searchHistoryVisitor, setSearchHistoryVisitor] = useState('')
+  const [displayRegisterVisitor, setDisplayRegisterVisitor] = useState(true);
 
-  const [displayRegisterVisitor, setDisplayRegisterVisitor] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(false);
 
-  const [currentIndex, setCurrentIndex] = useState(false)
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
 
-  const optionVisitor = Constants.visitorAll.map((item, index) => {
-    return (
-      <TouchableOpacity
-        style={[Layout.alignItemsStart]}
-        key={index}
-        onPress={() => selectAllVistors(item)}
-      >
-        <Text
-          style={{
-            color: Colors.bodyText,
-            fontSize: 16,
-            margin: 5,
-            fontWeight: '500',
-          }}
-        >
-          {item}
-        </Text>
-      </TouchableOpacity>
+  const onChange = (event, selectedDate) => {
+    setShow(false);
+    let data;
+    if(displayRegisterVisitor){
+      data = allRegisteredVisitor;
+    }else{
+      data = allVisitorsHistory;
+    }
+    const _filtered_visitors = data.filter(a =>  new Date(Number( a.StartDateTime.replace(/\/date\(/gi, '')
+      .replace(/\//gi, '') 
+      .replace(/\)/gi, '')))
+      .toLocaleDateString() == new Date(selectedDate)
+      .toLocaleDateString()
+      ?
+      true
+      :false
     )
-  })
-
-  const optionVisitorCheckInOrOut = Constants.visitorStatusType.map(
-    (item, index) => {
-      return (
-        <TouchableOpacity
-          style={[Layout.alignItemsStart]}
-          key={index}
-          onPress={() => {
-            selectVisitorCheckInOrOut_reg(item)
-          }}
-        >
-          <Text
-            style={{
-              color: Colors.bodyText,
-              fontSize: 16,
-              margin: 5,
-              fontWeight: '500',
-            }}
-          >
-            {item}
-          </Text>
-        </TouchableOpacity>
-      )
-    },
-  )
-
-  const optionVisitorCheckInOrOut2 = Constants.visitorSelectionType.map(
-    (item, index) => {
-      return (
-        <TouchableOpacity
-          style={[Layout.alignItemsStart]}
-          key={index}
-          onPress={() => selectVisitorCheckInOrOut_acc(item)}
-        >
-          <Text
-            style={{
-              color: Colors.bodyText,
-              fontSize: 16,
-              margin: 5,
-              fontWeight: '500',
-            }}
-          >
-            {item}
-          </Text>
-        </TouchableOpacity>
-      )
-    },
-  )
-
-  const filterVisitorReg = () => {
-    if (filterVisitorType.toLocaleLowerCase() === 'all') {
-      return
+    if(displayRegisterVisitor){
+      setCustomized_visitors(_filtered_visitors)
+    }else{
+      setCustomized_visitors_history(_filtered_visitors);
     }
-    const _filtered_visitors = allVisitors.filter(c => {
-      if (
-        c.VisitorStatus.toLocaleLowerCase().includes(
-          filterVisitorType.toLocaleLowerCase(),
-        )
-      ) {
-        return true
-      }
-      return false
-    })
-    setCustomized_visitors(_filtered_visitors)
-  }
-
-  const filterVisitorAcc = () => {
-    if (filterVisitorType2.toLocaleLowerCase() === 'all') {
-      return
-    }
-    const _filtered_visitors = customized_visitors.filter(c => {
-      if (
-        c.VisitorStatus.toLocaleLowerCase().includes(
-          filterVisitorType2.toLocaleLowerCase(),
-        )
-      ) {
-        return true
-      }
-      return false
-    })
-    setCustomized_visitors(_filtered_visitors)
-  }
-
-  // checked in filter
-  const selectVisitorCheckInOrOut_reg = item => {
-    setFilterVisitorType(item)
-    setSelectAllDialogViewAll(false)
-  }
-
-  // checked in filter
-  const selectVisitorCheckInOrOut_acc = item => {
-    setFilterVisitorType2(item)
-    setSelectAllDialogViewAll2(false)
-  }
-
-  // first filter
-  const selectAllVistors = item => {
-    setChooseAll(item)
-    setSelectAllDialogView(false)
-  }
+  };
 
   const resetRegVisitor = () => {
     setCustomized_visitors(allRegisteredVisitor)
@@ -197,7 +87,7 @@ const IndexVisitorContainer = ({ navigation }) => {
       const _filtered_visitors = allRegisteredVisitor.filter(c => {
         if (
           c.VisitorName.toLocaleLowerCase().includes(
-            searchRegisterVisitor.toLocaleLowerCase(),
+            searchRegisterVisitor.toLocaleLowerCase()
           )
         ) {
           return true
@@ -212,23 +102,78 @@ const IndexVisitorContainer = ({ navigation }) => {
 
   const handleVisitorHistory = () => {
     if (searchHistoryVisitor.length > 0) {
-      const _filtered_visitors_history = allVisitorsHistory.filter(c => {
+      const _filtered_visitors = allVisitorsHistory.filter(c => {
         if (
           c.VehicleNumber.toLocaleLowerCase().includes(
-            searchHistoryVisitor.toLocaleLowerCase(),
-          )  ||   c.VisitorStatus.toLocaleLowerCase().includes(
-            searchHistoryVisitor.toLocaleLowerCase())
+            searchHistoryVisitor.toLocaleLowerCase()
+          )
         ) {
           return true
         }
         return false
       })
-      setCustomized_visitors_history(_filtered_visitors_history)
+      setCustomized_visitors_history(_filtered_visitors)
     } else {
       setCustomized_visitors_history(allVisitorsHistory)
     }
   }
 
+  const handleSort = (order, data) => {
+    if(order){
+      const _filtered_visitors = data.sort((a,b) => {
+        if (new Date(
+          Number(
+            a.StartDateTime.replace(/\/date\(/gi, '')
+              .replace(/\//gi, '')
+              .replace(/\)/gi, ''),
+          ),
+        ) > new Date(
+          Number(
+            b.StartDateTime.replace(/\/date\(/gi, '')
+              .replace(/\//gi, '')
+              .replace(/\)/gi, ''),
+          ),
+        ) 
+        ) {
+          return 1
+        }
+        return -1
+      })
+      if(displayRegisterVisitor){
+        setCustomized_visitors(_filtered_visitors)
+      }else{
+        setCustomized_visitors_history(_filtered_visitors);
+      }
+    }
+    else{
+      const _filtered_visitors = data.sort((a,b) => {
+        if (new Date(
+          Number(
+            a.StartDateTime.replace(/\/date\(/gi, '')
+              .replace(/\//gi, '')
+              .replace(/\)/gi, ''),
+          ),
+        ) < new Date(
+          Number(
+            b.StartDateTime.replace(/\/date\(/gi, '')
+              .replace(/\//gi, '')
+              .replace(/\)/gi, ''),
+          ),
+        ) 
+        ) {
+          return 1
+        }
+        return -1
+      })
+      if(displayRegisterVisitor){
+        setCustomized_visitors(_filtered_visitors)
+      }else{
+        setCustomized_visitors_history(_filtered_visitors);
+      }
+    }
+  }
+
+  // search hist
   useEffect(() => {
     if (searchHistoryVisitor.length < 1) {
       resetVisitorHistory()
@@ -238,6 +183,7 @@ const IndexVisitorContainer = ({ navigation }) => {
     }
   }, [searchHistoryVisitor])
 
+  // search reg
   useEffect(() => {
     if (searchRegisterVisitor.length < 1) {
       resetRegVisitor()
@@ -288,10 +234,9 @@ const IndexVisitorContainer = ({ navigation }) => {
           }}
         >
           {/**search calendar area starts here */}
-          {!openSearchCalendar ? (
             <TouchableOpacity
               activeOpacity={1.2}
-              onPress={() => setOpenSearchCalendar(true)}
+              onPress={() => setShow(true)}
             >
               <DropShadow
                 style={{
@@ -328,7 +273,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 >
                   <DropShadow
                     style={{
-                      shadowColor: '#282828',
+                      shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                       shadowOffset: {
                         width: 0,
                         height: 3,
@@ -352,81 +297,20 @@ const IndexVisitorContainer = ({ navigation }) => {
                       fontSize: 12,
                     }}
                   >
-                    calendar
+                    Calendar
                   </Text>
                 </View>
               </DropShadow>
             </TouchableOpacity>
-          ) : (
-            <DropShadow
-              style={{
-                shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                shadowOffset: {
-                  width: 1,
-                  height: 2,
-                },
-                shadowOpacity: 1,
-                shadowRadius: 2,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <View
-                  style={{
-                    marginTop: 27,
-                    backgroundColor: '#fff',
-                    height: 40,
-                    marginHorizontal: 27,
-                    borderRadius: 7,
-                    borderWidth: 1,
-                    borderColor: '#184461',
-                    elevation: 10,
-                    shadowColor: '#000',
-                    shadowRadius: 10,
-                    shadowOpacity: 0.6,
-                    elevation: 8,
-                    shadowOffset: {
-                      width: 0,
-                      height: 4,
-                    },
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                  }}
-                >
-                  <TextInput
-                    placeholder={'Search register here'}
-                    returnKeyType={'search'}
-                    keyboardType={'web-search'}
-                    placeholderTextColor={'#666666'}
-                    value={searchRegisterVisitor}
-                    onChangeText={text => setSearchRegisterVisitor(text)}
-                    // onBlur={()=> setOpenSearch(false)}
-                    // blurOnSubmit={()=> setOpenSearch(false)}
-                    // onSubmitEditing={()=> setOpenSearch(false)}
-                    autoFocus={true}
-                    style={{
-                      width: '90%',
-                      fontSize: 12,
-                    }}
-                  />
-
-                  <TouchableOpacity
-                    onPress={() => {
-                      setOpenSearchCalendar(false)
-                    }}
-                  >
-                    <Icon
-                      type="Feather"
-                      name="x-circle"
-                      size={25}
-                      color="#184461"
-                      style={{}}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </DropShadow>
-          )}
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  onChange={onChange}
+                />
+              )}
           {/**search calendar area ends here */}
 
           {/**search bar area starts here */}
@@ -434,12 +318,12 @@ const IndexVisitorContainer = ({ navigation }) => {
             <View
               style={{
                 flexDirection: 'row',
-                alignItems: 'center',
                 alignContent: 'center',
+                marginVertical: 10,
                 flex: 1,
               }}
             >
-              <View style={{ flex: 3 }}>
+              <View style={{ flex: 3, width: "100%" }}>
                 <TouchableOpacity
                   activeOpacity={1.2}
                   onPress={() => setOpenSearch(true)}
@@ -512,7 +396,11 @@ const IndexVisitorContainer = ({ navigation }) => {
               <View style={{ flex: 1 }}>
                 <TouchableOpacity
                   activeOpacity={1.2}
-                  onPress={() => setOpenSearch(true)}
+                  onPress={()  => {
+                    setSelectedSortType(!selectedSortType);
+                    handleSort(!selectedSortType, (displayRegisterVisitor ? allRegisteredVisitor : allVisitorsHistory)
+                    );
+                  }}
                 >
                   <DropShadow
                     style={{
@@ -527,11 +415,10 @@ const IndexVisitorContainer = ({ navigation }) => {
                   >
                     <View
                       style={{
-                        backgroundColor: '#fff',
-                        height: 40,
                         borderRadius: 7,
                         borderWidth: 1,
                         borderColor: '#184461',
+                        backgroundColor: "#fff",
                         shadowColor: '#000',
                         shadowRadius: 10,
                         shadowOpacity: 0.6,
@@ -540,31 +427,13 @@ const IndexVisitorContainer = ({ navigation }) => {
                           width: 0,
                           height: 4,
                         },
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        marginEnd: 20,
-                        marginStart: 12,
+                        height: 40,
+                        width: "80%",
+                        justifyContent: "center",
+                        alignItems: "center"
                       }}
                     >
-                      <DropShadow
-                        style={{
-                          shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                          shadowOffset: {
-                            width: 0,
-                            height: 3,
-                          },
-                          shadowOpacity: 1,
-                          shadowRadius: 2,
-                        }}
-                      >
-                        <Icon
-                          name={'sort-amount-asc'}
-                          type={'FontAwesome'}
-                          color="#184461"
-                          size={20}
-                        />
-                      </DropShadow>
+                    <Icon type='MaterialCommunityIcons' name={ !selectedSortType ? 'sort-ascending' : 'sort-descending'} size={25} color="#000"/>
                     </View>
                   </DropShadow>
                 </TouchableOpacity>
@@ -612,9 +481,6 @@ const IndexVisitorContainer = ({ navigation }) => {
                   placeholderTextColor={'#666666'}
                   value={searchRegisterVisitor}
                   onChangeText={text => setSearchRegisterVisitor(text)}
-                  // onBlur={()=> setOpenSearch(false)}
-                  // blurOnSubmit={()=> setOpenSearch(false)}
-                  // onSubmitEditing={()=> setOpenSearch(false)}
                   autoFocus={true}
                   style={{
                     width: '90%',
@@ -678,9 +544,6 @@ const IndexVisitorContainer = ({ navigation }) => {
                   placeholderTextColor={'#666666'}
                   value={searchHistoryVisitor}
                   onChangeText={text => setSearchHistoryVisitor(text)}
-                  // onBlur={()=> setOpenSearch(false)}
-                  // blurOnSubmit={()=> setOpenSearch(false)}
-                  // onSubmitEditing={()=> setOpenSearch(false)}
                   autoFocus={true}
                   style={{
                     width: '90%',
@@ -1132,7 +995,7 @@ const IndexVisitorContainer = ({ navigation }) => {
           </View>
         ) : (
           <View>
-            {customized_visitors_history.map((v, key) => (
+              {customized_visitors_history.map((v, key) => (
               <View
                 key={key}
                 style={{

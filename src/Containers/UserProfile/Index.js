@@ -23,7 +23,6 @@ const IndexUserProfileContainer = ({ navigation }) => {
     virtualCard => virtualCard.virtualCard.defaultCard,
   )
   const dispatch = useDispatch()
-
   const handCardSelected = item => {
     dispatch(setDefaultCard(item.VirtualKey))
   }

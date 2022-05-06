@@ -208,13 +208,15 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               borderBottomWidth: 1,
               borderColor: '#45969A',
               fontSize: 20,
-              color: fullName === 'Full Name' ? '#C4C3C9' : '#457C9A',
               fontWeight: '900',
               paddingBottom: 0,
+              color:'#457C9A'
+             
             }}
             value={fullName}
             placeholder={placeholder.fullName}
             onChangeText={text => setFullName(text)}
+            placeholderTextColor={'#A6A2A2' }
             onFocus={() => {
               setPlaceholder({ ...placeholder, fullName: '' })
             }}
@@ -244,14 +246,15 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               borderBottomWidth: 1,
               borderColor: '#45969A',
               fontSize: 20,
-              color: ICNumber === '0000000000' ? '#C4C3C9' : '#457C9A',
               fontWeight: '900',
               paddingBottom: 0,
+              color:'#457C9A',
             }}
             value={ICNumber}
             placeholder={placeholder.ICNumber}
             keyboardType={'number-pad'}
             onChangeText={text => setICNumber(text)}
+            placeholderTextColor={'#A6A2A2'}
             onFocus={() => {
               setPlaceholder({ ...placeholder, ICNumber: '' })
             }}
@@ -281,13 +284,16 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               borderBottomWidth: 1,
               borderColor: '#45969A',
               fontSize: 20,
-              color: carPlateNum === 'ABC 12345' ? '#C4C3C9' : '#457C9A',
               fontWeight: '900',
               paddingBottom: 0,
+              color:'#457C9A'
+              
             }}
             value={carPlateNum}
             placeholder={placeholder.carPlateNum}
             onChangeText={text => setCarPlateNum(text)}
+            placeholderTextColor={'#A6A2A2'}
+            ICNumber
             onFocus={() => {
               setPlaceholder({ ...placeholder, carPlateNum: '' })
             }}
@@ -317,14 +323,15 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               borderBottomWidth: 1,
               borderColor: '#45969A',
               fontSize: 20,
-              color: mobileNumber === '000 00000000' ? '#C4C3C9' : '#457C9A',
               fontWeight: '900',
               paddingBottom: 0,
+              color:'#457C9A'
             }}
             value={mobileNumber}
             placeholder={placeholder.mobileNumber}
             keyboardType={'number-pad'}
             onChangeText={text => setMobileNumber(text)}
+            placeholderTextColor={'#A6A2A2'}
             onFocus={() => {
               setPlaceholder({ ...placeholder, mobileNumber: '' })
             }}

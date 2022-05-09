@@ -6,11 +6,10 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
-  Dimensions,
+  TextInput
 } from 'react-native'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
-import { launchImageLibrary } from 'react-native-image-picker'
+import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage } from 'react-native-flash-message'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-dynamic-vector-icons'
@@ -167,39 +166,29 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
   }, [])
 
   const handleAttachLogo = () => {
-    launchImageLibrary(
-      {
-        noData: true,
-        selectionLimit: 1,
-        mediaType: 'photo',
-        includeBase64: true,
-      },
-      response => {
-        if (!response.didCancel) {
-          setLogo(response.assets[0].base64)
-        }
-      },
-    )
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true
+    }).then(response => {
+      setLogo(response.data);
+    })
   }
 
   const handleAttachCard = (location = '') => {
-    launchImageLibrary(
-      {
-        noData: true,
-        selectionLimit: 1,
-        mediaType: 'photo',
-        includeBase64: true,
-      },
-      response => {
-        if (!response.didCancel) {
-          if (location === 'front') {
-            setCardFront(response.assets[0].base64)
-          } else {
-            setCardBack(response.assets[0].base64)
-          }
-        }
-      },
-    )
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      includeBase64: true
+    }).then(response => {
+      if (location === 'front') {
+        setCardFront(response.data)
+      } else {
+        setCardBack(response.data)
+      }
+    })
   }
 
   const handleSaveCard = async () => {

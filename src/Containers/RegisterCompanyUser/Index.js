@@ -5,16 +5,13 @@ import {
   Text,
   ImageBackground,
   Image,
-  ScrollView,
-  TextInput,
+  ScrollView
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
-import { regexStr } from '@/Assets/Constants'
-import { navigate } from '@/Navigators/utils'
 import DropShadow from 'react-native-drop-shadow'
 import ImagePicker from 'react-native-image-crop-picker'
-import { showMessage, hideMessage } from 'react-native-flash-message'
+import { showMessage } from 'react-native-flash-message'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useOrientation } from '../useOrientation'
 import { registerUser, requestProfile } from '@/api-utils'
@@ -24,7 +21,7 @@ import { useDispatch } from 'react-redux'
 
 
 const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
-  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
+  const { Layout, Images, Colors, MetricsSizes } = useTheme()
   const [photo, setPhoto] = useState(null)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -49,7 +46,7 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true,
+      cropping: true
     }).then(image => {
       setPhoto(image)
     })

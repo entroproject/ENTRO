@@ -19,6 +19,7 @@ import { inviteVisitors } from '@/api-utils'
 import Icon from 'react-native-dynamic-vector-icons'
 import { Dropdown } from 'react-native-element-dropdown'
 
+
 const IndexAddVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
   const [fullName, setFullName] = useState('')
@@ -370,7 +371,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                 fontWeight: '900',
                 color: '#457C9A',
               }}
-              inputSearchStyle={{ height: 40, fontSize: 16 }}
+              inputSearchStyle={{ height: 40, fontSize: 16, color:'#000', fontWeight:'bold'}}
               data={data}
               search
               maxHeight={300}
@@ -430,6 +431,10 @@ const IndexAddVisitorContainer = ({ navigation }) => {
           open={openStartVisit}
           date={startVisitDate_Picked}
           mode={'datetime'}
+          androidVariant={'iosClone'}
+          title= {"Select Visit Start Date"}
+          confirmText={"Confirm Date"}
+          cancelText={"Cancel"}
           onConfirm={date => {
             setOpenStartVisit(false)
             setStartVisitDate__Picked(date)
@@ -439,6 +444,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
             setOpenStartVisit(false)
           }}
         />
+
 
         <View style={{ marginTop: 30 }}>
           <Text
@@ -480,6 +486,10 @@ const IndexAddVisitorContainer = ({ navigation }) => {
           open={openEndVisit}
           date={endVisitDate_Picked}
           mode={'datetime'}
+          androidVariant={'iosClone'}
+          title= {"Select Visit End Date"}
+          confirmText={"Confirm Date"}
+          cancelText={"Cancel"}
           onConfirm={date => {
             setOpenEndVisit(false)
             setEndVisitDate__Picked(date)

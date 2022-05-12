@@ -31,16 +31,18 @@ const IndexUserProfileContainer = ({ navigation }) => {
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
       {/* header start */}
       <View style={{ backgroundColor: '#184461', height: 144 }}>
-        <Icon
-          name="arrow-left"
-          type="Feather"
-          size={35}
-          color="#fff"
-          style={{ margin: 20 }}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
+       
+      
+       <Icon
+       name="x"
+       type="Feather"
+       size={30}
+       color="#fff"
+       style={{ margin: 20,  alignSelf:'flex-end' }}
+       onPress={() => {navigation.goBack();}}
+     />
+   
+     
       </View>
       {/* header end */}
       {/* card start */}

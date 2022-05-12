@@ -79,8 +79,7 @@ const CardComponent = ({
                   : businessCards[key].id,
               )
             }}
-
-            style={{justifyContent: 'center', alignItems: 'center', }}
+            style={{ justifyContent: 'center', alignItems: 'center' }}
           >
             <View
               style={{
@@ -244,7 +243,6 @@ const CardComponent = ({
                 >
                   <View
                     style={{
-                      width: '90%',
                       backgroundColor: '#fff',
                       elevation: 10,
                       marginBottom: 10,
@@ -264,12 +262,13 @@ const CardComponent = ({
                       style={{
                         flexDirection: 'row',
                         marginTop: 8,
-                        marginHorizontal: 30,
+                        marginHorizontal: 10,
                         alignSelf: 'center',
-                        width: orientation === 'PORTRAIT' ? '90%' : null,
+                        width: '90%',
+                        padding: orientation === 'PORTRAIT' ? null : 20,
                       }}
                     >
-                      <View style={{ marginEnd: 5 }}>
+                      <View style={{ padding: 8 }}>
                         <Image
                           source={{
                             uri: `data:image/jpeg;base64,${businessCards[
@@ -283,7 +282,7 @@ const CardComponent = ({
                           resizeMode={'cover'}
                         />
                       </View>
-                      <View style={{}}>
+                      <View style={{ padding: 8 }}>
                         <Image
                           source={{
                             uri: `data:image/jpeg;base64,${businessCards[
@@ -317,7 +316,6 @@ const CardComponent = ({
                         {/**share business card */}
                         <TouchableOpacity
                           onPress={() => {
-                           
                             onShare(businessCards[key])
                           }}
                           style={{
@@ -383,8 +381,6 @@ const CardComponent = ({
           </TouchableOpacity>
         </View>
       ))}
-
-    
     </View>
   )
 }

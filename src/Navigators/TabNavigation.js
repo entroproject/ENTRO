@@ -23,16 +23,16 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
 
   if (isSelected) {
     return (
-      <View style={{ flex: 1, alignItems: 'center' }}>
+      <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#ffffff'}}>
         <View style={{ flexDirection: 'row', position: 'absolute', top: 0 }}>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}></View>
+          <View style={{ flex: 1, backgroundColor: '#ffffff' }}></View>
           <Svg width={75} height={61} viewBox="0 0 75 61">
             <Path
               d="M75.2 0v61H0V0c4.1 0 7.4 3.1 7.9 7.1C10 21.7 22.5 33 37.7 33c15.2 0 27.7-11.3 29.7-25.9.5-4 3.9-7.1 7.9-7.1h-.1z"
-              fill={'#fff'}
+              fill={'#ffffff'}
             />
           </Svg>
-          <View style={{ flex: 1, backgroundColor: '#fff' }}></View>
+          <View style={{ flex: 1, backgroundColor: '#ffffff' }}></View>
         </View>
 
         <TouchableOpacity
@@ -57,7 +57,7 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
         style={{
           flex: 1,
           height: 60,
-          backgroundColor: '#fff',
+          backgroundColor: '#ffffff',
         }}
         activeOpacity={1}
         onPress={onPress}
@@ -79,7 +79,7 @@ const CustomTabBar = props => {
             left: 0,
             right: 0,
             height: 30,
-            backgroundColor: '#fff',
+            backgroundColor: '#ffffff',
           }}
         ></View>
         <BottomTabBar {...props.props} />
@@ -95,7 +95,8 @@ const CustomTabBar = props => {
             left: 0,
             right: 0,
             height: 30,
-            backgroundColor: 'white',
+            backgroundColor: '#fff',
+            flex:1
           }}
         ></View>
         <BottomTabBar {...props.props} />

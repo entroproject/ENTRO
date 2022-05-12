@@ -20,7 +20,7 @@ import { showMessage, hideMessage } from 'react-native-flash-message'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useOrientation } from '../useOrientation'
 import { useSelector } from 'react-redux'
-import FloatingLabel from 'react-native-floating-labels'
+
 
 const IndexEditUserContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -35,10 +35,10 @@ const IndexEditUserContainer = ({ navigation }) => {
   const orientation = useOrientation()
 
   const [placeholder, setPlaceholder] = useState({
-    fullName: 'Mohamad Faisal',
-    contactNumber: ' 60176143035',
-    emailAddress: 'servosecurity@gmail.com',
-    carPlateNum: 'AVD 8801',
+    fullName: 'FullName',
+    contactNumber: 'Contact Number',
+    emailAddress: 'Email Address',
+    carPlateNum: 'Car Number',
   })
 
   const uploadPhoto = () => {
@@ -217,20 +217,21 @@ const IndexEditUserContainer = ({ navigation }) => {
                 borderBottomWidth: 1,
                 borderColor: '#45969A',
                 fontSize: 20,
-                color: fullName === 'Mohamad Faisal' ? '#C4C3C9' : '#457C9A',
                 fontWeight: '900',
                 paddingBottom: 0,
+                color:'#457C9A'
               }}
               value={fullName}
               placeholder={placeholder.fullName}
               onChangeText={text => setFullName(text)}
+              placeholderTextColor={'#A6A2A2'}
               onFocus={() => {
                 setPlaceholder({ ...placeholder, fullName: '' })
               }}
               onBlur={() => {
                 setPlaceholder({
                   ...placeholder,
-                  fullName: 'Mohamad Faisal',
+                  fullName: 'FullName',
                 })
               }}
             />
@@ -255,13 +256,14 @@ const IndexEditUserContainer = ({ navigation }) => {
                 borderBottomWidth: 1,
                 borderColor: '#45969A',
                 fontSize: 20,
-                color: contactNumber === '+60176143035' ? '#C4C3C9' : '#457C9A',
                 fontWeight: '900',
                 paddingBottom: 0,
+                color:'#457C9A'
               }}
               value={contactNumber}
               placeholder={placeholder.contactNumber}
               onChangeText={text => setContactNumber(text)}
+              placeholderTextColor={'#A6A2A2'}
               keyboardType={'number-pad'}
               onFocus={() => {
                 setPlaceholder({ ...placeholder, contactNumber: '' })
@@ -269,7 +271,7 @@ const IndexEditUserContainer = ({ navigation }) => {
               onBlur={() => {
                 setPlaceholder({
                   ...placeholder,
-                  contactNumber: '+60176143035',
+                  contactNumber: 'Contact Number',
                 })
               }}
             />
@@ -292,23 +294,21 @@ const IndexEditUserContainer = ({ navigation }) => {
                 borderBottomWidth: 1,
                 borderColor: '#45969A',
                 fontSize: 20,
-                color:
-                  carPlateNum === 'AVD 8801'
-                    ? '#C4C3C9'
-                    : '#457C9A',
                 fontWeight: '900',
                 paddingBottom: 0,
+                color:'#457C9A'
               }}
               value={carPlateNum}
               placeholder={placeholder.carPlateNum}
               onChangeText={text => setCarPlateNum(text)}
+              placeholderTextColor={'#A6A2A2'}
               onFocus={() => {
                 setPlaceholder({ ...placeholder, carPlateNum: '' })
               }}
               onBlur={() => {
                 setPlaceholder({
                   ...placeholder,
-                  carPlateNum: 'AVD 8801',
+                  carPlateNum: 'Car Number',
                 })
               }}
             />
@@ -331,23 +331,21 @@ const IndexEditUserContainer = ({ navigation }) => {
                 borderBottomWidth: 1,
                 borderColor: '#45969A',
                 fontSize: 20,
-                color:
-                  emailAddress === 'servosecurity@gmail.com'
-                    ? '#C4C3C9'
-                    : '#457C9A',
                 fontWeight: '900',
                 paddingBottom: 0,
+                color:'#457C9A'
               }}
               value={emailAddress}
               placeholder={placeholder.emailAddress}
               onChangeText={text => setEmailAddress(text)}
+              placeholderTextColor={'#A6A2A2'}
               onFocus={() => {
                 setPlaceholder({ ...placeholder, emailAddress: '' })
               }}
               onBlur={() => {
                 setPlaceholder({
                   ...placeholder,
-                  emailAddress: 'servosecurity@gmail.com',
+                  emailAddress: 'Email Address',
                 })
               }}
             />

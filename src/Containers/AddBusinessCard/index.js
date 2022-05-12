@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { useTheme } from '@/Hooks'
-import FloatingLabel from 'react-native-floating-labels'
+
 
 const CardUpload = ({
   cardFront,
@@ -172,13 +172,16 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
   const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
   const [showUploadScreen, setShowUploadScreen] = useState(false)
+  
 
   const [placeholder, setPlaceholder] = useState({
-    fname: 'Mohamad Faisal',
-    bname: 'Servo Security Sdn Bhd',
-    bwebsite: 'www.servosecurity.my',
-    phone: '60176143035',
+    fname: 'FullName',
+    bname: 'Business Name',
+    bwebsite: 'Company Website',
+    phone: 'Phone Number',
   })
+
+ 
 
   const handleAttachLogo = () => {
     launchImageLibrary(
@@ -187,6 +190,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
         selectionLimit: 1,
         mediaType: 'photo',
         includeBase64: true,
+        
       },
       response => {
         if (!response.didCancel) {
@@ -397,7 +401,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 onBlur={() => {
                   setPlaceholder({
                     ...placeholder,
-                    fname: 'Mohamad Faisal',
+                    fname: 'FullName',
                   })
                 }}
               />
@@ -437,7 +441,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 onBlur={() => {
                   setPlaceholder({
                     ...placeholder,
-                    bname: 'Servo Security Sdn Bhd',
+                    bname: 'Business Name',
                   })
                 }}
               />
@@ -476,7 +480,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 onBlur={() => {
                   setPlaceholder({
                     ...placeholder,
-                    bwebsite: 'www.servosecurity.my',
+                    bwebsite: 'Company Website',
                   })
                 }}
               />
@@ -517,7 +521,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 onBlur={() => {
                   setPlaceholder({
                     ...placeholder,
-                    phone: '60176143035',
+                    phone: 'Phone Number',
                   })
                 }}
               />
@@ -565,7 +569,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
               <View style={{ marginTop: 6, alignItems: 'flex-end' }}>
                 {logo ? (
                   <Image
-                    source={{ uri: `data:image/jpeg;base64,${logo}` }}
+                    source={{ uri: `data:image/jpeg;base64,${logo}`}}
                     style={{
                       resizeMode: 'cover',
                       width: 100,

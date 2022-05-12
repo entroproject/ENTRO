@@ -21,7 +21,7 @@ import { registerUser, requestProfile } from '@/api-utils'
 import { loginUser } from '@/Features/users'
 import { addCard, setDefaultCard } from '@/Features/virtualCards'
 import { useDispatch } from 'react-redux'
-import FloatingLabel from 'react-native-floating-labels'
+
 
 const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -35,6 +35,15 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
   const [loading, setLoading] = useState(false)
   const orientation = useOrientation()
   const dispatch = useDispatch()
+
+  const [placeholder, setPlaceholder] = useState({
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    emailAddress: 'Email Address',
+    companyName: 'Company Name',
+    carPlateNum: 'Vehcicle Number'
+
+  })
 
   const uploadPhoto = () => {
     ImagePicker.openPicker({
@@ -64,6 +73,37 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
       return false
     }
 
+    if(!regexStr.email.test(emailAddress)){
+      setLoading(false)
+      showMessage({
+        message: 'Please enter a valid email',
+        backgroundColor: 'red',
+        duration: 3000,
+      })
+      return false
+    }
+
+    if(!regexStr.name.test(firstName) || !regexStr.name.test(lastName) ){
+      setLoading(false)
+      showMessage({
+        message: 'Please enter your real name',
+        backgroundColor: 'red',
+        duration: 3000,
+      })
+      return false
+    }
+
+    if(!regexStr.carplate.test(carPlateNum) ){
+      setLoading(false)
+      showMessage({
+        message: 'Please enter a valid vehicle number',
+        backgroundColor: 'red',
+        duration: 3000,
+      })
+      return false
+    }
+
+   
     // register user
 
     const req_register = await registerUser({
@@ -239,29 +279,26 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
                         },
                       ]}
                     >
-                      <FloatingLabel
-                        labelStyle={{
-                          color: '#A6A2A2',
-                          fontSize: 14,
-                          fontWeight: '500',
-                          padding: firstName !== '' ? 5 : 3,
-                        }}
-                        inputStyle={{
-                          borderWidth: 0,
-                          fontSize: 14,
-                          fontWeight: '700',
-                          color: '#000',
-                        }}
-                        Value={firstName}
-                        onChangeText={text => setFirstName(text)}
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 14,
-                          padding: firstName !== '' ? 3 : 7,
-                        }}
-                      >
-                        Enter first name
-                      </FloatingLabel>
+                    <TextInput
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '900',
+                      color:'#457C9A'
+                    }}
+                    value={firstName}
+                    placeholder={placeholder.firstName}
+                    onChangeText={text => setFirstName(text)}
+                    placeholderTextColor={'#A6A2A2'}
+                    onFocus={() => {
+                      setPlaceholder({ ...placeholder, firstName: '' })
+                    }}
+                    onBlur={() => {
+                      setPlaceholder({
+                        ...placeholder,
+                        firstName: 'First Name',
+                      })
+                    }}
+                  />
                     </View>
                   </DropShadow>
                   {/**first Name label ends here */}
@@ -298,29 +335,26 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
                         },
                       ]}
                     >
-                      <FloatingLabel
-                        labelStyle={{
-                          color: '#A6A2A2',
-                          fontSize: 14,
-                          fontWeight: '500',
-                          padding: lastName !== '' ? 5 : 3,
-                        }}
-                        inputStyle={{
-                          borderWidth: 0,
-                          fontSize: 14,
-                          fontWeight: '700',
-                          color: '#000',
-                        }}
-                        Value={lastName}
-                        onChangeText={text => setLastName(text)}
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 14,
-                          padding: lastName !== '' ? 3 : 7,
-                        }}
-                      >
-                        Enter last name
-                      </FloatingLabel>
+                    <TextInput
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '900',
+                      color:'#457C9A'
+                    }}
+                    value={lastName}
+                    placeholder={placeholder.lastName}
+                    onChangeText={text => setLastName(text)}
+                    placeholderTextColor={'#A6A2A2'}
+                    onFocus={() => {
+                      setPlaceholder({ ...placeholder, lastName: '' })
+                    }}
+                    onBlur={() => {
+                      setPlaceholder({
+                        ...placeholder,
+                        lastName: 'Last Name',
+                      })
+                    }}
+                  />
                     </View>
                   </DropShadow>
                   {/**last Name label ends here */}
@@ -357,29 +391,26 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
                         },
                       ]}
                     >
-                      <FloatingLabel
-                        labelStyle={{
-                          color: '#A6A2A2',
-                          fontSize: 14,
-                          fontWeight: '500',
-                          padding: emailAddress !== '' ? 5 : 3,
-                        }}
-                        inputStyle={{
-                          borderWidth: 0,
-                          fontSize: 14,
-                          fontWeight: '700',
-                          color: '#000',
-                        }}
-                        Value={emailAddress}
-                        onChangeText={text => setEmailAddress(text)}
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 14,
-                          padding: emailAddress !== '' ? 3 : 7,
-                        }}
-                      >
-                        Enter email address
-                      </FloatingLabel>
+                    <TextInput
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '900',
+                      color:'#457C9A'
+                    }}
+                    value={emailAddress}
+                    placeholder={placeholder.emailAddress}
+                    onChangeText={text => setEmailAddress(text)}
+                    placeholderTextColor={'#A6A2A2'}
+                    onFocus={() => {
+                      setPlaceholder({ ...placeholder, emailAddress: '' })
+                    }}
+                    onBlur={() => {
+                      setPlaceholder({
+                        ...placeholder,
+                        emailAddress: 'Email Address',
+                      })
+                    }}
+                  />
                     </View>
                   </DropShadow>
                   {/**email address label starts here */}
@@ -416,29 +447,26 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
                         },
                       ]}
                     >
-                      <FloatingLabel
-                        labelStyle={{
-                          color: '#A6A2A2',
-                          fontSize: 14,
-                          fontWeight: '500',
-                          padding: companyName !== '' ? 5 : 3,
-                        }}
-                        inputStyle={{
-                          borderWidth: 0,
-                          fontSize: 14,
-                          fontWeight: '700',
-                          color: '#000',
-                        }}
-                        Value={companyName}
-                        onChangeText={text => setCompanyName(text)}
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 14,
-                          padding: companyName !== '' ? 3 : 7,
-                        }}
-                      >
-                        Enter company name
-                      </FloatingLabel>
+                    <TextInput
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '900',
+                      color:'#457C9A'
+                    }}
+                    value={companyName}
+                    placeholder={placeholder.companyName}
+                    onChangeText={text => setCompanyName(text)}
+                    placeholderTextColor={'#A6A2A2'}
+                    onFocus={() => {
+                      setPlaceholder({ ...placeholder, companyName: '' })
+                    }}
+                    onBlur={() => {
+                      setPlaceholder({
+                        ...placeholder,
+                        companyName: 'Company Name',
+                      })
+                    }}
+                  />
                     </View>
                   </DropShadow>
                   {/**company label starts here */}
@@ -475,29 +503,26 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
                         },
                       ]}
                     >
-                      <FloatingLabel
-                        labelStyle={{
-                          color: '#A6A2A2',
-                          fontSize: 14,
-                          fontWeight: '500',
-                          padding: carPlateNum !== '' ? 5 : 3,
-                        }}
-                        inputStyle={{
-                          borderWidth: 0,
-                          fontSize: 14,
-                          fontWeight: '700',
-                          color: '#000',
-                        }}
-                        Value={carPlateNum}
-                        onChangeText={text => setCarPlateNum(text)}
-                        style={{
-                          fontWeight: '700',
-                          fontSize: 14,
-                          padding: carPlateNum !== '' ? 3 : 7,
-                        }}
-                      >
-                        Enter vehicle number
-                      </FloatingLabel>
+                    <TextInput
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '900',
+                      color:'#457C9A'
+                    }}
+                    value={carPlateNum}
+                    placeholder={placeholder.carPlateNum}
+                    onChangeText={text => setCarPlateNum(text)}
+                    placeholderTextColor={'#A6A2A2'}
+                    onFocus={() => {
+                      setPlaceholder({ ...placeholder, carPlateNum: '' })
+                    }}
+                    onBlur={() => {
+                      setPlaceholder({
+                        ...placeholder,
+                        carPlateNum: 'Vehicle Number',
+                      })
+                    }}
+                  />
                     </View>
                   </DropShadow>
                   {/**car number starts here */}

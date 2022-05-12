@@ -37,7 +37,7 @@ const ApplicationNavigator = () => {
   const isLogged = useSelector(user => user.user.isLoggedIn)
   return (
     <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
-      <NavigationContainer theme={NavigationTheme} ref={navigationRef}>
+      <NavigationContainer theme={{colors: { background: '#000' }}} ref={navigationRef} >
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Startup" component={StartupContainer} />
@@ -76,13 +76,17 @@ const ApplicationNavigator = () => {
             component={TabNavigation}
             options={{
               animationEnabled: false,
+              
             }}
+           
           />
               <Stack.Screen
                 name="MainHome"
+                
                 component={IndexHomeContainer}
                 options={{
                   animationEnabled: false,
+                  cardStyle: { opacity: 1 }
                 }}
               />
 

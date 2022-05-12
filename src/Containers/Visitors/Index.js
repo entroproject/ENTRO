@@ -13,66 +13,67 @@ import moment from 'moment'
 import { useTheme } from '@/Hooks'
 import { useOrientation } from '../useOrientation'
 import { ButtonGroup } from 'react-native-elements'
-import { getVisitors, getVisitorsHistory } from '@/api-utils';
-import * as Constants from '@/Assets/Constants';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-dynamic-vector-icons';
-import DropShadow from 'react-native-drop-shadow';
-import {Picker} from '@react-native-picker/picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
+import { getVisitors, getVisitorsHistory } from '@/api-utils'
+import * as Constants from '@/Assets/Constants'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+import Icon from 'react-native-dynamic-vector-icons'
+import DropShadow from 'react-native-drop-shadow'
+import { Picker } from '@react-native-picker/picker'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 const IndexVisitorContainer = ({ navigation }) => {
-  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme();
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [allRegisteredVisitor, setAllRegisteredVisitor] = useState([]);
-  const [allVisitorsHistory, setAllVisitorsHistory] = useState([]);
-  const [customized_visitors, setCustomized_visitors] = useState([]);
+  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [allRegisteredVisitor, setAllRegisteredVisitor] = useState([])
+  const [allVisitorsHistory, setAllVisitorsHistory] = useState([])
+  const [customized_visitors, setCustomized_visitors] = useState([])
   const [customized_visitors_history, setCustomized_visitors_history] =
-    useState([]);
-  const [loading, setLoading] = useState(true);
-  const orientation = useOrientation();
-  const isFocused = useIsFocused();
+    useState([])
+  const [loading, setLoading] = useState(true)
+  const orientation = useOrientation()
+  const isFocused = useIsFocused()
 
-  const [selectedSortType, setSelectedSortType] = useState(true);
+  const [selectedSortType, setSelectedSortType] = useState(true)
 
-  const [openSearch, setOpenSearch] = useState(false);
-  const [openSearchCalendar, setOpenSearchCalendar] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false)
+  const [openSearchCalendar, setOpenSearchCalendar] = useState(false)
 
-  const [searchRegisterVisitor, setSearchRegisterVisitor] = useState('');
-  const [searchHistoryVisitor, setSearchHistoryVisitor] = useState('');
+  const [searchRegisterVisitor, setSearchRegisterVisitor] = useState('')
+  const [searchHistoryVisitor, setSearchHistoryVisitor] = useState('')
 
-  const [displayRegisterVisitor, setDisplayRegisterVisitor] = useState(true);
+  const [displayRegisterVisitor, setDisplayRegisterVisitor] = useState(true)
 
-  const [currentIndex, setCurrentIndex] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(false)
 
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [date, setDate] = useState(new Date())
+  const [mode, setMode] = useState('date')
+  const [show, setShow] = useState(false)
 
   const onChange = (event, selectedDate) => {
-    setShow(false);
-    let data;
-    if(displayRegisterVisitor){
-      data = allRegisteredVisitor;
-    }else{
-      data = allVisitorsHistory;
+    setShow(false)
+    let data
+    if (displayRegisterVisitor) {
+      data = allRegisteredVisitor
+    } else {
+      data = allVisitorsHistory
     }
-    const _filtered_visitors = data.filter(a =>  new Date(Number( a.StartDateTime.replace(/\/date\(/gi, '')
-      .replace(/\//gi, '') 
-      .replace(/\)/gi, '')))
-      .toLocaleDateString() == new Date(selectedDate)
-      .toLocaleDateString()
-      ?
-      true
-      :false
+    const _filtered_visitors = data.filter(a =>
+      new Date(
+        Number(
+          a.StartDateTime.replace(/\/date\(/gi, '')
+            .replace(/\//gi, '')
+            .replace(/\)/gi, ''),
+        ),
+      ).toLocaleDateString() == new Date(selectedDate).toLocaleDateString()
+        ? true
+        : false,
     )
-    if(displayRegisterVisitor){
+    if (displayRegisterVisitor) {
       setCustomized_visitors(_filtered_visitors)
-    }else{
-      setCustomized_visitors_history(_filtered_visitors);
+    } else {
+      setCustomized_visitors_history(_filtered_visitors)
     }
-  };
+  }
 
   const resetRegVisitor = () => {
     setCustomized_visitors(allRegisteredVisitor)
@@ -85,10 +86,8 @@ const IndexVisitorContainer = ({ navigation }) => {
   const handleRegVisitor = () => {
     if (searchRegisterVisitor.length > 0) {
       const _filtered_visitors = allRegisteredVisitor.filter(c => {
-        if (
-          c.VisitorName.toLocaleLowerCase().includes(
-            searchRegisterVisitor.toLocaleLowerCase()
-          )
+        if (c.VisitorName.toLocaleLowerCase().includes(searchRegisterVisitor.toLocaleLowerCase())
+        || c.VehicleNumber.toLocaleLowerCase().includes(searchRegisterVisitor.toLocaleLowerCase()) 
         ) {
           return true
         }
@@ -103,10 +102,10 @@ const IndexVisitorContainer = ({ navigation }) => {
   const handleVisitorHistory = () => {
     if (searchHistoryVisitor.length > 0) {
       const _filtered_visitors = allVisitorsHistory.filter(c => {
-        if (
-          c.VehicleNumber.toLocaleLowerCase().includes(
-            searchHistoryVisitor.toLocaleLowerCase()
-          )
+        if (c.VehicleNumber.toLocaleLowerCase().includes(searchHistoryVisitor.toLocaleLowerCase()) 
+        || c.VisitorName.toLocaleLowerCase().includes(searchHistoryVisitor.toLocaleLowerCase())
+        || c.VisitorStatus.toLocaleLowerCase().includes(searchHistoryVisitor.toLocaleLowerCase())
+        || c.Visitortype.toLocaleLowerCase().includes(searchHistoryVisitor.toLocaleLowerCase())
         ) {
           return true
         }
@@ -119,56 +118,59 @@ const IndexVisitorContainer = ({ navigation }) => {
   }
 
   const handleSort = (order, data) => {
-    if(order){
-      const _filtered_visitors = data.sort((a,b) => {
-        if (new Date(
-          Number(
-            a.StartDateTime.replace(/\/date\(/gi, '')
-              .replace(/\//gi, '')
-              .replace(/\)/gi, ''),
-          ),
-        ) > new Date(
-          Number(
-            b.StartDateTime.replace(/\/date\(/gi, '')
-              .replace(/\//gi, '')
-              .replace(/\)/gi, ''),
-          ),
-        ) 
+    if (order) {
+      const _filtered_visitors = data.sort((a, b) => {
+        if (
+          new Date(
+            Number(
+              a.StartDateTime.replace(/\/date\(/gi, '')
+                .replace(/\//gi, '')
+                .replace(/\)/gi, ''),
+            ),
+          ) >
+          new Date(
+            Number(
+              b.StartDateTime.replace(/\/date\(/gi, '')
+                .replace(/\//gi, '')
+                .replace(/\)/gi, ''),
+            ),
+          )
         ) {
           return 1
         }
         return -1
       })
-      if(displayRegisterVisitor){
+      if (displayRegisterVisitor) {
         setCustomized_visitors(_filtered_visitors)
-      }else{
-        setCustomized_visitors_history(_filtered_visitors);
+      } else {
+        setCustomized_visitors_history(_filtered_visitors)
       }
-    }
-    else{
-      const _filtered_visitors = data.sort((a,b) => {
-        if (new Date(
-          Number(
-            a.StartDateTime.replace(/\/date\(/gi, '')
-              .replace(/\//gi, '')
-              .replace(/\)/gi, ''),
-          ),
-        ) < new Date(
-          Number(
-            b.StartDateTime.replace(/\/date\(/gi, '')
-              .replace(/\//gi, '')
-              .replace(/\)/gi, ''),
-          ),
-        ) 
+    } else {
+      const _filtered_visitors = data.sort((a, b) => {
+        if (
+          new Date(
+            Number(
+              a.StartDateTime.replace(/\/date\(/gi, '')
+                .replace(/\//gi, '')
+                .replace(/\)/gi, ''),
+            ),
+          ) <
+          new Date(
+            Number(
+              b.StartDateTime.replace(/\/date\(/gi, '')
+                .replace(/\//gi, '')
+                .replace(/\)/gi, ''),
+            ),
+          )
         ) {
           return 1
         }
         return -1
       })
-      if(displayRegisterVisitor){
+      if (displayRegisterVisitor) {
         setCustomized_visitors(_filtered_visitors)
-      }else{
-        setCustomized_visitors_history(_filtered_visitors);
+      } else {
+        setCustomized_visitors_history(_filtered_visitors)
       }
     }
   }
@@ -234,83 +236,80 @@ const IndexVisitorContainer = ({ navigation }) => {
           }}
         >
           {/**search calendar area starts here */}
-            <TouchableOpacity
-              activeOpacity={1.2}
-              onPress={() => setShow(true)}
+          <TouchableOpacity activeOpacity={1.2} onPress={() => setShow(true)}>
+            <DropShadow
+              style={{
+                shadowColor: '#282828',
+                shadowOffset: {
+                  width: 1,
+                  height: 2,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 2,
+              }}
             >
-              <DropShadow
+              <View
                 style={{
-                  shadowColor: '#282828',
+                  marginTop: 27,
+                  backgroundColor: '#fff',
+                  height: 40,
+                  marginHorizontal: 20,
+                  borderRadius: 7,
+                  borderWidth: 1,
+                  borderColor: '#184461',
+                  shadowColor: '#000',
+                  shadowRadius: 10,
+                  shadowOpacity: 0.6,
+                  elevation: 8,
                   shadowOffset: {
-                    width: 1,
-                    height: 2,
+                    width: 0,
+                    height: 4,
                   },
-                  shadowOpacity: 1,
-                  shadowRadius: 2,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
                 }}
               >
-                <View
+                <DropShadow
                   style={{
-                    marginTop: 27,
-                    backgroundColor: '#fff',
-                    height: 40,
-                    marginHorizontal: 20,
-                    borderRadius: 7,
-                    borderWidth: 1,
-                    borderColor: '#184461',
-                    shadowColor: '#000',
-                    shadowRadius: 10,
-                    shadowOpacity: 0.6,
-                    elevation: 8,
+                    shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                     shadowOffset: {
                       width: 0,
-                      height: 4,
+                      height: 3,
                     },
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'row',
+                    shadowOpacity: 1,
+                    shadowRadius: 2,
                   }}
                 >
-                  <DropShadow
-                    style={{
-                      shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                      shadowOffset: {
-                        width: 0,
-                        height: 3,
-                      },
-                      shadowOpacity: 1,
-                      shadowRadius: 2,
-                    }}
-                  >
-                    <Icon
-                      type="Feathers"
-                      name="search"
-                      color="#184461"
-                      size={27}
-                    />
-                  </DropShadow>
+                  <Icon
+                    type="Feathers"
+                    name="search"
+                    color="#184461"
+                    size={27}
+                  />
+                </DropShadow>
 
-                  <Text
-                    style={{
-                      color: '#184461',
-                      fontWeight: '700',
-                      fontSize: 12,
-                    }}
-                  >
-                    Calendar
-                  </Text>
-                </View>
-              </DropShadow>
-            </TouchableOpacity>
-              {show && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={date}
-                  mode={mode}
-                  is24Hour={true}
-                  onChange={onChange}
-                />
-              )}
+                <Text
+                  style={{
+                    color: '#184461',
+                    fontWeight: '700',
+                    fontSize: 12,
+                  }}
+                >
+                  Calendar
+                </Text>
+              </View>
+            </DropShadow>
+          </TouchableOpacity>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              is24Hour={true}
+              onChange={onChange}
+            />
+          )}
           {/**search calendar area ends here */}
 
           {/**search bar area starts here */}
@@ -323,7 +322,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 flex: 1,
               }}
             >
-              <View style={{ flex: 3, width: "100%" }}>
+              <View style={{ flex: 3, width: '100%' }}>
                 <TouchableOpacity
                   activeOpacity={1.2}
                   onPress={() => setOpenSearch(true)}
@@ -396,10 +395,14 @@ const IndexVisitorContainer = ({ navigation }) => {
               <View style={{ flex: 1 }}>
                 <TouchableOpacity
                   activeOpacity={1.2}
-                  onPress={()  => {
-                    setSelectedSortType(!selectedSortType);
-                    handleSort(!selectedSortType, (displayRegisterVisitor ? allRegisteredVisitor : allVisitorsHistory)
-                    );
+                  onPress={() => {
+                    setSelectedSortType(!selectedSortType)
+                    handleSort(
+                      !selectedSortType,
+                      displayRegisterVisitor
+                        ? allRegisteredVisitor
+                        : allVisitorsHistory,
+                    )
                   }}
                 >
                   <DropShadow
@@ -418,7 +421,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                         borderRadius: 7,
                         borderWidth: 1,
                         borderColor: '#184461',
-                        backgroundColor: "#fff",
+                        backgroundColor: '#fff',
                         shadowColor: '#000',
                         shadowRadius: 10,
                         shadowOpacity: 0.6,
@@ -428,12 +431,36 @@ const IndexVisitorContainer = ({ navigation }) => {
                           height: 4,
                         },
                         height: 40,
-                        width: "80%",
-                        justifyContent: "center",
-                        alignItems: "center"
+                        width: '70%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginStart: 10, marginEnd:20
                       }}
                     >
-                    <Icon type='MaterialCommunityIcons' name={ !selectedSortType ? 'sort-ascending' : 'sort-descending'} size={25} color="#000"/>
+
+                    <DropShadow
+                        style={{
+                          shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 1,
+                          shadowRadius: 2,
+                        }}
+                      >
+                      <Icon
+                      type="MaterialCommunityIcons"
+                      name={
+                        !selectedSortType
+                          ? 'sort-ascending'
+                          : 'sort-descending'
+                      }
+                      size={25}
+                      color="#000"
+                    />
+                      </DropShadow>
+                    
                     </View>
                   </DropShadow>
                 </TouchableOpacity>
@@ -453,10 +480,10 @@ const IndexVisitorContainer = ({ navigation }) => {
             >
               <View
                 style={{
-                  marginTop: 15,
+                  marginTop: 10,
                   backgroundColor: '#fff',
                   height: 40,
-                  marginHorizontal: 27,
+                  marginHorizontal: 20,
                   borderRadius: 7,
                   borderWidth: 1,
                   borderColor: '#184461',
@@ -475,7 +502,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 }}
               >
                 <TextInput
-                  placeholder={'Search register visitor'}
+                  placeholder={'Search registered visitor'}
                   returnKeyType={'search'}
                   keyboardType={'web-search'}
                   placeholderTextColor={'#666666'}
@@ -516,10 +543,10 @@ const IndexVisitorContainer = ({ navigation }) => {
             >
               <View
                 style={{
-                  marginTop: 15,
+                  marginTop: 10,
                   backgroundColor: '#fff',
                   height: 40,
-                  marginHorizontal: 27,
+                  marginHorizontal: 20,
                   borderRadius: 7,
                   borderWidth: 1,
                   borderColor: '#184461',
@@ -677,7 +704,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                   >
                     <View
                       style={{
-                        width: '93%',
+                        width: '100%',
                         backgroundColor: '#fff',
                         borderRadius: 10,
                         elevation: 10,
@@ -686,6 +713,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                         shadowRadius: 10,
                         shadowOpacity: 0.6,
                         elevation: 8,
+
                         shadowOffset: {
                           width: 0,
                           height: 4,
@@ -698,6 +726,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                           marginStart: 20,
                           marginEnd: 20,
                           marginVertical: 14,
+                          flex: 1,
                         }}
                       >
                         <View
@@ -706,7 +735,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                             justifyContent: 'space-evenly',
                           }}
                         >
-                          <View style={{}}>
+                          <View style={{ width: '20%' }}>
                             <Image
                               source={{
                                 uri: `data:image/png;base64,${v.VisitorImageLogo}`,
@@ -720,7 +749,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                             />
                           </View>
 
-                          <View style={{ marginStart: 15, width: '70%' }}>
+                          <View style={{ marginStart: 10, width: '70%' }}>
                             <Text
                               style={{
                                 fontSize: 14,
@@ -749,16 +778,16 @@ const IndexVisitorContainer = ({ navigation }) => {
                               ).toLocaleString()}
                             </Text>
                           </View>
+                        </View>
 
-                          <View style={{ flex: 1, marginStart: 10 }}>
-                            <Icon
-                              name={'ellipsis-v'}
-                              type={'FontAwesome'}
-                              size={30}
-                              color={'#000'}
-                              style={{}}
-                            />
-                          </View>
+                        <View style={{ flex: 1 }}>
+                          <Icon
+                            name={'ellipsis-v'}
+                            type={'FontAwesome'}
+                            size={30}
+                            color={'#184461'}
+                            style={{ alignSelf: 'flex-end' }}
+                          />
                         </View>
                       </View>
                     </View>
@@ -784,8 +813,8 @@ const IndexVisitorContainer = ({ navigation }) => {
                         >
                           <View
                             style={{
-                              width: '90%',
-                              height: 130,
+                              width: '95%',
+                            
                               backgroundColor: '#fff',
                               elevation: 10,
                               marginBottom: 10,
@@ -984,6 +1013,77 @@ const IndexVisitorContainer = ({ navigation }) => {
                                 />
                               </View>
                             </View>
+
+                            <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
+                              marginHorizontal: 20,
+                              marginVertical: 10,
+                            }}
+                          >
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                width: 110,
+                                justifyContent: 'space-evenly',
+                              }}
+                            >
+                              {/**share business card */}
+                              <TouchableOpacity
+                             
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <Icon
+                                  type="Entypo"
+                                  name="share"
+                                  size={23}
+                                  color="#184461"
+                                />
+                              </TouchableOpacity>
+                              {/**share business card ends here */}
+      
+                              {/**edit business card */}
+                              <TouchableOpacity
+                             
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <Icon
+                                  type="FontAwesome"
+                                  name="edit"
+                                  size={23}
+                                  color="#184461"
+                                />
+                              </TouchableOpacity>
+                              {/**edit business card ends here */}
+      
+                              {/**delete business card */}
+                              <TouchableOpacity
+                                onPress={() => {
+                                 
+                                }}
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <Icon
+                                  type="Foundation"
+                                  name="trash"
+                                  size={23}
+                                  color="#184461"
+                                />
+                              </TouchableOpacity>
+      
+                              {/**delete business card ends here */}
+                            </View>
+                          </View>
                           </View>
                         </View>
                       </DropShadow>
@@ -995,7 +1095,7 @@ const IndexVisitorContainer = ({ navigation }) => {
           </View>
         ) : (
           <View>
-              {customized_visitors_history.map((v, key) => (
+            {customized_visitors_history.map((v, key) => (
               <View
                 key={key}
                 style={{

@@ -22,7 +22,8 @@ export const Colors = {
   textColor:'#184461',
   mediumGray: '#D1D1D1',
   greenGradient:['#184461', '#45969A', '#74EBD5'],
-  lightGreen:'#74EBD5'
+  lightGreen:'#74EBD5',
+  blackColor:'#000000'
 }
 
 export const NavigationColors = {

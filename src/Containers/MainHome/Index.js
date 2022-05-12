@@ -19,6 +19,7 @@ import { useOrientation } from '../useOrientation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAnnouncements } from '@/api-utils'
 import { addAnnouncement } from '@/Features/announcements'
+import LottieView from 'lottie-react-native'
 import ViewMoreText from 'react-native-view-more-text'
 import Moment from 'react-moment'
 
@@ -39,7 +40,6 @@ const IndexHomeContainer = ({ navigation }) => {
     dispatch(addAnnouncement(ann.Announcement))
     setAnnouncementLoading(false)
   }
-
 
   useEffect(() => {
     handleGetAnnouncements()
@@ -121,11 +121,39 @@ const IndexHomeContainer = ({ navigation }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: 20,
+                
               }}
             >
-              <Text style={{ color: '#184461', fontSize: 20 }}>
-                <Text style={{ fontSize: 30 }}>🤩</Text> Welcome
-              </Text>
+
+           
+           
+
+            <View
+              style={{
+                width: '70%',
+                height: 35,
+                marginTop: 10,
+               
+                flexDirection:'row',
+               
+                justifyContent:'center',
+                alignItems:'center'
+              }}
+            >
+
+            
+            <Text style={{ fontSize: 28, marginRight:-10,  }}>🤩</Text> 
+              <LottieView
+                source={require('../../Assets/Lottie/welcome.json')}
+                autoPlay
+                loop
+                style={{ width: 120, marginTop:3}}
+              />
+            </View>
+            
+          
+              
+               
 
               <Text
                 style={{
@@ -151,21 +179,19 @@ const IndexHomeContainer = ({ navigation }) => {
               />
               {/* divider end */}
 
-              <Text
-                style={{ color: '#184461', fontSize: 12, marginBottom: 10 }}
-              >
+              <Text style={{ color: '#184461', fontSize: 12, marginBottom: 5 }}>
                 {' '}
-                Click the button below to
+                Click the button below to register
               </Text>
               <Text
                 style={{ color: '#184461', fontSize: 12, marginBottom: 10 }}
               >
                 {' '}
-                register your visitor
+                your visitor
               </Text>
 
               <PrimaryButttonComponent
-                label="Register Here"
+                label="Register Visitor"
                 iconRight={'user-plus'}
                 iconType={'FontAwesome'}
                 onPress={() => navigation.navigate('AddVistorInfo')}
@@ -536,7 +562,7 @@ const IndexHomeContainer = ({ navigation }) => {
             {announcementsLoading ? (
               <ActivityIndicator
                 size={50}
-                color="blue"
+                color='#184461'
                 style={{
                   alignSelf: 'center',
                 }}
@@ -552,7 +578,10 @@ const IndexHomeContainer = ({ navigation }) => {
                       itemIcon: ann.EventBannerLogo,
                       itemDesc: ann.Description,
                       itemDate: ann.EventStartAt,
+                      itemDateEnd: ann.EventEndAt,
+                      itemPlace: ann.Location,
                       itemDistance: '3.5miles',
+
                     })
                   }
                 >
@@ -584,8 +613,7 @@ const IndexHomeContainer = ({ navigation }) => {
                         }}
                         style={{
                           width: '40%',
-                          height: 110,
-                          resizeMode: 'cover',
+                          resizeMode: 'stretch',
                         }}
                       />
 
@@ -684,7 +712,7 @@ const IndexHomeContainer = ({ navigation }) => {
                             }}
                             numberOfLines={1}
                           >
-                            3.5 miles. Gunung Ledang Johor
+                            {ann.Location}
                           </Text>
                         </View>
                       </View>

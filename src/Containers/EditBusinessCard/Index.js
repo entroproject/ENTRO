@@ -148,10 +148,10 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
   const [showUploadScreen, setShowUploadScreen] = useState(false)
 
   const [placeholder, setPlaceholder] = useState({
-    fname: 'Enter Full Name',
+    fname: 'FullName',
     bname: 'Business Name',
-    bwebsite: 'Business Website',
-    phone: 'Business Phone Number',
+    bwebsite: 'Company Website',
+    phone: 'Phone Number',
   })
 
   useEffect(() => {
@@ -273,7 +273,7 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{flex: 1, backgroundColor: '#F1F1F1' }}>
       {/* header start */}
       <View style={{ height: 51, backgroundColor: '#184461' }}>
         <View
@@ -378,7 +378,7 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
                 onBlur={() => {
                   setPlaceholder({
                     ...placeholder,
-                    fname: 'Enter Full Name',
+                    fname: 'FullName',
                   })
                 }}
               />
@@ -457,7 +457,7 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
                 onBlur={() => {
                   setPlaceholder({
                     ...placeholder,
-                    bwebsite: 'Business Website',
+                    bwebsite: 'Company Website',
                   })
                 }}
               />
@@ -497,7 +497,7 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
                 onBlur={() => {
                   setPlaceholder({
                     ...placeholder,
-                    phone: 'Business Phone Number',
+                    phone: 'Phone Number',
                   })
                 }}
               />

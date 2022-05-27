@@ -21,19 +21,20 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useOrientation } from '../useOrientation'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from '@/Features/users'
+import { registerUser } from '@/api-utils'
 
 
-const IndexEditUserContainer = ({ navigation }) => {
+const IndexEditUserContainer = ({ navigation, route }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
-  const [photo, setPhoto] = useState(null)
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [emailAddress, setEmailAddress] = useState('')
-  const [companyName, setCompanyName] = useState('')
-  const [carPlateNum, setCarPlateNum] = useState('')
-  const [contactNumber, setContactNumber] = useState('')
-  const [loading, setLoading] = useState(false)
   const user = useSelector(user => user.user.profile)
+  const [photo, setPhoto] = useState(user.ProfileLogo)
+  const [firstName, setFirstName] = useState(user.FirstName)
+  const [lastName, setLastName] = useState(user.LastName)
+  const [emailAddress, setEmailAddress] = useState(user.Email)
+  const [companyName, setCompanyName] = useState(user.CompanyName)
+  const [carPlateNum, setCarPlateNum] = useState(user.VehicleNo)
+  const [contactNumber, setContactNumber] = useState(user.MobileNo)
+  const [loading, setLoading] = useState(false)
   const orientation = useOrientation()
   const dispatch = useDispatch();
   const accessId = useSelector(state => state.user.accessId);
@@ -56,7 +57,7 @@ const IndexEditUserContainer = ({ navigation }) => {
     })
   }
 
-  const SubmitForm = () => {
+  const SubmitForm = async () => {
     if (
       !firstName ||
       !lastName ||
@@ -91,9 +92,28 @@ const IndexEditUserContainer = ({ navigation }) => {
         ProfileLogo: photo,
         AccessId: accessId
       }
-      dispatch(updateUser(_data));
-      setLoading(false)
-      navigate('UserProfile')
+
+      const req_register = await registerUser(_data);
+      const res_register = await req_register.json();
+  
+      if (res_register.StatusCode !== '200') {
+        setLoading(false)
+        showMessage({
+          message: res_register.message,
+          backgroundColor: 'red',
+          duration: 2000,
+        })
+      } else {
+        setLoading(false)
+        showMessage({
+          message: "Account Updated",
+          backgroundColor: 'green',
+          duration: 2000,
+        })
+        dispatch(updateUser(_data));
+        setLoading(false)
+        navigation.goBack();
+      }
     }
   }
 

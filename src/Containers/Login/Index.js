@@ -139,6 +139,7 @@ const IndexLoginContainer = ({route}) => {
       setLoading(false);
       dispatch(addCard(cards.VirtualKey))
       dispatch(loginUser(prof))
+      dispatch(setAccessId(finalAccess));
       navigation.reset({
         index: 0,
         routes: [{ name: 'MainNav' }],

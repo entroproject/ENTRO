@@ -15,6 +15,7 @@ import { ButtonGroup } from 'react-native-elements'
 import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { useDispatch, useSelector } from 'react-redux'
+import { getContacts } from '@/api-utils'
 
 const IndexCommunityContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
@@ -23,14 +24,15 @@ const IndexCommunityContainer = ({ navigation }) => {
   const [openSearch, setOpenSearch] = useState(false)
 
   const user = useSelector(user => user.user.profile)
+  const accessId = useSelector(state => state.user.accessId);
+  const defaultCard = useSelector(state => state.virtualCard.defaultCard);
 
   const [searchEmergency, setSearchEmergency] = useState('')
-  const [allEmergency, setAllEmergency] = useState(user.Emergency)
-  const [userEmergencyFilter, setUserEmergencyFilter] = useState(user.Emergency)
-
+  const [allEmergency, setAllEmergency] = useState([])
+  const [userEmergencyFilter, setUserEmergencyFilter] = useState([])
+  const [allCommunity, setAllCommunity] = useState([])
+  const [userCommunityFilter, setUserCommunityFilter] = useState([])
   const [searchCommunity, setSearchCommunity] = useState('')
-  const [allCommunity, setAllCommunity] = useState(user.Community)
-  const [userCommunityFilter, setUserCommunityFilter] = useState(user.Community)
 
   useEffect(() => {
     if (selectedIndex === 0) {
@@ -38,7 +40,24 @@ const IndexCommunityContainer = ({ navigation }) => {
     } else {
       setDisplayContact(false)
     }
-  })
+  }, [selectedIndex]);
+
+  useEffect(()=> {
+    handleGetContacts();
+  }, [])
+
+
+  const handleGetContacts = async () => {
+    if(defaultCard){
+      const get_con = await getContacts(accessId, defaultCard.BuildingName)
+      const data = await get_con.json();
+      setAllEmergency(data.Emergency);
+      setUserEmergencyFilter(data.Emergency);
+      setAllCommunity(data.Community);
+      setUserCommunityFilter(data.Community);
+    }
+  }
+
 
   const handleSearchEmergency = () => {
     if (searchEmergency.length > 0) {
@@ -104,7 +123,44 @@ const IndexCommunityContainer = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
-      <View
+     {typeof defaultCard.BuildingName === 'undefined'
+      ?<View style={{
+          height: 500,
+          padding: 10,
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <Text style={{
+            fontSize: 30,
+            fontWeight: "bold",
+            color: "#000",
+            textAlign: "center"
+          }}>Oops</Text>
+          <Text style={{
+            fontSize: 15,
+            fontWeight: "bold",
+            color: "#000",
+            textAlign: "center"
+          }}>You haven't set up your default access card yet. Go to your profile and set it.</Text>
+          <TouchableOpacity 
+          onPress={()=> navigation.navigate("UserProfile")}
+          style={{
+            padding: 15,
+            backgroundColor: "#184461",
+            marginVertical: 20,
+            borderRadius: 10
+          }}>
+            <Text style={{
+              textAlign: "center",
+              color: "#fff",
+              fontWeight: "bold"
+            }}>Set it now</Text>
+          </TouchableOpacity>
+        </View>
+
+      :(
+        <>
+        <View
         style={{
           height: 144,
           backgroundColor: '#184461',
@@ -405,7 +461,10 @@ const IndexCommunityContainer = ({ navigation }) => {
 
       {displaycontact ? (
         <ScrollView style={{ marginTop: 10 }}>
-          {userEmergencyFilter.map((serv, key) => (
+          {
+            userEmergencyFilter.length == 0 ?
+            <Text style={{fontSize: 18, color: "#000c", textAlign: "center", marginTop: 20}}>No data available</Text>
+            :userEmergencyFilter.map((serv, key) => (
             <Pressable
               key={key}
               onPress={() => {
@@ -524,7 +583,10 @@ const IndexCommunityContainer = ({ navigation }) => {
         </ScrollView>
       ) : (
         <ScrollView style={{ marginTop: 10 }}>
-          {userCommunityFilter.map((com, key) => (
+          {
+            userCommunityFilter.length === 0 ?
+            <Text style={{fontSize: 18, color: "#000c", textAlign: "center", marginTop: 20}}>No data available</Text>
+            :userCommunityFilter.map((com, key) => (
             <Pressable
               key={key}
               onPress={() => {
@@ -642,6 +704,8 @@ const IndexCommunityContainer = ({ navigation }) => {
           ))}
         </ScrollView>
       )}
+      </>)
+     }
     </View>
   )
 }

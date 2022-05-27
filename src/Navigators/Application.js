@@ -27,6 +27,7 @@ import { navigationRef } from './utils'
 import TabNavigation from './TabNavigation'
 import IndexEditBusinessCardContainer from '@/Containers/EditBusinessCard/Index'
 import { useSelector } from 'react-redux'
+import IndexEditVisitorContainer from '@/Containers/EditVisitor/Index'
 
 const Stack = createStackNavigator()
 
@@ -41,9 +42,6 @@ const ApplicationNavigator = () => {
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Startup" component={StartupContainer} />
-
-         
-
           <Stack.Screen
             name="Login"
             component={IndexLoginContainer}
@@ -181,6 +179,14 @@ const ApplicationNavigator = () => {
               <Stack.Screen
                 name="AddVistorInfo"
                 component={IndexAddVisitorContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
+
+              <Stack.Screen
+                name="EditVistorInfo"
+                component={IndexEditVisitorContainer}
                 options={{
                   animationEnabled: false,
                 }}

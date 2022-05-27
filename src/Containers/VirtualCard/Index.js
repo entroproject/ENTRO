@@ -6,27 +6,30 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  TouchableOpacity
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import DropShadow from 'react-native-drop-shadow'
 import { getQRAccess } from '@/api-utils'
 import { useSelector } from 'react-redux'
+import Icon from 'react-native-dynamic-vector-icons'
 
 const IndexVirtualAccessContainer = ({ navigation }) => {
-  const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
+  const { Layout } = useTheme()
 
 
   const [loading, setLoading] = useState(false)
   const [image, setImage] = useState('')
   const [minutes, setMinutes] = useState('01');
   const [seconds, setSeconds] = useState('59');
-  const user = useSelector(user => user.user.profile)
+  const accessId = useSelector(state => state.user.accessId)
+  const defaultCard = useSelector(state => state.virtualCard.defaultCard);
   const height = Dimensions.get('screen').height
 
   const getImage = async () => {
     setLoading(true);
-    const req_img = await getQRAccess('')
-    const res_img = await req_img.json()
+    const req_img = await getQRAccess(accessId, defaultCard.BuildingName);
+    const res_img = await req_img.json();
     setImage(res_img);
     startCounter();
     setLoading(false);
@@ -61,7 +64,25 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
 
   return (
     <ScrollView style={{ backgroundColor: '#F1F1F1' }}>
-      {loading ? (
+      <View style={{
+        padding: 10
+      }}>
+        <TouchableOpacity 
+        onPress={()=> navigation.goBack()}
+        style={{
+          flexDirection: "row",
+          alignItems: "center"
+        }}>
+          <Icon type="Ionicons" color="#000" size={30} name="arrow-back" />
+          <Text style={{
+            color: "#000",
+            fontSize: 15,
+            fontWeight: "bold"
+          }}>Go back</Text>
+        </TouchableOpacity>
+      </View>
+      {loading ?
+      
         <View
           style={{
             minHeight: height * 0.6,
@@ -73,19 +94,60 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
             textAlign: "center",
             color: "#000",
             fontWeight: "bold",
-            fontSize: 20
+            fontSize: 18
           }}>Getting QR Access</Text>
         </View>
-      ) : (
+        :typeof defaultCard.BuildingLogo === 'undefined'
+       ?<View style={{
+          height: 500,
+          padding: 10,
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <Text style={{
+            fontSize: 30,
+            fontWeight: "bold",
+            color: "#000",
+            textAlign: "center"
+          }}>Oops</Text>
+          <Text style={{
+            fontSize: 15,
+            fontWeight: "bold",
+            color: "#000",
+            textAlign: "center"
+          }}>You haven't set up your default access card yet. Go to your profile and set it.</Text>
+          <TouchableOpacity 
+          onPress={()=> navigation.navigate("UserProfile")}
+          style={{
+            padding: 15,
+            backgroundColor: "#184461",
+            marginVertical: 20,
+            borderRadius: 10
+          }}>
+            <Text style={{
+              textAlign: "center",
+              color: "#fff",
+              fontWeight: "bold"
+            }}>Set it now</Text>
+          </TouchableOpacity>
+        </View>
+        :
         <View style={{ flex: 1 }}>
           <View
             style={{
               width: 350,
-              marginTop: 160,
               alignSelf: 'center',
             }}
           >
             <View style={[Layout.center, {}]}>
+              <Image 
+                style={{
+                  width: 100,
+                  height: 100,
+                  resizeMode: "contain"
+                }}
+                source={{ uri: `data:image/png;base64,${defaultCard.BuildingLogo}` }}
+              />
               <DropShadow
                 style={{
                   shadowColor: '#000',
@@ -147,7 +209,7 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
             </Text>
           </View>
         </View>
-      )}
+      }
     </ScrollView>
   )
 }

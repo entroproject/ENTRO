@@ -4,9 +4,6 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  ImageBackground,
-  FlatList,
-  TouchableWithoutFeedback,
   ScrollView,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
@@ -18,14 +15,13 @@ import DropShadow from 'react-native-drop-shadow'
 const IndexUserProfileContainer = ({ navigation }) => {
   const { Layout, Colors, Images, MetricsSizes } = useTheme()
   const user = useSelector(user => user.user.profile)
-  const VirtualCard = useSelector(virtualCard => virtualCard.virtualCard.cards)
-  const defaultCardID = useSelector(
-    virtualCard => virtualCard.virtualCard.defaultCard,
-  )
+  const VirtualCard = useSelector(state => state.virtualCard.cards)
+  const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
   const dispatch = useDispatch()
   const handCardSelected = item => {
-    dispatch(setDefaultCard(item.VirtualKey))
+    dispatch(setDefaultCard(item))
   }
+
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
@@ -315,7 +311,17 @@ const IndexUserProfileContainer = ({ navigation }) => {
         }}
       >
         <View style={{ flex: 1, marginHorizontal: 16 }}>
-          {VirtualCard.map((item, index) => (
+          {
+            VirtualCard?.length === 0
+            ?
+            <View>
+              <Text style={{
+                textAlign: "center",
+                color: "#000",
+                fontSize: 16
+              }}>No Virtual card has been assigned to you yet</Text>
+            </View>
+            :VirtualCard?.map((item, index) => (
             <TouchableOpacity
               style={{
                 width: '100%',
@@ -355,7 +361,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
                     </Text>
                   </View>
 
-                  {item.VirtualKey === defaultCardID ? (
+                  {item.VirtualKey === defaultCardID.VirtualKey ? (
                     <Image
                       source={Images.goodMark}
                       style={{

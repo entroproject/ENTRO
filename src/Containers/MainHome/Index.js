@@ -6,10 +6,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator,
-  Pressable,
-  BackHandler,
-  Alert,
+  ActivityIndicator
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
@@ -17,11 +14,12 @@ import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { useOrientation } from '../useOrientation'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAnnouncements } from '@/api-utils'
+import { getAnnouncements, getVirtualKeys } from '@/api-utils'
 import { addAnnouncement } from '@/Features/announcements'
 import LottieView from 'lottie-react-native'
-import ViewMoreText from 'react-native-view-more-text'
-import Moment from 'react-moment'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { addCard } from '@/Features/virtualCards'
+
 
 const IndexHomeContainer = ({ navigation }) => {
   const { Images, MetricsSizes, Layout } = useTheme()
@@ -29,21 +27,31 @@ const IndexHomeContainer = ({ navigation }) => {
   const user = useSelector(user => user.user.profile)
   const [announcementsLoading, setAnnouncementLoading] = useState(true)
   const announcements = useSelector(
-    announcement => announcement.announcement.announcements,
+    state => state.announcement.announcements,
   )
   const dispatch = useDispatch()
 
+  const accessId = useSelector(state => state.user.accessId);
+  const isFocused = useIsFocused()
+
   const handleGetAnnouncements = async () => {
     setAnnouncementLoading(true)
-    const req_ann = await getAnnouncements('')
+    const req_ann = await getAnnouncements(accessId, "Plaza33");
     const ann = await req_ann.json()
     dispatch(addAnnouncement(ann.Announcement))
     setAnnouncementLoading(false)
   }
 
+  const getAccess = async () => {
+    const req_keys = await getVirtualKeys(accessId);
+    const keys = await req_keys.json();
+    addCard(keys.VirtualKey);
+  }
+
   useEffect(() => {
-    handleGetAnnouncements()
-  }, [])
+    handleGetAnnouncements();
+    getAccess();
+  }, [isFocused])
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
@@ -124,9 +132,6 @@ const IndexHomeContainer = ({ navigation }) => {
                 
               }}
             >
-
-           
-           
 
             <View
               style={{
@@ -567,7 +572,7 @@ const IndexHomeContainer = ({ navigation }) => {
                   alignSelf: 'center',
                 }}
               />
-            ) : announcements.length > 0 ? (
+            ) : announcements?.length > 0 ? (
               announcements.map((ann, key) => (
                 <TouchableOpacity
                   key={key}

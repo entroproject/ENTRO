@@ -13,13 +13,15 @@ import moment from 'moment'
 import { useTheme } from '@/Hooks'
 import { useOrientation } from '../useOrientation'
 import { ButtonGroup } from 'react-native-elements'
-import { getVisitors, getVisitorsHistory } from '@/api-utils'
+import { deleteVisitor, getVisitors, getVisitorsHistory } from '@/api-utils'
 import * as Constants from '@/Assets/Constants'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { Picker } from '@react-native-picker/picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { useSelector } from 'react-redux'
+import { showMessage } from 'react-native-flash-message'
 
 const IndexVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -32,22 +34,19 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [loading, setLoading] = useState(true)
   const orientation = useOrientation()
   const isFocused = useIsFocused()
-
   const [selectedSortType, setSelectedSortType] = useState(true)
-
   const [openSearch, setOpenSearch] = useState(false)
   const [openSearchCalendar, setOpenSearchCalendar] = useState(false)
-
   const [searchRegisterVisitor, setSearchRegisterVisitor] = useState('')
   const [searchHistoryVisitor, setSearchHistoryVisitor] = useState('')
-
   const [displayRegisterVisitor, setDisplayRegisterVisitor] = useState(true)
-
   const [currentIndex, setCurrentIndex] = useState(false)
-
   const [date, setDate] = useState(new Date())
   const [mode, setMode] = useState('date')
   const [show, setShow] = useState(false)
+  const accessId = useSelector(state => state.user.accessId)
+  const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
+
 
   const onChange = (event, selectedDate) => {
     setShow(false)
@@ -211,19 +210,36 @@ const IndexVisitorContainer = ({ navigation }) => {
   }, [isFocused])
 
   const getAllVisitors = async () => {
-    const req_vis = await getVisitors('')
-    const visitors = await req_vis.json()
-    setAllRegisteredVisitor(visitors.Visitors)
-    setCustomized_visitors(visitors.Visitors)
-    setLoading(false)
+    const req_vis = await getVisitors(accessId);
+    const visitors = await req_vis.json();
+    setAllRegisteredVisitor(visitors.Visitors);
+    setCustomized_visitors(visitors.Visitors);
+    setLoading(false);
   }
 
   const getAllVisitorsHistory = async () => {
-    const req_vis = await getVisitorsHistory('')
-    const visitors_hist = await req_vis.json()
-    setAllVisitorsHistory(visitors_hist.Visitors)
-    setCustomized_visitors_history(visitors_hist.Visitors)
-    setLoading(false)
+    const req_vis = await getVisitorsHistory(accessId);
+    const visitors_hist = await req_vis.json();
+    setAllVisitorsHistory(visitors_hist.Visitors);
+    setCustomized_visitors_history(visitors_hist.Visitors);
+    setLoading(false);
+  }
+
+
+  const handleDeleteVisitor = async visitor => {
+    try{
+      const del_req = await deleteVisitor(accessId, defaultCardID.BuildingName, defaultCardID.VirtualKey);
+      const response = await del_req().json();
+      console.log(response);
+    }catch(err){
+      console.log(err);
+      showMessage({
+        message: "Something went wrong",
+        backgroundColor: "red",
+        color: "white",
+        duration: 2000
+      })
+    }
   }
 
   return (
@@ -685,7 +701,12 @@ const IndexVisitorContainer = ({ navigation }) => {
                 marginBottom: 10,
               }}
             >
-              {customized_visitors.map(v => (
+              {
+                customized_visitors.length === 0 
+                ? <View>
+                    <Text style={{color: "#000", textAlign: "center", fontSize: 15}}>You don't have any visitors currently.</Text>
+                  </View>
+                : customized_visitors.map(v => (
                 <View
                   key={v.VisitorName}
                   style={{
@@ -1048,7 +1069,7 @@ const IndexVisitorContainer = ({ navigation }) => {
       
                               {/**edit business card */}
                               <TouchableOpacity
-                             
+                                onPress={() => navigation.navigate("EditVistorInfo", {visitor: v})}
                                 style={{
                                   flexDirection: 'row',
                                   alignItems: 'center',
@@ -1065,9 +1086,7 @@ const IndexVisitorContainer = ({ navigation }) => {
       
                               {/**delete business card */}
                               <TouchableOpacity
-                                onPress={() => {
-                                 
-                                }}
+                                onPress={() => handleDeleteVisitor(v)}
                                 style={{
                                   flexDirection: 'row',
                                   alignItems: 'center',
@@ -1095,7 +1114,12 @@ const IndexVisitorContainer = ({ navigation }) => {
           </View>
         ) : (
           <View>
-            {customized_visitors_history.map((v, key) => (
+            {
+              customized_visitors_history.length == 0
+              ?<View>
+                <Text style={{color: "#000", textAlign: "center", fontSize: 15}}>You don't have any visitors currently.</Text>
+              </View>
+              :customized_visitors_history.map((v, key) => (
               <View
                 key={key}
                 style={{

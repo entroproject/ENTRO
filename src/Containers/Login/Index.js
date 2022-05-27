@@ -9,8 +9,6 @@ import {
   Dimensions,
   useWindowDimensions,
   ScrollView,
-  BackHandler,
-  Alert,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PhoneInput from 'react-native-phone-number-input'
@@ -20,12 +18,12 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { showMessage } from 'react-native-flash-message'
 import { useNavigation } from '@react-navigation/native'
 import { useOrientation } from '../useOrientation'
-import { requestProfile, sendOtp, validateNumber } from '../../api-utils'
-import { loginUser } from '@/Features/users'
-import { useDispatch } from 'react-redux'
-import { addCard, setDefaultCard } from '@/Features/virtualCards'
+import { requestProfile, validateOTP, validateNumber, getVirtualKeys } from '../../api-utils'
+import { loginUser, setAccessId } from '@/Features/users'
+import { useDispatch, useSelector } from 'react-redux'
+import { addCard } from '@/Features/virtualCards'
 
-const IndexLoginContainer = () => {
+const IndexLoginContainer = ({route}) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
   const SCREEN_WIDTH = useWindowDimensions().width
   const SCREEN_HEIGHT = useWindowDimensions().height
@@ -36,9 +34,17 @@ const IndexLoginContainer = () => {
   const [numValidated, setNumValidated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
-  const [sentOtp, setSentOtp] = useState('');
   const orientation = useOrientation();
   const dispatch = useDispatch();
+
+  const accessId = useSelector(state => state.user.accessId);
+
+  useEffect(()=> {
+    const phoneNumber = route.params?.phoneNumber;
+    if(phoneNumber){
+      setPhoneNumber(phoneNumber);
+    }
+  }, []);
 
 
   const submitPhoneNumber = async () => {
@@ -49,27 +55,30 @@ const IndexLoginContainer = () => {
         message: 'Please enter a valid phone number',
         backgroundColor: 'red',
         duration: 3000,
-      });
-      setLoading(false);
-      return false;
+        });
+        setLoading(false);
+        return false;
       }
     // make api call to validate phone number
     const req = await validateNumber(phoneNumber);
     const res = await req.json();
     if(res.StatusCode === "200"){
-      // send ot to phone number
-     //const _sentOtp = String(Math.random()).slice(2, 8);
-     // setSentOtp("123456");
-      setOtp(sentOtp)
-      const otp_req = await sendOtp(phoneNumber, sentOtp); 
-      const otp_res = await otp_req.json();
-      showMessage({
-        message: 'We have sent you an OTP.',
-        backgroundColor: 'green',
-        duration: 2000
-      });
-      setNumValidated(true);
-      setLoading(false);
+      if(res.IsAlreadyRegistered){
+        showMessage({
+          message: 'Phone number already used.',
+          backgroundColor: 'red',
+          duration: 2000
+        });
+        setLoading(false);
+      }else{
+        showMessage({
+          message: 'We have sent you an OTP.',
+          backgroundColor: 'green',
+          duration: 2000
+        });
+        setNumValidated(true);
+        setLoading(false);
+      }
     }else{
       showMessage({
         message: 'Please enter a valid phone number',
@@ -86,7 +95,7 @@ const IndexLoginContainer = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-    if (otp.length !== 6 || otp !== sentOtp) {
+    if (otp.length !== 6) {
       showMessage({
         message: 'Please enter a valid OTP',
         backgroundColor: 'red',
@@ -95,26 +104,47 @@ const IndexLoginContainer = () => {
       setLoading(false);
       return false
     }
+
+    const otp_req = await validateOTP(phoneNumber, otp); 
+    const otp_res = await otp_req.json();
+    console.log(otp_res);
+    if(otp_res.StatusCode !== '200'){
+      setLoading(false);
+      showMessage({
+        message: otp_res.Message,
+        backgroundColor: 'red',
+        duration: 2000,
+      });
+      return;
+    }
     // request profile
-    const req_prof = await requestProfile("");
+    let finalAccess = accessId;
+    if(!accessId){
+      finalAccess = otp_res.AccessId;
+    }
+    const req_prof = await requestProfile(finalAccess);
     const prof = await req_prof.json();
+    const req_cards = await getVirtualKeys(finalAccess);
+    const cards = await req_cards.json();
+
+
     if(prof.StatusCode !== "200"){
       setLoading(false);
       showMessage({
-        message: prof.message,
+        message: prof.Message,
         backgroundColor: 'red',
         duration: 2000,
       })
     }else{
       setLoading(false);
-      dispatch(addCard(prof.VirtualKey));
-      dispatch(setDefaultCard(prof.VirtualKey[0].VirtualKey));
-      dispatch(loginUser(prof));
+      dispatch(addCard(cards.VirtualKey))
+      dispatch(loginUser(prof))
       navigation.reset({
         index: 0,
         routes: [{ name: 'MainNav' }],
       })
-    }    
+    }  
+
   }
 
   return (
@@ -198,6 +228,7 @@ const IndexLoginContainer = () => {
         autoFocus
         containerStyle={styleSheet.phoneNumberView}
         textContainerStyle={{ paddingVertical: 0 }}
+        value={phoneNumber}
         onChangeFormattedText={text => {
           setNumValidated(false);
           setPhoneNumber(text);
@@ -227,8 +258,7 @@ const IndexLoginContainer = () => {
             onCodeChanged={val => setOtp(val)}
             codeInputFieldStyle={styleSheet.underlineStyleBase}
             onCodeFilled={value => {
-              setOtp(value),
-              setSentOtp(value)
+              setOtp(value)
             }}
           />
         </View>

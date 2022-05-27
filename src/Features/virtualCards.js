@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     cards: [],
-    defaultCard: ""
+    defaultCard: {}
 }
 
 export const virtualCardSlice = createSlice({
@@ -10,7 +10,11 @@ export const virtualCardSlice = createSlice({
     initialState,
     reducers: {
         addCard: (state, action) => {
-            state.cards = action.payload;
+            if(action.payload){
+                state.cards = action.payload;
+            }else{
+                state.cards = [];
+            }
         },
         setDefaultCard: (state, action) => {
             state.defaultCard = action.payload

@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Icon from 'react-native-dynamic-vector-icons'
 import {
   View,
   Text,
   ImageBackground,
   Image,
+  TextInput,
   ScrollView
 } from 'react-native'
 import { useTheme } from '@/Hooks'
@@ -14,13 +15,14 @@ import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage } from 'react-native-flash-message'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useOrientation } from '../useOrientation'
-import { registerUser, requestProfile } from '@/api-utils'
+import { getVirtualKeys, registerUser, requestProfile } from '@/api-utils'
 import { loginUser } from '@/Features/users'
 import { addCard, setDefaultCard } from '@/Features/virtualCards'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { regexStr } from '@/Assets/Constants'
 
 
-const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
+const IndexRegisterCompanyUserContainer = ({navigation, route}) => {
   const { Layout, Images, Colors, MetricsSizes } = useTheme()
   const [photo, setPhoto] = useState(null)
   const [firstName, setFirstName] = useState('')
@@ -32,6 +34,12 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
   const [loading, setLoading] = useState(false)
   const orientation = useOrientation()
   const dispatch = useDispatch()
+  const accessId = useSelector(state => state.user.accessId);
+
+  useEffect(()=> {
+    const {phoneNumber} = route.params;
+    setPhoneNumber(phoneNumber);
+  }, [])
 
   const [placeholder, setPlaceholder] = useState({
     firstName: 'First Name',
@@ -39,21 +47,24 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
     emailAddress: 'Email Address',
     companyName: 'Company Name',
     carPlateNum: 'Vehcicle Number'
-
-  })
+  });
 
   const uploadPhoto = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true
+      cropping: true,
+      includeBase64: true
     }).then(image => {
-      setPhoto(image)
+      setPhoto(image.data)
+    }).catch(err => {
+      console.log(err);
     })
   }
 
   const SubmitForm = async () => {
-    setLoading(true)
+    try{
+      setLoading(true)
     if (
       !firstName ||
       !lastName ||
@@ -99,19 +110,23 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
       })
       return false
     }
-
    
     // register user
-
-    const req_register = await registerUser({
+    const _data = {
       Email: emailAddress,
       FirstName: firstName,
       LastName: lastName,
       CompanyName: companyName,
       VehicleNo: carPlateNum,
       MobileNo: phoneNumber,
-    })
-    const res_register = await req_register.json()
+      ProfileLogo: photo,
+      AccessId: accessId
+    }
+
+    const req_register = await registerUser(_data);
+    const res_register = await req_register.json();
+
+    console.log(res_register);
 
     if (res_register.StatusCode !== '200') {
       setLoading(false)
@@ -121,19 +136,28 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
         duration: 2000,
       })
     } else {
-      const req_prof = await requestProfile('')
-      const prof = await req_prof.json()
-      setLoading(false)
-      dispatch(addCard(prof.VirtualKey))
-      dispatch(setDefaultCard(prof.VirtualKey[0].VirtualKey))
+      const req_prof = await requestProfile(accessId);
+      const prof = await req_prof.json();
+      const req_keys = await getVirtualKeys(accessId);
+      const keys = await req_keys.json();
+      dispatch(addCard(keys))
       dispatch(loginUser(prof))
-      console.log(prof);
       navigation.reset({
         index: 0,
         routes: [{ name: 'TutorialSlide' }],
       })
     }
     setLoading(false)
+    }
+    catch(err){
+      console.log(err);
+      showMessage({
+        message: "Something went wrong",
+        backgroundColor: 'red',
+        duration: 2000,
+      })
+      setLoading(false);
+    }
   }
 
   return (
@@ -209,7 +233,7 @@ const IndexRegisterCompanyUserContainer = ({navigation, routes}) => {
                   ]}
                 >
                   <Image
-                    source={photo ? { uri: photo.path } : Images.profilepic}
+                    source={photo ? { uri: `data:image/jpeg;base64,${photo}` } : Images.profilepic}
                     style={{
                       width: orientation === 'PORTRAIT' ? 110 : 150,
                       height: orientation === 'PORTRAIT' ? 110 : 150,

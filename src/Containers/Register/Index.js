@@ -18,21 +18,33 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { showMessage, hideMessage } from 'react-native-flash-message'
 import { useNavigation } from '@react-navigation/native'
 import { useOrientation } from '../useOrientation'
-import { requestProfile, sendOtp, validateNumber } from '@/api-utils'
+import {validateNumber, validateOTP } from '@/api-utils'
+import { useDispatch } from 'react-redux'
+import { setAccessId } from '@/Features/users'
 
-const IndexRegisterContainer = () => {
+
+const IndexRegisterContainer = ({route}) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
   const SCREEN_WIDTH = useWindowDimensions().width
   const SCREEN_HEIGHT = useWindowDimensions().height
 
   const navigation = useNavigation()
+  const dispatch = useDispatch();
+
 
   const [phoneNumber, setPhoneNumber] = useState('')
   const [numValidated, setNumValidated] = useState(false)
   const [loading, setLoading] = useState(false)
   const [otp, setOtp] = useState(false);
-  const [sentOtp, setSentOtp] = useState(false);
   const orientation = useOrientation();
+
+
+  useEffect(()=> {
+    const phoneNumber = route.params?.phoneNumber;
+    if(phoneNumber){
+      setPhoneNumber(phoneNumber);
+    }
+  }, []);
 
 
   const submitPhoneNumber = async () => {
@@ -43,27 +55,30 @@ const IndexRegisterContainer = () => {
         message: 'Please enter a valid phone number',
         backgroundColor: 'red',
         duration: 3000,
-      });
-      setLoading(false);
-      return false;
+        });
+        setLoading(false);
+        return false;
       }
     // make api call to validate phone number
     const req = await validateNumber(phoneNumber);
     const res = await req.json();
     if(res.StatusCode === "200"){
-      // send ot to phone number
-      // const _sentOtp = String(Math.random()).slice(2, 8);
-      //setSentOtp("123456");
-      setOtp(sentOtp)
-      const otp_req = await sendOtp(phoneNumber, sentOtp); 
-      const otp_res = await otp_req.json();
-      showMessage({
-        message: 'We have sent you an OTP.',
-        backgroundColor: 'green',
-        duration: 2000
-      });
-      setNumValidated(true);
-      setLoading(false);
+      if(res.IsAlreadyRegistered){
+        showMessage({
+          message: 'Phone number already used.',
+          backgroundColor: 'red',
+          duration: 2000
+        });
+        setLoading(false);
+      }else{
+        showMessage({
+          message: 'We have sent you an OTP.',
+          backgroundColor: 'green',
+          duration: 2000
+        });
+        setNumValidated(true);
+        setLoading(false);
+      }
     }else{
       showMessage({
         message: 'Please enter a valid phone number',
@@ -80,17 +95,38 @@ const IndexRegisterContainer = () => {
 
   const handleRegister = async () => {
     setLoading(true);
-    if (otp.length !== 6 || otp !== sentOtp) {
-      showMessage({
-        message: 'Please enter a valid OTP',
-        backgroundColor: 'red',
-        duration: 2000,
-      })
-      setLoading(false);
-      return false
+    try{
+        const otp_req = await validateOTP(phoneNumber, otp); 
+        const otp_res = await otp_req.json();
+        if(otp_res.IsAlreadyRegistered){
+          setLoading(false);
+          showMessage({
+            message: 'Phone number already registered. Login.',
+            backgroundColor: 'green',
+            duration: 3000,
+          });
+          navigation.navigate("Login", {phoneNumber});
+          return;
+        }
+        if(otp_res.StatusCode == 200){
+          dispatch(setAccessId(otp_res.AccessId));
+          setLoading(false);
+          navigation.navigate("RegisterCompanyUser", {phoneNumber});
+          return;
+        }
+        else{
+          showMessage({
+            message: otp_res.Message,
+            backgroundColor: 'red',
+            textStyle: {color: "#fff"},
+            duration: 3000,
+          });
+          setLoading(false);
+        }
+    }catch(err){
+        setLoading(false);
+        console.log(err);
     }
-    setLoading(false); 
-    navigation.navigate("RegisterCompanyUser", {phoneNumber});
   }
   
   return (
@@ -172,6 +208,7 @@ const IndexRegisterContainer = () => {
                 containerStyle={styleSheet.phoneNumberView}
                 textContainerStyle={{ paddingVertical: 0 }}
                 onChangeFormattedText={text => {
+                  setNumValidated(false);
                   setPhoneNumber(text)
                 }}
               />
@@ -192,8 +229,7 @@ const IndexRegisterContainer = () => {
                       style={styleSheet.otpView}
                       codeInputFieldStyle={styleSheet.underlineStyleBase}
                       onCodeFilled={value => {
-                        setOtp(value),
-                        setSentOtp(value)
+                        setOtp(value)
                       }}
                     />
                   </View>

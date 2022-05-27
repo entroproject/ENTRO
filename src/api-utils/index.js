@@ -18,7 +18,7 @@ export const validateNumber = async number => {
     }));
 }
 
-export const sendOtp = async (MobileNo, OTP) => {
+export const validateOTP = async (MobileNo, OTP) => {
     return await makeRequest("validateOTP", JSON.stringify({
         MobileNo,
         "OTP": OTP
@@ -27,42 +27,65 @@ export const sendOtp = async (MobileNo, OTP) => {
 
 export const requestProfile = async AccessId => {
     return await makeRequest("profileRequest", JSON.stringify({
-        "AccessId": "883217495722675713416e41a25dd051"
+        AccessId
     }));
 }
 
-export const getAnnouncements = async AccessId => {
+export const getAnnouncements = async (AccessId, BuildingName) => {
     return await makeRequest("AnnouncementRequest", JSON.stringify({
-        "AccessId": "883217495722675713416e41a25dd051",
-        "BuildingName": "PLAZA33 Chinese"
+        AccessId,
+        BuildingName
     }));
 }
 
-export const getVisitors = async AccessId => {
+export const getVisitors = async (AccessId, BuildingName) => {
     return await makeRequest("PlannedVisitor", JSON.stringify({
-        "AccessId": "883217495722675713416e41a25dd051",
-        "BuildingName": "PLAZA33"
+        AccessId,
+        BuildingName
     }));
 }
 
-export const getVisitorsHistory = async AccessId => {
+export const getVisitorsHistory = async (AccessId, BuildingName) => {
     return await makeRequest("HistoryVisitor", JSON.stringify({
-        "AccessId": "883217495722675713416e41a25dd051",
-        "BuildingName": "PLAZA33"
+        AccessId,
+        BuildingName
     }));
 }
 
-export const inviteVisitors = async AccessId => {
-    return await makeRequest("InviteVisitor", JSON.stringify({
-        "AccessId": "883217495722675713416e41a25dd051",
-        "BuildingName": "PLAZA33"
+export const inviteVisitors = async data => {
+    return await makeRequest("InviteVisitor", JSON.stringify(data));
+}
+
+export const deleteVisitor = async (accessid, BuildingName, VirtualKey) => {
+    return await makeRequest("invitevisitordelete", JSON.stringify({
+        accessid,
+        BuildingName,
+        VirtualKey,
+        Command: "DELETE"
     }));
 }
 
-export const getQRAccess = async AccessId => {
+export const editVisitor = async data => {
+    return await makeRequest("InviteVisitorUpdate", JSON.stringify(data));
+}
+
+export const getQRAccess = async (AccessId, BuildingName) => {
     return await makeRequest("qraccess", JSON.stringify({
-        "AccessId": "883217495722675713416e41a25dd051",
-        "BuildingName": "PLAZA33"
+        AccessId,
+        BuildingName
+    }));
+}
+
+export const getVirtualKeys = async AccessId => {
+    return await makeRequest("virtualkeyRequest", JSON.stringify({
+        AccessId
+    }));
+}
+
+export const getContacts = async (AccessId, BuildingName) => {
+    return await makeRequest("/contactrequest", JSON.stringify({
+        AccessId,
+        BuildingName
     }));
 }
 

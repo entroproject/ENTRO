@@ -16,16 +16,18 @@ import { regexStr } from '@/Assets/Constants'
 import { navigate } from '@/Navigators/utils'
 import DropShadow from 'react-native-drop-shadow'
 import ImagePicker from 'react-native-image-crop-picker'
-import { showMessage, hideMessage } from 'react-native-flash-message'
+import { showMessage } from 'react-native-flash-message'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useOrientation } from '../useOrientation'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUser } from '@/Features/users'
 
 
 const IndexEditUserContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
   const [photo, setPhoto] = useState(null)
-  const [fullName, setFullName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [emailAddress, setEmailAddress] = useState('')
   const [companyName, setCompanyName] = useState('')
   const [carPlateNum, setCarPlateNum] = useState('')
@@ -33,6 +35,8 @@ const IndexEditUserContainer = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
   const user = useSelector(user => user.user.profile)
   const orientation = useOrientation()
+  const dispatch = useDispatch();
+  const accessId = useSelector(state => state.user.accessId);
 
   const [placeholder, setPlaceholder] = useState({
     fullName: 'FullName',
@@ -46,14 +50,16 @@ const IndexEditUserContainer = ({ navigation }) => {
       width: 300,
       height: 400,
       cropping: true,
+      includeBase64: true
     }).then(image => {
-      setPhoto(image)
+      setPhoto(image.data);
     })
   }
 
   const SubmitForm = () => {
     if (
-      !fullName ||
+      !firstName ||
+      !lastName ||
       !emailAddress ||
       !contactNumber ||
       !carPlateNum
@@ -67,16 +73,27 @@ const IndexEditUserContainer = ({ navigation }) => {
     }
 
     if (
-      fullName !== '' ||
+      firstName !== '' ||
+      lastName !== '' ||
       emailAddress !== '' ||
       contactNumber !== '' ||
       carPlateNum !== ''
     ) {
       setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-        navigate('UserProfile')
-      }, 1000)
+      
+      const _data = {
+        Email: emailAddress,
+        FirstName: firstName,
+        LastName: lastName,
+        CompanyName: companyName,
+        VehicleNo: carPlateNum,
+        MobileNo: contactNumber,
+        ProfileLogo: photo,
+        AccessId: accessId
+      }
+      dispatch(updateUser(_data));
+      setLoading(false)
+      navigate('UserProfile')
     }
   }
 
@@ -139,7 +156,7 @@ const IndexEditUserContainer = ({ navigation }) => {
               ]}
             >
               <Image
-                source={photo ? { uri: photo.path } : Images.profilepic}
+                source={photo ? { uri: `data:image/png;base64,${photo}` } : Images.profilepic}
                 style={{
                   width: 124,
                   height: 124,
@@ -210,7 +227,7 @@ const IndexEditUserContainer = ({ navigation }) => {
                 marginBottom: 10,
               }}
             >
-              Name
+              First Name
             </Text>
             <TextInput
               style={{
@@ -221,23 +238,40 @@ const IndexEditUserContainer = ({ navigation }) => {
                 paddingBottom: 0,
                 color:'#457C9A'
               }}
-              value={fullName}
-              placeholder={placeholder.fullName}
-              onChangeText={text => setFullName(text)}
+              value={firstName}
+              placeholder="First Name"
+              onChangeText={text => setFirstName(text)}
               placeholderTextColor={'#A6A2A2'}
-              onFocus={() => {
-                setPlaceholder({ ...placeholder, fullName: '' })
-              }}
-              onBlur={() => {
-                setPlaceholder({
-                  ...placeholder,
-                  fullName: 'FullName',
-                })
-              }}
             />
           </View>
 
-      
+          <View style={{}}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: '#184461',
+                fontWeight: '500',
+                marginStart: 4,
+                marginVertical: 15,
+              }}
+            >
+              Last Name
+            </Text>
+            <TextInput
+              style={{
+                borderBottomWidth: 1,
+                borderColor: '#45969A',
+                fontSize: 20,
+                fontWeight: '900',
+                paddingBottom: 0,
+                color:'#457C9A'
+              }}
+              value={lastName}
+              placeholder="Last Name"
+              onChangeText={text => setLastName(text)}
+              placeholderTextColor={'#A6A2A2'}
+            />
+          </View>
 
           <View style={{ marginTop: 25 }}>
             <Text

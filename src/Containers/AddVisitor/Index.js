@@ -18,6 +18,7 @@ import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import { inviteVisitors } from '@/api-utils'
 import Icon from 'react-native-dynamic-vector-icons'
 import { Dropdown } from 'react-native-element-dropdown'
+import { useSelector } from 'react-redux'
 
 
 const IndexAddVisitorContainer = ({ navigation }) => {
@@ -37,6 +38,10 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   const [visitEndDate, setVisitEndDate] = useState('00-00-0000')
   const [endVisitDate_Picked, setEndVisitDate__Picked] = useState(new Date())
   const [openEndVisit, setOpenEndVisit] = useState(false)
+
+  const accessId = useSelector(state => state.user.accessId);
+  const defaultCard = useSelector(state => state.virtualCard.defaultCard);
+
 
   const [placeholder, setPlaceholder] = useState({
     fullName: 'Full Name',
@@ -111,9 +116,9 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       mobileNumber !== '' ||
       carPlateNum !== ''
     ) {
-      const req_invite = await inviteVisitors('', {
-        accessId: 'ea204301348a34b8695319778667d311',
-        BuildingName: 'Plaza33',
+      const req_invite = await inviteVisitors({
+        accessId,
+        BuildingName: defaultCard.BuildingName,
         Visitortype: value,
         VisitorName: fullName,
         DocumentNumber: ICNumber,
@@ -181,17 +186,53 @@ const IndexAddVisitorContainer = ({ navigation }) => {
           >
             Visitor Registration
           </Text>
-          <Icon
-            name="x"
-            type="Feather"
-            size={30}
-            color="#fff"
-            onPress={() => {}}
-          />
+            <Icon
+              onPress={()=> navigation.goBack()}
+              name="x"
+              type="Feather"
+              size={30}
+              color="#fff"
+            />
         </View>
       </View>
 
-      <View style={{ marginTop: 50, marginHorizontal: 42, marginBottom: 40 }}>
+      {
+      typeof defaultCard.BuildingName === 'undefined'
+      ?<View style={{
+          height: 500,
+          padding: 10,
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <Text style={{
+            fontSize: 30,
+            fontWeight: "bold",
+            color: "#000",
+            textAlign: "center"
+          }}>Oops</Text>
+          <Text style={{
+            fontSize: 15,
+            fontWeight: "bold",
+            color: "#000",
+            textAlign: "center"
+          }}>You haven't set up your default access card yet. Go to your profile and set it.</Text>
+          <TouchableOpacity 
+          onPress={()=> navigation.navigate("UserProfile")}
+          style={{
+            padding: 15,
+            backgroundColor: "#184461",
+            marginVertical: 20,
+            borderRadius: 10
+          }}>
+            <Text style={{
+              textAlign: "center",
+              color: "#fff",
+              fontWeight: "bold"
+            }}>Set it now</Text>
+          </TouchableOpacity>
+        </View>
+
+      :<View style={{ marginTop: 50, marginHorizontal: 42, marginBottom: 40 }}>
         <View style={{}}>
           <Text
             style={{
@@ -605,6 +646,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
           />
         </View>
       </View>
+      }
     </ScrollView>
   )
 }

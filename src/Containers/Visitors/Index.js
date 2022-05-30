@@ -706,9 +706,9 @@ const IndexVisitorContainer = ({ navigation }) => {
                 ? <View>
                     <Text style={{color: "#000", textAlign: "center", fontSize: 15}}>You don't have any visitors currently.</Text>
                   </View>
-                : customized_visitors.map(v => (
+                : customized_visitors.map((v, key) => (
                 <View
-                  key={v.VisitorName}
+                  key={key}
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',

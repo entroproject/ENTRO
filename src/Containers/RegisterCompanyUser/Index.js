@@ -126,8 +126,6 @@ const IndexRegisterCompanyUserContainer = ({navigation, route}) => {
     const req_register = await registerUser(_data);
     const res_register = await req_register.json();
 
-    console.log(res_register);
-
     if (res_register.StatusCode !== '200') {
       setLoading(false)
       showMessage({

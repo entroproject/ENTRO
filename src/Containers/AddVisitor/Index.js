@@ -42,7 +42,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   const accessId = useSelector(state => state.user.accessId);
   const defaultCard = useSelector(state => state.virtualCard.defaultCard);
 
-
   const [placeholder, setPlaceholder] = useState({
     fullName: 'Full Name',
     ICNumber: '0000000000',
@@ -116,9 +115,9 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       mobileNumber !== '' ||
       carPlateNum !== ''
     ) {
-      const req_invite = await inviteVisitors({
+      const _data = {
         accessId,
-        BuildingName: defaultCard.BuildingName,
+        BuildingName: defaultCard.BuildingName.trim(),
         Visitortype: value,
         VisitorName: fullName,
         DocumentNumber: ICNumber,
@@ -126,8 +125,11 @@ const IndexAddVisitorContainer = ({ navigation }) => {
         VehicleNumber: carPlateNum,
         StartDateTime: visitStartDate,
         EndDateTime: visitEndDate,
-      })
+      }
+      const req_invite = await inviteVisitors(_data);
       const resp = await req_invite.json()
+
+      console.log(_data);
 
       if (resp.StatusCode == '200') {
         setLoading(false)
@@ -136,15 +138,13 @@ const IndexAddVisitorContainer = ({ navigation }) => {
           backgroundColor: 'green',
           duration: 3000,
         })
-        setFullName('')
-        setICNumber('')
-        setCarPlateNum('')
-        setVisitStartDate('')
-        setVisitEndDate('')
-        setMobileNumber('')
-        setTimeout(() => {
-          navigation.goBack()
-        }, 200)
+        // setFullName('')
+        // setICNumber('')
+        // setCarPlateNum('')
+        // setVisitStartDate('')
+        // setVisitEndDate('')
+        // setMobileNumber('')
+        // navigation.goBack()
       } else {
         setLoading(false)
         showMessage({

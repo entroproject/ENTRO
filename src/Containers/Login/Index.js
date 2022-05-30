@@ -50,7 +50,7 @@ const IndexLoginContainer = ({route}) => {
   const submitPhoneNumber = async () => {
     try{
       setLoading(true)
-      if(phoneNumber.length < 9 || phoneNumber.length > 14){
+      if(phoneNumber.length < 8){
         showMessage({
         message: 'Please enter a valid phone number',
         backgroundColor: 'red',
@@ -63,16 +63,18 @@ const IndexLoginContainer = ({route}) => {
     const req = await validateNumber(phoneNumber);
     const res = await req.json();
     if(res.StatusCode === "200"){
-      if(res.IsAlreadyRegistered){
+        console.log(res)
+      if(res.IsAlreadyRegistered === false){
         showMessage({
-          message: 'Phone number already used.',
+          message: 'Please register your mobile number!',
           backgroundColor: 'red',
           duration: 2000
         });
         setLoading(false);
+        navigation.navigate('Register');
       }else{
         showMessage({
-          message: 'We have sent you an OTP.',
+          message: 'OTP was sent successfully!',
           backgroundColor: 'green',
           duration: 2000
         });

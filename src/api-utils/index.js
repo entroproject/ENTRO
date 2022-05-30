@@ -18,6 +18,12 @@ export const validateNumber = async number => {
     }));
 }
 
+export const RegisterNumber = async number => {
+    return await makeRequest("registermobile", JSON.stringify({
+        "MobileNo": number
+    }));
+}
+
 export const validateOTP = async (MobileNo, OTP) => {
     return await makeRequest("validateOTP", JSON.stringify({
         MobileNo,
@@ -92,6 +98,7 @@ export const getContacts = async (AccessId, BuildingName) => {
 export const registerUser = async body => {
     return await makeRequest("signup", JSON.stringify(body));
 }
+
 
 
 

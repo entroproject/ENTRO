@@ -24,8 +24,8 @@ const IndexCommunityContainer = ({ navigation }) => {
   const [openSearch, setOpenSearch] = useState(false)
 
   const user = useSelector(user => user.user.profile)
-  const accessId = useSelector(state => state.user.accessId);
-  const defaultCard = useSelector(state => state.virtualCard.defaultCard);
+  const accessId = useSelector(state => state.user.accessId)
+  const defaultCard = useSelector(state => state.virtualCard.defaultCard)
 
   const [searchEmergency, setSearchEmergency] = useState('')
   const [allEmergency, setAllEmergency] = useState([])
@@ -40,24 +40,22 @@ const IndexCommunityContainer = ({ navigation }) => {
     } else {
       setDisplayContact(false)
     }
-  }, [selectedIndex]);
+  }, [selectedIndex])
 
-  useEffect(()=> {
-    handleGetContacts();
+  useEffect(() => {
+    handleGetContacts()
   }, [])
 
-
   const handleGetContacts = async () => {
-    if(defaultCard){
+    if (defaultCard) {
       const get_con = await getContacts(accessId, defaultCard.BuildingName)
-      const data = await get_con.json();
-      setAllEmergency(data.Emergency);
-      setUserEmergencyFilter(data.Emergency);
-      setAllCommunity(data.Community);
-      setUserCommunityFilter(data.Community);
+      const data = await get_con.json()
+      setAllEmergency(data.Emergency)
+      setUserEmergencyFilter(data.Emergency)
+      setAllCommunity(data.Community)
+      setUserCommunityFilter(data.Community)
     }
   }
-
 
   const handleSearchEmergency = () => {
     if (searchEmergency.length > 0) {
@@ -123,92 +121,173 @@ const IndexCommunityContainer = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
-     {typeof defaultCard.BuildingName === 'undefined'
-      ?<View style={{
-          height: 500,
-          padding: 10,
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-          <Text style={{
-            fontSize: 30,
-            fontWeight: "bold",
-            color: "#000",
-            textAlign: "center"
-          }}>Oops</Text>
-          <Text style={{
-            fontSize: 15,
-            fontWeight: "bold",
-            color: "#000",
-            textAlign: "center"
-          }}>You haven't set up your default access card yet. Go to your profile and set it.</Text>
-          <TouchableOpacity 
-          onPress={()=> navigation.navigate("UserProfile")}
-          style={{
-            padding: 15,
-            backgroundColor: "#184461",
-            marginVertical: 20,
-            borderRadius: 10
-          }}>
-            <Text style={{
-              textAlign: "center",
-              color: "#fff",
-              fontWeight: "bold"
-            }}>Set it now</Text>
-          </TouchableOpacity>
-        </View>
-
-      :(
-        <>
-        <View
-        style={{
-          height: 144,
-          backgroundColor: '#184461',
-        }}
-      >
+      {typeof defaultCard.BuildingName === 'undefined' ? (
         <View
           style={{
-            marginStart: 22,
-            marginTop: 27,
-            marginBottom: 10,
-            marginEnd: 8,
+            height: 500,
+            padding: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Text
             style={{
-              fontWeight: '700',
-              fontSize: 23,
-              color: '#fff',
-              flexWrap: 'wrap',
-              textTransform: 'capitalize',
+              fontSize: 30,
+              fontWeight: 'bold',
+              color: '#184461',
+              textAlign: 'center',
             }}
-            numberOfLines={1}
           >
-            Hi, {user.FirstName} {user.LastName}
+            Oops
           </Text>
           <Text
             style={{
-              fontWeight: '400',
-              fontSize: 12,
-              color: '#fff',
-              flexWrap: 'wrap',
+              fontSize: 15,
+              fontWeight: 'bold',
+              color: '#184461',
+              textAlign: 'center',
             }}
           >
-            Dont worry your emergency line is here.
+            You haven't set up your default access card yet. Go to your profile
+            and set it.
           </Text>
-        </View>
-
-        {/**search bar area starts here */}
-
-        {!openSearch ? (
-          <>
-            <TouchableOpacity
-              activeOpacity={1.2}
-              onPress={() => setOpenSearch(true)}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('UserProfile')}
+            style={{
+              padding: 15,
+              backgroundColor: '#184461',
+              marginVertical: 20,
+              borderRadius: 10,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#fff',
+                fontWeight: 'bold',
+              }}
             >
+              Set it now
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <>
+          <View
+            style={{
+              height: 144,
+              backgroundColor: '#184461',
+            }}
+          >
+            <View
+              style={{
+                marginStart: 22,
+                marginTop: 27,
+                marginBottom: 10,
+                marginEnd: 8,
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: '700',
+                  fontSize: 23,
+                  color: '#fff',
+                  flexWrap: 'wrap',
+                  textTransform: 'capitalize',
+                }}
+                numberOfLines={1}
+              >
+                Hi, {user.FirstName} {user.LastName}
+              </Text>
+              <Text
+                style={{
+                  fontWeight: '400',
+                  fontSize: 12,
+                  color: '#fff',
+                  flexWrap: 'wrap',
+                }}
+              >
+                Dont worry your emergency line is here.
+              </Text>
+            </View>
+
+            {/**search bar area starts here */}
+
+            {!openSearch ? (
+              <>
+                <TouchableOpacity
+                  activeOpacity={1.2}
+                  onPress={() => setOpenSearch(true)}
+                >
+                  <DropShadow
+                    style={{
+                      shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                      shadowOffset: {
+                        width: 1,
+                        height: 2,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 2,
+                    }}
+                  >
+                    <View
+                      style={{
+                        marginBottom: 10,
+                        backgroundColor: '#fff',
+                        height: 40,
+                        marginHorizontal: 20,
+                        borderRadius: 7,
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}
+                    >
+                      <DropShadow
+                        style={{
+                          shadowColor: '#282828',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 1,
+                          shadowRadius: 2,
+                        }}
+                      >
+                        <Icon
+                          type="Feathers"
+                          name="search"
+                          color="#184461"
+                          size={27}
+                        />
+                      </DropShadow>
+
+                      <Text
+                        style={{
+                          color: '#184461',
+                          fontWeight: '700',
+                          fontSize: 12,
+                        }}
+                      >
+                        Search
+                      </Text>
+                    </View>
+                  </DropShadow>
+                </TouchableOpacity>
+              </>
+            ) : selectedIndex === 0 ? (
               <DropShadow
                 style={{
-                  shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  shadowColor: '#282828',
                   shadowOffset: {
                     width: 1,
                     height: 2,
@@ -226,6 +305,7 @@ const IndexCommunityContainer = ({ navigation }) => {
                     borderRadius: 7,
                     borderWidth: 1,
                     borderColor: '#184461',
+                    elevation: 10,
                     shadowColor: '#000',
                     shadowRadius: 10,
                     shadowOpacity: 0.6,
@@ -239,252 +319,59 @@ const IndexCommunityContainer = ({ navigation }) => {
                     flexDirection: 'row',
                   }}
                 >
-                  <DropShadow
+                  <TextInput
+                    placeholder={'Search emergency contact'}
+                    returnKeyType={'search'}
+                    keyboardType={'web-search'}
+                    placeholderTextColor={'#666666'}
+                    value={searchEmergency}
+                    onChangeText={text => setSearchEmergency(text)}
+                    // onBlur={()=> setOpenSearch(false)}
+                    // blurOnSubmit={()=> setOpenSearch(false)}
+                    // onSubmitEditing={()=> setOpenSearch(false)}
+                    autoFocus={true}
                     style={{
-                      shadowColor: '#282828',
-                      shadowOffset: {
-                        width: 0,
-                        height: 3,
-                      },
-                      shadowOpacity: 1,
-                      shadowRadius: 2,
+                      width: '90%',
+                      fontSize: 12,
+                    }}
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setOpenSearch(false)
                     }}
                   >
                     <Icon
-                      type="Feathers"
-                      name="search"
+                      type="Feather"
+                      name="x-circle"
+                      size={25}
                       color="#184461"
-                      size={27}
                     />
-                  </DropShadow>
-
-                  <Text
-                    style={{
-                      color: '#184461',
-                      fontWeight: '700',
-                      fontSize: 12,
-                    }}
-                  >
-                    Search
-                  </Text>
+                  </TouchableOpacity>
                 </View>
               </DropShadow>
-            </TouchableOpacity>
-          </>
-        ) : selectedIndex === 0 ? (
-          <DropShadow
-            style={{
-              shadowColor: '#282828',
-              shadowOffset: {
-                width: 1,
-                height: 2,
-              },
-              shadowOpacity: 1,
-              shadowRadius: 2,
-            }}
-          >
-            <View
-              style={{
-                marginBottom: 10,
-                backgroundColor: '#fff',
-                height: 40,
-                marginHorizontal: 20,
-                borderRadius: 7,
-                borderWidth: 1,
-                borderColor: '#184461',
-                elevation: 10,
-                shadowColor: '#000',
-                shadowRadius: 10,
-                shadowOpacity: 0.6,
-                elevation: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}
-            >
-              <TextInput
-                placeholder={'Search emergency contact'}
-                returnKeyType={'search'}
-                keyboardType={'web-search'}
-                placeholderTextColor={'#666666'}
-                value={searchEmergency}
-                onChangeText={text => setSearchEmergency(text)}
-                // onBlur={()=> setOpenSearch(false)}
-                // blurOnSubmit={()=> setOpenSearch(false)}
-                // onSubmitEditing={()=> setOpenSearch(false)}
-                autoFocus={true}
+            ) : (
+              <DropShadow
                 style={{
-                  width: '90%',
-                  fontSize: 12,
-                }}
-              />
-
-              <TouchableOpacity
-                onPress={() => {
-                  setOpenSearch(false)
-                }}
-              >
-                <Icon
-                  type="Feather"
-                  name="x-circle"
-                  size={25}
-                  color="#184461"
-                />
-              </TouchableOpacity>
-            </View>
-          </DropShadow>
-        ) : (
-          <DropShadow
-            style={{
-              shadowColor: '#282828',
-              shadowOffset: {
-                width: 1,
-                height: 2,
-              },
-              shadowOpacity: 1,
-              shadowRadius: 2,
-            }}
-          >
-            <View
-              style={{
-                marginBottom: 10,
-                backgroundColor: '#fff',
-                height: 40,
-                marginHorizontal: 20,
-                borderRadius: 7,
-                borderWidth: 1,
-                borderColor: '#184461',
-                elevation: 10,
-                shadowColor: '#000',
-                shadowRadius: 10,
-                shadowOpacity: 0.6,
-                elevation: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}
-            >
-              <TextInput
-                placeholder={'Search community contact'}
-                returnKeyType={'search'}
-                keyboardType={'web-search'}
-                placeholderTextColor={'#666666'}
-                value={searchCommunity}
-                onChangeText={text => setSearchCommunity(text)}
-                // onBlur={()=> setOpenSearch(false)}
-                // blurOnSubmit={()=> setOpenSearch(false)}
-                // onSubmitEditing={()=> setOpenSearch(false)}
-                autoFocus={true}
-                style={{
-                  width: '90%',
-                  fontSize: 12,
-                }}
-              />
-
-              <TouchableOpacity
-                onPress={() => {
-                  setOpenSearch(false)
-                }}
-              >
-                <Icon
-                  type="Feather"
-                  name="x-circle"
-                  size={25}
-                  color="#184461"
-                />
-              </TouchableOpacity>
-            </View>
-          </DropShadow>
-        )}
-
-        {/**search bar area ends here */}
-      </View>
-
-      <View style={{ marginTop: 10 }}>
-        <DropShadow
-          style={{
-            shadowColor: '#282828',
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-            shadowOpacity: 1,
-            shadowRadius: 2,
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              borderRadius: 7,
-              margin: 7,
-              justifyContent: 'center',
-            }}
-            activeOpacity={1.0}
-          >
-            <ButtonGroup
-              buttons={['Emergency', 'Community']}
-              selectedIndex={selectedIndex}
-              onPress={value => {
-                setSelectedIndex(value)
-              }}
-              containerStyle={{
-                borderRadius: 7,
-                elevation: 10,
-              }}
-              selectedButtonStyle={{
-                backgroundColor: '#184461',
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
-                borderBottomLeftRadius: 7,
-                borderTopLeftRadius: 7,
-                elevation: 10,
-              }}
-              textStyle={{
-                textAlign: 'center',
-                color: '#000',
-                fontWeight: 'bold',
-              }}
-              buttonContainerStyle={{ backgroundColor: '#fff' }}
-              innerBorderStyle={{ color: 'transparent' }}
-              activeOpacity={1.0}
-            />
-          </TouchableOpacity>
-        </DropShadow>
-      </View>
-
-      {displaycontact ? (
-        <ScrollView style={{ marginTop: 10 }}>
-          {
-            userEmergencyFilter.length == 0 ?
-            <Text style={{fontSize: 18, color: "#000c", textAlign: "center", marginTop: 20}}>No data available</Text>
-            :userEmergencyFilter.map((serv, key) => (
-            <Pressable
-              key={key}
-              onPress={() => {
-                Linking.openURL(`tel:${serv.PhoneNo}`)
-              }}
-            >
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  shadowColor: '#282828',
+                  shadowOffset: {
+                    width: 1,
+                    height: 2,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 2,
                 }}
               >
                 <View
                   style={{
-                    width: '93%',
-                    backgroundColor: 'white',
-                    borderRadius: 15,
-                    elevation: 10,
                     marginBottom: 10,
-                    marginTop: 5,
+                    backgroundColor: '#fff',
+                    height: 40,
+                    marginHorizontal: 20,
+                    borderRadius: 7,
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    elevation: 10,
                     shadowColor: '#000',
                     shadowRadius: 10,
                     shadowOpacity: 0.6,
@@ -493,219 +380,371 @@ const IndexCommunityContainer = ({ navigation }) => {
                       width: 0,
                       height: 4,
                     },
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
                   }}
                 >
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ justifyContent: 'center' }}>
-                      <Icon
-                        type="MaterialIcons"
-                        name="account-circle"
-                        color="#184461"
-                        size={40}
-                        style={{ marginHorizontal: 17, marginVertical: 14 }}
-                      />
-                    </View>
+                  <TextInput
+                    placeholder={'Search community contact'}
+                    returnKeyType={'search'}
+                    keyboardType={'web-search'}
+                    placeholderTextColor={'#666666'}
+                    value={searchCommunity}
+                    onChangeText={text => setSearchCommunity(text)}
+                    // onBlur={()=> setOpenSearch(false)}
+                    // blurOnSubmit={()=> setOpenSearch(false)}
+                    // onSubmitEditing={()=> setOpenSearch(false)}
+                    autoFocus={true}
+                    style={{
+                      width: '90%',
+                      fontSize: 12,
+                    }}
+                  />
 
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        marginStart: 8,
-                        width: 125,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: '#184461',
-                          fontWeight: '700',
-                          marginBottom: 5,
-                          flexWrap: 'wrap',
-                          fontSize: 16,
-                        }}
-                        numberOfLines={1}
-                      >
-                        {serv.Name}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginBottom: 5,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: '#184461',
-                            fontWeight: '500',
-                            fontSize: 12,
-                          }}
-                        >
-                          {serv.PhoneNo}
-                        </Text>
-                      </View>
-                    </View>
-
-                    <View
-                      style={{
-                        marginStart: 2,
-                        marginEnd: 20,
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      }}
-                    >
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-evenly',
-                          flex: 1,
-                        }}
-                      >
-                        <Icon
-                          type="Feathers"
-                          name="share"
-                          color="#184461"
-                          size={25}
-                        />
-                        <Icon
-                          type="FontAwesome"
-                          name="phone"
-                          color="#184461"
-                          size={25}
-                        />
-                      </View>
-                    </View>
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setOpenSearch(false)
+                    }}
+                  >
+                    <Icon
+                      type="Feather"
+                      name="x-circle"
+                      size={25}
+                      color="#184461"
+                    />
+                  </TouchableOpacity>
                 </View>
-              </View>
-            </Pressable>
-          ))}
-        </ScrollView>
-      ) : (
-        <ScrollView style={{ marginTop: 10 }}>
-          {
-            userCommunityFilter.length === 0 ?
-            <Text style={{fontSize: 18, color: "#000c", textAlign: "center", marginTop: 20}}>No data available</Text>
-            :userCommunityFilter.map((com, key) => (
-            <Pressable
-              key={key}
-              onPress={() => {
-                Linking.openURL(`tel:${com.PhoneNo}`)
+              </DropShadow>
+            )}
+
+            {/**search bar area ends here */}
+          </View>
+
+          <View style={{ marginTop: 10 }}>
+            <DropShadow
+              style={{
+                shadowColor: '#282828',
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 2,
               }}
             >
-              <View
+              <TouchableOpacity
                 style={{
+                  borderRadius: 7,
+                  margin: 7,
                   justifyContent: 'center',
-                  alignItems: 'center',
                 }}
+                activeOpacity={1.0}
               >
-                <View
-                  style={{
-                    width: '93%',
-                    backgroundColor: 'white',
-                    borderRadius: 15,
+                <ButtonGroup
+                  buttons={['Emergency', 'Community']}
+                  selectedIndex={selectedIndex}
+                  onPress={value => {
+                    setSelectedIndex(value)
+                  }}
+                  containerStyle={{
+                    borderRadius: 7,
                     elevation: 10,
-                    marginBottom: 10,
-                    marginTop: 5,
-                    shadowColor: '#000',
-                    shadowRadius: 10,
-                    shadowOpacity: 0.6,
-                    elevation: 8,
-                    shadowOffset: {
-                      width: 0,
-                      height: 4,
-                    },
+                  }}
+                  selectedButtonStyle={{
+                    backgroundColor: '#184461',
+                    borderTopRightRadius: 7,
+                    borderBottomRightRadius: 7,
+                    borderBottomLeftRadius: 7,
+                    borderTopLeftRadius: 7,
+                    elevation: 10,
+                  }}
+                  textStyle={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontWeight: 'bold',
+                  }}
+                  buttonContainerStyle={{ backgroundColor: '#fff' }}
+                  innerBorderStyle={{ color: 'transparent' }}
+                  activeOpacity={1.0}
+                />
+              </TouchableOpacity>
+            </DropShadow>
+          </View>
+
+          {displaycontact ? (
+            <ScrollView style={{ marginTop: 10 }}>
+              {userEmergencyFilter.length == 0 ? (
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: '#000c',
+                    textAlign: 'center',
+                    marginTop: 20,
                   }}
                 >
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ justifyContent: 'center' }}>
-                      <Icon
-                        type="MaterialIcons"
-                        name="account-circle"
-                        color="#184461"
-                        size={40}
-                        style={{ marginHorizontal: 17, marginVertical: 14 }}
-                      />
-                    </View>
-
+                  No data available
+                </Text>
+              ) : (
+                userEmergencyFilter.map((serv, key) => (
+                  <Pressable
+                    key={key}
+                    onPress={() => {
+                      Linking.openURL(`tel:${serv.PhoneNo}`)
+                    }}
+                  >
                     <View
                       style={{
-                        justifyContent: 'center',
-                        marginStart: 8,
-                        width: 125,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: '#184461',
-                          fontWeight: '700',
-                          marginBottom: 5,
-                          flexWrap: 'wrap',
-                          fontSize: 16,
-                        }}
-                        numberOfLines={1}
-                      >
-                        {com.Name}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginBottom: 5,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: '#184461',
-                            fontWeight: '500',
-                            fontSize: 12,
-                          }}
-                        >
-                          {com.PhoneNo}
-                        </Text>
-                      </View>
-                    </View>
-
-                    <View
-                      style={{
-                        marginStart: 2,
-                        marginEnd: 20,
-                        flex: 1,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        flexDirection: 'row',
                       }}
                     >
                       <View
                         style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-evenly',
-                          flex: 1,
+                          width: '93%',
+                          backgroundColor: 'white',
+                          borderRadius: 15,
+                          elevation: 10,
+                          marginBottom: 10,
+                          marginTop: 5,
+                          shadowColor: '#000',
+                          shadowRadius: 10,
+                          shadowOpacity: 0.6,
+                          elevation: 8,
+                          shadowOffset: {
+                            width: 0,
+                            height: 4,
+                          },
                         }}
                       >
-                        <Icon
-                          type="Feathers"
-                          name="share"
-                          color="#184461"
-                          size={25}
-                        />
-                        <Icon
-                          type="FontAwesome"
-                          name="phone"
-                          color="#184461"
-                          size={25}
-                        />
+                        <View style={{ flexDirection: 'row' }}>
+                          <View style={{ justifyContent: 'center' }}>
+                            <Icon
+                              type="MaterialIcons"
+                              name="account-circle"
+                              color="#184461"
+                              size={40}
+                              style={{
+                                marginHorizontal: 17,
+                                marginVertical: 14,
+                              }}
+                            />
+                          </View>
+
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              marginStart: 8,
+                              width: 125,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: '#184461',
+                                fontWeight: '700',
+                                marginBottom: 5,
+                                flexWrap: 'wrap',
+                                fontSize: 16,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {serv.Name}
+                            </Text>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginBottom: 5,
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  color: '#184461',
+                                  fontWeight: '500',
+                                  fontSize: 12,
+                                }}
+                              >
+                                {serv.PhoneNo}
+                              </Text>
+                            </View>
+                          </View>
+
+                          <View
+                            style={{
+                              marginStart: 2,
+                              marginEnd: 20,
+                              flex: 1,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                            }}
+                          >
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-evenly',
+                                flex: 1,
+                              }}
+                            >
+                              <Icon
+                                type="Feathers"
+                                name="share"
+                                color="#184461"
+                                size={25}
+                              />
+                              <Icon
+                                type="FontAwesome"
+                                name="phone"
+                                color="#184461"
+                                size={25}
+                              />
+                            </View>
+                          </View>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </View>
-              </View>
-            </Pressable>
-          ))}
-        </ScrollView>
+                  </Pressable>
+                ))
+              )}
+            </ScrollView>
+          ) : (
+            <ScrollView style={{ marginTop: 10 }}>
+              {userCommunityFilter.length === 0 ? (
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: '#000c',
+                    textAlign: 'center',
+                    marginTop: 20,
+                  }}
+                >
+                  No data available
+                </Text>
+              ) : (
+                userCommunityFilter.map((com, key) => (
+                  <Pressable
+                    key={key}
+                    onPress={() => {
+                      Linking.openURL(`tel:${com.PhoneNo}`)
+                    }}
+                  >
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: '93%',
+                          backgroundColor: 'white',
+                          borderRadius: 15,
+                          elevation: 10,
+                          marginBottom: 10,
+                          marginTop: 5,
+                          shadowColor: '#000',
+                          shadowRadius: 10,
+                          shadowOpacity: 0.6,
+                          elevation: 8,
+                          shadowOffset: {
+                            width: 0,
+                            height: 4,
+                          },
+                        }}
+                      >
+                        <View style={{ flexDirection: 'row' }}>
+                          <View style={{ justifyContent: 'center' }}>
+                            <Icon
+                              type="MaterialIcons"
+                              name="account-circle"
+                              color="#184461"
+                              size={40}
+                              style={{
+                                marginHorizontal: 17,
+                                marginVertical: 14,
+                              }}
+                            />
+                          </View>
+
+                          <View
+                            style={{
+                              justifyContent: 'center',
+                              marginStart: 8,
+                              width: 125,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: '#184461',
+                                fontWeight: '700',
+                                marginBottom: 5,
+                                flexWrap: 'wrap',
+                                fontSize: 16,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {com.Name}
+                            </Text>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginBottom: 5,
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  color: '#184461',
+                                  fontWeight: '500',
+                                  fontSize: 12,
+                                }}
+                              >
+                                {com.PhoneNo}
+                              </Text>
+                            </View>
+                          </View>
+
+                          <View
+                            style={{
+                              marginStart: 2,
+                              marginEnd: 20,
+                              flex: 1,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                            }}
+                          >
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-evenly',
+                                flex: 1,
+                              }}
+                            >
+                              <Icon
+                                type="Feathers"
+                                name="share"
+                                color="#184461"
+                                size={25}
+                              />
+                              <Icon
+                                type="FontAwesome"
+                                name="phone"
+                                color="#184461"
+                                size={25}
+                              />
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </Pressable>
+                ))
+              )}
+            </ScrollView>
+          )}
+        </>
       )}
-      </>)
-     }
     </View>
   )
 }

@@ -63,13 +63,14 @@ const IndexRegisterContainer = ({route}) => {
     const req = await validateNumber(phoneNumber);
     const res = await req.json();
     if(res.StatusCode === "200"){
-      if(res.IsAlreadyRegistered){
+      if(res.IsAlreadyRegistered === true){
         showMessage({
-          message: 'Phone number already used.',
+          message: 'Phone number is already registered',
           backgroundColor: 'red',
           duration: 2000
         });
         setLoading(false);
+        navigation.navigate('Login');
       }else{
         showMessage({
           message: 'We have sent you an OTP.',
@@ -101,7 +102,7 @@ const IndexRegisterContainer = ({route}) => {
         if(otp_res.IsAlreadyRegistered){
           setLoading(false);
           showMessage({
-            message: 'Phone number already registered. Login.',
+            message: 'Phone number already registered. Please Login!',
             backgroundColor: 'green',
             duration: 3000,
           });

@@ -434,18 +434,19 @@ const IndexUserProfileContainer = ({ navigation }) => {
                     
                     </View>
 
-                    <View style={{ justifyContent: 'center', flex: 2 }}>
+                    <View style={{ justifyContent: 'center', flex: 2,     backgroundColor:"#fff", justifyContent:'center', alignItems:'center' }}>
                       <Image
                         source={{
                           uri: `data:image/png;base64,${item.BuildingLogo}`,
                         }}
                         style={{
-                          width: 90,
+                          width: 100,
                           height: 55,
                           marginEnd: 3,
-                          marginStart: 5
+                          marginStart: 5,
+                      
                         }}
-                        resizeMode={'cover'}
+                        resizeMode={'stretch'}
                       />
                     </View>
                   </View>

@@ -260,7 +260,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
         const _ser_cards = JSON.stringify(businessCards)
         await AsyncStorage.setItem('businesscards', _ser_cards)
         showMessage({
-          message: 'Card added successfully',
+          message: 'Business card added successfully!',
           backgroundColor: 'green',
           duration: 3000,
         })
@@ -273,7 +273,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
         await AsyncStorage.setItem('businesscards', ser_cards)
         await AsyncStorage.setItem('defaultBCard', cardID)
         showMessage({
-          message: 'Card added successfully',
+          message: 'Business card added successfully!',
           backgroundColor: 'green',
           duration: 3000,
         })
@@ -282,7 +282,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
     } catch (err) {
       console.log(err)
       showMessage({
-        message: 'Something went wrong',
+        message: 'Something went wrong!',
         backgroundColor: 'red',
         duration: 3000,
       })

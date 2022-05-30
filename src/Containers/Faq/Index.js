@@ -13,63 +13,59 @@ function IndexUsersFaqContainer() {
   const usersGuideMenu = [
     {
       id: 1,
-      name: 'Entro App first user guide',
+      name: 'Ezxcess App first user guide',
       guide_Image: Images.userProfileImg,
       faq: [
         {
           id: 1,
-          desc: '- How to download and install entro app?',
+          desc: '• How to download and install Ezxcess app?',
           subCatergory: [
             {
               id: 1,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
+                'Download through Apps Store and Play Store.',
               subImage: Images.pexelsmeetupIcon,
-              subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+             
             },
           ],
         },
         {
           id: 2,
-          desc: '- How to register entro app?',
+          desc: '•	How to register Ezxcess app?',
           subCatergory: [
             {
               id: 2,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
-              subImage: Images.pexelsmeetupIcon,
+                ' Tap register on the login page.',
               subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+                ' Register using phone number.',
             },
           ],
         },
 
         {
           id: 3,
-          desc: '- How do I reset my Password?',
+          desc: '•	How do I reset my Password?',
           subCatergory: [
             {
               subtext:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
               subImage: Images.pexelsmeetupIcon,
-              subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+              
             },
           ],
         },
 
         {
           id: 4,
-          desc: '- why i need set up my profile during registration?',
+          desc: '•	Why I need set up my profile during registration?',
           subCatergory: [
             {
               id: 4,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
+                'To collect user data and setup the details in Ezxcess.',
               subImage: Images.pexelsmeetupIcon,
-              subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+             
             },
           ],
         },
@@ -83,30 +79,29 @@ function IndexUsersFaqContainer() {
       faq: [
         {
           id: 5,
-          desc: '- How to use the Access Card?',
+          desc: '•	How to use the Access Card?',
           subCatergory: [
             {
               id: 5,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
+                'An access card is required to access the building or community registered Ezxess system.',
               subImage: Images.pexelsmeetupIcon,
-              subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+             
             },
           ],
         },
 
         {
           id: 6,
-          desc: '- How do I use the business card?',
+          desc: '•	How do l use the business card?',
           subCatergory: [
             {
               id: 6,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
+                '-	Add a business card.',
               subImage: Images.pexelsmeetupIcon,
               subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+                '- Share business cards with a person through other apps',
             },
           ],
         },
@@ -119,30 +114,28 @@ function IndexUsersFaqContainer() {
       faq: [
         {
           id: 7,
-          desc: '- How to invite visitors?',
+          desc: '•	How to invite visitors?',
           subCatergory: [
             {
               id: 7,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
+                '- Tap on register here button at home section to register your visitor.',
               subImage: Images.pexelsmeetupIcon,
-              subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+             
             },
           ],
         },
 
         {
           id: 8,
-          desc: '- How to share visitors link after registration?',
+          desc: '•	How to share visitors link after registration?',
           subCatergory: [
             {
               id: 8,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
+                '- Tap on registered visitor name at visitor tab and share link through other apps.',
               subImage: Images.pexelsmeetupIcon,
-              subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+             
             },
           ],
         },
@@ -155,30 +148,28 @@ function IndexUsersFaqContainer() {
       faq: [
         {
           id: 9,
-          desc: '- What are contacts in emergency used for?',
+          desc: '•	What are contacts in emergency used for?',
           subCatergory: [
             {
               id: 9,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
+                '- To be contacted in the event of a medical emergency.',
               subImage: Images.pexelsmeetupIcon,
-              subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+            
             },
           ],
         },
 
         {
           id: 10,
-          desc: '- Who do i contact in community section?',
+          desc: '•	Who do I contact in community section?',
           subCatergory: [
             {
               id: 10,
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
+                '- Please contact Helpdesk.',
               subImage: Images.pexelsmeetupIcon,
-              subtext_01:
-                'Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.Nunc Nam eget purus ut augue sit lobortis ut at nulla.',
+             
             },
           ],
         },
@@ -288,7 +279,7 @@ function IndexUsersFaqContainer() {
                         }}
                       >
                         <View style={{ flexGrow: 1 }}>
-                          <Text style={{ color: '#184461' }}>
+                          <Text style={{ color: '#184461', fontWeight:'500' }}>
                             {faqquestions.desc}
                           </Text>
 
@@ -304,30 +295,32 @@ function IndexUsersFaqContainer() {
                                         marginTop: 10,
                                       }}
                                     >
-                                      <Text style={{ color: '#184461' }}>
+                                      <Text style={{ color: '#184461', }}>
                                         {listofObject.subtext}
                                       </Text>
-                                      <View
-                                        style={{
-                                          marginTop: 5,
-                                          marginBottom: 5,
-                                        }}
-                                      >
-                                        <Image
-                                          source={listofObject.subImage}
-                                          style={[
-                                            Layout.selfCenter,
-                                            {
-                                              width: 150,
-                                              height: 150,
-                                              resizeMode: 'contain',
-                                            },
-                                          ]}
-                                        />
-                                      </View>
+                                    
                                       <Text style={{ color: '#184461' }}>
                                         {listofObject.subtext_01}
                                       </Text>
+
+                                      <View
+                                      style={{
+                                        marginTop: 5,
+                                        marginBottom: 5,
+                                      }}
+                                    >
+                                      <Image
+                                        source={listofObject.subImage}
+                                        style={[
+                                          Layout.selfCenter,
+                                          {
+                                            width: 150,
+                                            height: 150,
+                                            resizeMode: 'contain',
+                                          },
+                                        ]}
+                                      />
+                                    </View>
                                     </View>
                                   )
                                 },

@@ -99,7 +99,7 @@ const IndexEditUserContainer = ({ navigation, route }) => {
       if (res_register.StatusCode !== '200') {
         setLoading(false)
         showMessage({
-          message: res_register.message,
+          message: res_register.Message,
           backgroundColor: 'red',
           duration: 2000,
         })

@@ -37,6 +37,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
   const [visitEndDate, setVisitEndDate] = useState('00-00-0000')
   const [endVisitDate_Picked, setEndVisitDate__Picked] = useState(new Date())
   const [openEndVisit, setOpenEndVisit] = useState(false)
+  const [visitorId, setVisitorId] = useState("");
 
   const accessId = useSelector(state => state.user.accessId);
   const defaultCard = useSelector(state => state.virtualCard.defaultCard);
@@ -48,6 +49,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
     setICNumber(visitor.DocumentNumber);
     setCarPlateNum(visitor.VehicleNumber);
     setMobileNumber(visitor.MobileNumber);
+    setVisitorId(visitor.VisitorInvitationId)
   }, [])
 
 
@@ -59,10 +61,10 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
   })
 
   const data = [
-    { label: 'Contractor', value: '1' },
-    { label: 'Visitor', value: '2' },
-    { label: 'Delivery', value: '3' },
-    { label: 'Meeting', value: '4' },
+    { label: 'Contractor', value: 'Contractor' },
+    { label: 'Visitor', value: 'Visitor' },
+    { label: 'Delivery', value: 'Delivery' },
+    { label: 'Meeting', value: 'Meeting' },
   ]
 
   const [value, setValue] = useState(null)
@@ -125,9 +127,11 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
       mobileNumber !== '' ||
       carPlateNum !== ''
     ) {
-      const req_invite = await editVisitor({
+
+      const _data = {
         accessId,
-        BuildingName: defaultCard.BuildingName,
+        VisitorInvitationId: visitorId,
+        BuildingName: defaultCard.BuildingName.trim(),
         Visitortype: value,
         VisitorName: fullName,
         DocumentNumber: ICNumber,
@@ -135,8 +139,9 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
         VehicleNumber: carPlateNum,
         StartDateTime: visitStartDate,
         EndDateTime: visitEndDate,
-      })
-
+      }
+      console.log(_data);
+      const req_invite = await editVisitor(_data);
       const resp = await req_invite.json()
       if (resp.StatusCode == '200') {
         setLoading(false)
@@ -155,7 +160,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
       } else {
         setLoading(false)
         showMessage({
-          message: resp.message,
+          message: resp.Message,
           backgroundColor: 'red',
           duration: 3000,
         })

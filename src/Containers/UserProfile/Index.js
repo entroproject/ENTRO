@@ -15,13 +15,12 @@ import DropShadow from 'react-native-drop-shadow'
 const IndexUserProfileContainer = ({ navigation }) => {
   const { Layout, Colors, Images, MetricsSizes } = useTheme()
   const user = useSelector(user => user.user.profile)
-  const VirtualCard = useSelector(state => state.virtualCard.cards)
+  const VirtualCard = useSelector(state => state.virtualCard.cards || [])
   const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
   const dispatch = useDispatch()
   const handCardSelected = item => {
     dispatch(setDefaultCard(item))
   }
-
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>

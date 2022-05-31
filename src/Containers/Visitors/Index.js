@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   Modal,
+  Alert,
 } from 'react-native'
 import moment from 'moment'
 import { useTheme } from '@/Hooks'
@@ -32,20 +33,19 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [customized_visitors_history, setCustomized_visitors_history] =
     useState([])
   const [loading, setLoading] = useState(true)
-  const orientation = useOrientation()
   const isFocused = useIsFocused()
   const [selectedSortType, setSelectedSortType] = useState(true)
   const [openSearch, setOpenSearch] = useState(false)
-  const [openSearchCalendar, setOpenSearchCalendar] = useState(false)
   const [searchRegisterVisitor, setSearchRegisterVisitor] = useState('')
   const [searchHistoryVisitor, setSearchHistoryVisitor] = useState('')
   const [displayRegisterVisitor, setDisplayRegisterVisitor] = useState(true)
   const [currentIndex, setCurrentIndex] = useState(false)
   const [date, setDate] = useState(new Date())
   const [mode, setMode] = useState('date')
-  const [show, setShow] = useState(false)
-  const accessId = useSelector(state => state.user.accessId)
-  const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
+  const [show, setShow] = useState(false);
+  const accessId = useSelector(state => state.user.accessId);
+  const defaultCardID = useSelector(state => state.virtualCard.defaultCard);
+  const [custom_refresher, set_custom_refresher] = useState(false);
 
   const onChange = (event, selectedDate) => {
     setShow(false)
@@ -217,17 +217,21 @@ const IndexVisitorContainer = ({ navigation }) => {
   }, [selectedIndex])
 
   // make api request to get all visitors and access
+  const getData = async () => {
+    await getAllVisitors()
+    await getAllVisitorsHistory()
+    setLoading(false);
+  }
+
   useEffect(() => {
+    setLoading(true);
     if(defaultCardID){
-      getAllVisitors()
-      getAllVisitorsHistory()
-    }
-  
-  }, [isFocused])
+      getData();
+  }
+  }, [isFocused, custom_refresher])
 
   const getAllVisitors = async () => {
     const req_vis = await getVisitors(accessId, defaultCardID.BuildingName)
-    console.log("registerd visit => ", req_vis)
     const visitors = await req_vis.json()
     setAllRegisteredVisitor(visitors.Visitors)
     setCustomized_visitors(visitors.Visitors)
@@ -242,15 +246,36 @@ const IndexVisitorContainer = ({ navigation }) => {
     setLoading(false)
   }
 
-  const handleDeleteVisitor = async visitor => {
+  const handleDeleteVisitor = async ({VisitorInvitationId}) => {
     try {
-      const del_req = await deleteVisitor(
-        accessId,
-        defaultCardID.BuildingName,
-        defaultCardID.VirtualKey,
-      )
-      const response = await del_req().json()
-      console.log(response)
+      const deleteAction = async () => {
+        const del_req = await deleteVisitor(
+          accessId,
+          defaultCardID.BuildingName,
+          defaultCardID.VirtualKey,
+          VisitorInvitationId
+        )
+        const response = await del_req.json();
+        if(response.StatusCode === '200'){
+          showMessage({
+            message: "Visitor Deleted",
+            duration: 2000,
+            backgroundColor: "green"
+          })
+          set_custom_refresher(!custom_refresher);
+        }
+      }
+      Alert.alert("Delete Visitor", "Are you sure you want to delete visitor?", [
+        {
+          text: "Yes",
+          onPress: deleteAction
+        },
+        {
+          text: "No",
+        }
+      ])
+
+
     } catch (err) {
       console.log(err)
       showMessage({
@@ -710,7 +735,58 @@ const IndexVisitorContainer = ({ navigation }) => {
               Please wait...
             </Text>
           </View>
-        ) : displayRegisterVisitor ? (
+        ) : 
+        typeof defaultCardID.BuildingLogo === 'undefined' ? (
+        <View
+          style={{
+            height: 500,
+            padding: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              fontWeight: 'bold',
+              color: '#184461',
+              textAlign: 'center',
+            }}
+          >
+            Oops
+          </Text>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: 'bold',
+              color: '#184461',
+              textAlign: 'center',
+            }}
+          >
+            You haven't set up your default access card yet. Go to your profile
+            and set it.
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('UserProfile')}
+            style={{
+              padding: 15,
+              backgroundColor: '#184461',
+              marginVertical: 20,
+              borderRadius: 10,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                color: '#fff',
+                fontWeight: 'bold',
+              }}
+            >
+              Set it now
+            </Text>
+          </TouchableOpacity>
+        </View>)
+        :displayRegisterVisitor ? (
           <View>
             <View
               style={{
@@ -729,9 +805,9 @@ const IndexVisitorContainer = ({ navigation }) => {
                   </Text>
                 </View>
               ) : (
-                customized_visitors.map(v => (
+                customized_visitors.map((v, key) => (
                   <View
-                    key={v.VisitorName}
+                    key={1+key}
                     style={{
                       justifyContent: 'center',
                       alignItems: 'center',
@@ -742,7 +818,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                       activeOpacity={1.0}
                       onPress={() => {
                         setCurrentIndex(
-                          v.VisitorName === currentIndex ? null : v.VisitorName,
+                          key === currentIndex ? null : key,
                         )
                       }}
                     >
@@ -835,7 +911,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                         </View>
                       </View>
 
-                      {v.VisitorName === currentIndex ? (
+                      {key === currentIndex ? (
                         <DropShadow
                           style={{
                             shadowColor: '#F0F0F0',
@@ -1068,8 +1144,8 @@ const IndexVisitorContainer = ({ navigation }) => {
                                 <View
                                   style={{
                                     flexDirection: 'row',
-                                    width: 110,
-                                    justifyContent: 'space-evenly',
+                                    width: 140,
+                                    justifyContent: 'space-between',
                                   }}
                                 >
                                   {/**share business card */}
@@ -1151,7 +1227,7 @@ const IndexVisitorContainer = ({ navigation }) => {
             ) : (
               customized_visitors_history.map((v, key) => (
                 <View
-                  key={key}
+                  key={2+key}
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',

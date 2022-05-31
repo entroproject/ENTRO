@@ -62,11 +62,12 @@ export const inviteVisitors = async data => {
     return await makeRequest("InviteVisitor", JSON.stringify(data));
 }
 
-export const deleteVisitor = async (accessid, BuildingName, VirtualKey) => {
+export const deleteVisitor = async (accessid, BuildingName, VirtualKey, VisitorInvitationId) => {
     return await makeRequest("invitevisitordelete", JSON.stringify({
         accessid,
         BuildingName,
         VirtualKey,
+        VisitorInvitationId: VisitorInvitationId,
         Command: "DELETE"
     }));
 }

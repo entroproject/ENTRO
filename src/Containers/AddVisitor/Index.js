@@ -50,10 +50,10 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   })
 
   const data = [
-    { label: 'Contractor', value: '1' },
-    { label: 'Visitor', value: '2' },
-    { label: 'Delivery', value: '3' },
-    { label: 'Meeting', value: '4' },
+    { label: 'Contractor', value: 'Contractor' },
+    { label: 'Visitor', value: 'Visitor' },
+    { label: 'Delivery', value: 'Delivery' },
+    { label: 'Meeting', value: 'Meeting' },
   ]
 
   const [value, setValue] = useState(null)
@@ -138,13 +138,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
           backgroundColor: 'green',
           duration: 3000,
         })
-        // setFullName('')
-        // setICNumber('')
-        // setCarPlateNum('')
-        // setVisitStartDate('')
-        // setVisitEndDate('')
-        // setMobileNumber('')
-        // navigation.goBack()
+        navigation.goBack()
       } else {
         setLoading(false)
         showMessage({

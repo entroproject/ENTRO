@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { ScrollView, View, Text, TouchableOpacity, Image } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { useDispatch, useSelector } from 'react-redux'
-import { useOrientation } from '../useOrientation'
+import Icon from 'react-native-dynamic-vector-icons'
 
 function IndexUsersFaqContainer() {
   const { Gutters, Colors, Images, Fonts, Layout } = useTheme()
@@ -195,6 +195,7 @@ function IndexUsersFaqContainer() {
         <Text
           style={{
             color: Colors.white,
+            fontSize: 16,
             fontWeight: '700',
             marginLeft: 18,
             flex: 2,
@@ -202,18 +203,17 @@ function IndexUsersFaqContainer() {
         >
           FAQ
         </Text>
-
-        <Image
-          source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
-          style={{
-            width: 60,
-            height: 60,
-            marginEnd: 20,
-            borderRadius: 30,
-            borderWidth: 2,
-            borderColor: '#FFFEFE',
-          }}
-        />
+        <View style={{flex:1,  marginEnd: 10,  }}>
+        <Icon
+        name="x"
+        type="Feather"
+        size={35}
+        color="#fff"
+        style={{  alignSelf:'flex-end' }}
+        onPress={() => {navigation.goBack();}}
+      />
+        </View>
+      
       </View>
       <View
         style={[

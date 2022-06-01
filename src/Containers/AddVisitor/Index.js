@@ -11,7 +11,6 @@ import {
 import moment from 'moment'
 import { useTheme } from '@/Hooks'
 import DatePicker from 'react-native-date-picker'
-import * as Constants from '@/Assets/Constants'
 import DropShadow from 'react-native-drop-shadow'
 import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage, hideMessage } from 'react-native-flash-message'
@@ -22,7 +21,7 @@ import { Dropdown } from 'react-native-element-dropdown'
 import { useSelector } from 'react-redux'
 
 const IndexAddVisitorContainer = ({ navigation }) => {
-  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
+  const {Layout, Images, Colors } = useTheme()
   const [fullName, setFullName] = useState('')
   const [ICNumber, setICNumber] = useState('')
   const [mobileNumber, setMobileNumber] = useState('')
@@ -104,7 +103,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
     }).then(image => {
       setPhoto(image.data)
       setShowDisplayCamOption(false)
-      console.log(image)
     })
   }
 
@@ -150,8 +148,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       const req_invite = await inviteVisitors(_data)
       const resp = await req_invite.json()
 
-      console.log(_data)
-
       if (resp.StatusCode == '200') {
         setLoading(false)
         showMessage({
@@ -190,7 +186,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
             onPress={() => {
               navigation.goBack()
             }}
-            style={{}}
           />
           <Text
             style={{
@@ -746,7 +741,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               ) : (
                 <View>
                   <Image
-                    source={photo ? { uri: photo.path } : Images.profilepic}
+                    source={{uri: photo ? `data:image/png;base64,${photo}` : ''}}
                     style={{
                       width: 80,
                       height: 80,

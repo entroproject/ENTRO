@@ -35,24 +35,27 @@ const IndexAnnouncmentContainer = ({ navigation, route }) => {
           style={{
             color: Colors.white,
             fontWeight: '700',
+            fontSize: 16,
             marginLeft: 18,
             flex: 2,
+           
           }}
         >
           Announcement
         </Text>
 
-        <Image
-        source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
-          style={{
-            width: 60,
-            height: 60,
-            marginEnd: 20,
-            borderRadius: 30,
-            borderWidth: 2,
-            borderColor: '#FFFEFE',
-          }}
-        />
+        <View style={{flex:1,  marginEnd: 10,  }}>
+        <Icon
+        name="x"
+        type="Feather"
+        size={35}
+        color="#fff"
+        style={{  alignSelf:'flex-end' }}
+        onPress={() => {navigation.goBack();}}
+      />
+        </View>
+        
+    
       </View>
 
       <View style={{marginVertical: 20, marginHorizontal:20}}>

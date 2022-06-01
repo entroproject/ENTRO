@@ -43,6 +43,7 @@ const IndexSettingContainer = () => {
             color: Colors.white,
             fontWeight: '700',
             marginLeft: 18,
+            fontSize: 16,
             flex: 2,
           }}
         >

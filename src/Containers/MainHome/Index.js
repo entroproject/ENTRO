@@ -553,7 +553,7 @@ const IndexHomeContainer = ({ navigation }) => {
           Announcement
         </Text>
 
-        <Text style={{ color: '#4CA3A3' }}>view all</Text>
+        {/**<Text style={{ color: '#4CA3A3' }}>view all</Text>**/}
       </View>
 
       <View

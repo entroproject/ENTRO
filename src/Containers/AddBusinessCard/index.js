@@ -293,7 +293,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
     <ScrollView style={{ backgroundColor: '#F1F1F1', flex: 1 }}>
       {/* header start */}
 
-      <View style={{ height: 51, backgroundColor: '#184461' }}>
+      <View style={{ height: 55, backgroundColor: '#184461' }}>
         <View
           style={{
             flexDirection: 'row',
@@ -309,7 +309,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 : navigation.goBack()
             }
           >
-            <Icon name="arrow-left" type="Feather" size={30} color="#fff" />
+            <Icon name="arrow-left" type="Feather" size={35} color="#fff" />
           </TouchableOpacity>
 
           <Text
@@ -317,6 +317,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
               color: Colors.white,
               fontWeight: '600',
               marginLeft: 15,
+              fontSize: 16,
             }}
           >
             Business Card
@@ -324,7 +325,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
           <Icon
             name="x"
             type="Feather"
-            size={30}
+            size={35}
             color="#fff"
             onPress={() => {}}
           />
@@ -644,17 +645,17 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                       }}
                       style={{
                         resizeMode: 'cover',
-                        width: 50,
-                        height: 80,
-                        marginEnd: 2,
+                        width: 80,
+                        height: 50,
+                        marginEnd: 8,
                       }}
                     />
                     <Image
                       source={{ uri: `data:image/jpeg;base64,${cardBack}` }}
                       style={{
                         resizeMode: 'cover',
-                        width: 50,
-                        height: 80,
+                        width: 80,
+                        height: 50,
                       }}
                     />
                   </View>

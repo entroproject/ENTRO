@@ -260,7 +260,7 @@ const CardComponent = ({
                   >
                     <View
                       style={{
-                        flexDirection: 'row',
+                      
                         marginTop: 8,
                         marginHorizontal: 10,
                         alignSelf: 'center',
@@ -276,8 +276,8 @@ const CardComponent = ({
                             ].cardFrontChunks.join('')}`,
                           }}
                           style={{
-                            width: orientation === 'PORTRAIT' ? 120 : 200,
-                            height: orientation === 'PORTRAIT' ? 180 : 240,
+                            width: orientation === 'PORTRAIT' ? 270 : 420,
+                            height: orientation === 'PORTRAIT' ? 140 : 200,
                           }}
                           resizeMode={'cover'}
                         />
@@ -290,8 +290,8 @@ const CardComponent = ({
                             ].cardBackChunks.join('')}`,
                           }}
                           style={{
-                            width: orientation === 'PORTRAIT' ? 120 : 200,
-                            height: orientation === 'PORTRAIT' ? 180 : 240,
+                            width: orientation === 'PORTRAIT' ? 270 : 420,
+                            height: orientation === 'PORTRAIT' ? 140 : 200,
                           }}
                           resizeMode={'cover'}
                         />

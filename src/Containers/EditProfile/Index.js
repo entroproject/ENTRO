@@ -119,7 +119,7 @@ const IndexEditUserContainer = ({ navigation, route }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
-      <View style={{ height: 51, backgroundColor: '#184461' }}>
+      <View style={{ height: 55, backgroundColor: '#184461' }}>
         <View
           style={{
             flexDirection: 'row',
@@ -131,7 +131,7 @@ const IndexEditUserContainer = ({ navigation, route }) => {
           <Icon
             name="arrow-left"
             type="Feather"
-            size={30}
+            size={35}
             color="#fff"
             onPress={() => {
               navigation.goBack()
@@ -143,6 +143,7 @@ const IndexEditUserContainer = ({ navigation, route }) => {
               color: Colors.white,
               fontWeight: '600',
               marginLeft: 15,
+              fontSize: 16,
             }}
           >
             Update Profile
@@ -150,7 +151,7 @@ const IndexEditUserContainer = ({ navigation, route }) => {
           <Icon
             name="x"
             type="Feather"
-            size={30}
+            size={35}
             color="#fff"
             onPress={() => {}}
           />

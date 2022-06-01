@@ -17,6 +17,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
   const user = useSelector(user => user.user.profile)
   const VirtualCard = useSelector(state => state.virtualCard.cards || [])
   const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
+
   const dispatch = useDispatch()
   const handCardSelected = item => {
     dispatch(setDefaultCard(item))
@@ -31,7 +32,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
        <Icon
        name="x"
        type="Feather"
-       size={30}
+       size={35}
        color="#fff"
        style={{ margin: 20,  alignSelf:'flex-end' }}
        onPress={() => {navigation.goBack();}}

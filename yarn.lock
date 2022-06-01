@@ -6219,13 +6219,6 @@
   dependencies:
     "prop-types" "^15.7.2"
 
-"react-native-awesome-alerts@^1.5.2":
-  "integrity" "sha512-PPTzKLpwDKbjeghvrRkg7OunND4C7d4bQORVLBnhqUK2z2PfZiI3UCULU0tczzeOyavv5hVSrYNXKPXlvhfmVg=="
-  "resolved" "https://registry.npmjs.org/react-native-awesome-alerts/-/react-native-awesome-alerts-1.5.2.tgz"
-  "version" "1.5.2"
-  dependencies:
-    "prop-types" "^15.7.2"
-
 "react-native-calendars@^1.1283.0":
   "integrity" "sha512-CKrjFwM+vLE0qd2M8OyClrtmjZsbCPb9QJs3uTZ9vZc1hnweURIVPSTBINWQrRw8Q/uTzzYmIpS0jlb/kBhKYg=="
   "resolved" "https://registry.npmjs.org/react-native-calendars/-/react-native-calendars-1.1283.0.tgz"
@@ -6242,6 +6235,18 @@
     "xdate" "^0.8.0"
   optionalDependencies:
     "moment" "^2.24.0"
+
+"react-native-camera-hooks@^0.5.3":
+  "integrity" "sha512-MIrZgJvJ7+UKiYzbbuKr0JHh8UsvMJ6hYekpZOcsHV5oMHgyW1AxHbCLDymkNTCaI/04rBX/XH9fsLVW0zZFkg=="
+  "resolved" "https://registry.npmjs.org/react-native-camera-hooks/-/react-native-camera-hooks-0.5.3.tgz"
+  "version" "0.5.3"
+
+"react-native-camera@^4.2.1":
+  "integrity" "sha512-+Vkql24PFYQfsPRznJCvPwJQfyzCnjlcww/iZ4Ej80bgivKjL9eU0IMQIXp4yi6XCrKi4voWXxIDPMupQZKeIQ=="
+  "resolved" "https://registry.npmjs.org/react-native-camera/-/react-native-camera-4.2.1.tgz"
+  "version" "4.2.1"
+  dependencies:
+    "prop-types" "^15.6.2"
 
 "react-native-codegen@^0.0.7":
   "integrity" "sha512-dwNgR8zJ3ALr480QnAmpTiqvFo+rDtq6V5oCggKhYFlRjzOmVSFn3YD41u8ltvKS5G2nQ8gCs2vReFFnRGLYng=="
@@ -6342,10 +6347,10 @@
   dependencies:
     "lodash.merge" "^4.6.2"
 
-"react-native-fs@^2.19.0":
-  "integrity" "sha512-Yl09IbETkV5UJcBtVtBLttyTmiAhJIHpGA/LvredI5dYiw3MXMMVu42bzELiuH2Bwj7F+qd0fMNvgfBDiDxd2A=="
-  "resolved" "https://registry.npmjs.org/react-native-fs/-/react-native-fs-2.19.0.tgz"
-  "version" "2.19.0"
+"react-native-fs@^2.20.0":
+  "integrity" "sha512-VkTBzs7fIDUiy/XajOSNk0XazFE9l+QlMAce7lGuebZcag5CnjszB+u4BdqzwaQOdcYb5wsJIsqq4kxInIRpJQ=="
+  "resolved" "https://registry.npmjs.org/react-native-fs/-/react-native-fs-2.20.0.tgz"
+  "version" "2.20.0"
   dependencies:
     "base-64" "^0.1.0"
     "utf8" "^3.0.0"

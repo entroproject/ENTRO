@@ -9,8 +9,6 @@ import {
   Text,
   ScrollView,
   useWindowDimensions,
-  BackHandler,
-  Alert,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
@@ -47,21 +45,21 @@ function IndexTutorialSlideContainer({navigation}) {
   
   const onBoardings = [
     {
-      title_slide_01: 'First Slide Title',
+      title_slide_01: 'Welcome to EzXcess',
       description_slide_1_1:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Praesent maximus .',
+        'A platform effective and efficient for visitor management',
       description_slide_1_2:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Praesent maximus .',
+        'Secured place to manage all visit activities and network.',
 
       slide_Image_01: Images.tutorialfirstimage,
     },
 
     {
-      title_slide_02: 'Second Slide Title ',
+      title_slide_02: 'Easy And convenient ',
       description_slide_2_1:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Praesent maximus .',
+        'Visitors can be invited easily and granted persmission ',
       description_slide_2_2:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Praesent maximus .',
+        'convenient business card sharing and emergency mangt contact',
 
       slide_Image_02: Images.tutorialsecondimage,
 

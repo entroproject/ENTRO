@@ -9,6 +9,8 @@ import {
   Animated,
   TextInput,
   StyleSheet,
+  Modal,
+  TouchableOpacity,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
@@ -17,7 +19,7 @@ import { navigate } from '@/Navigators/utils'
 import DropShadow from 'react-native-drop-shadow'
 import ImagePicker from 'react-native-image-crop-picker'
 import { showMessage } from 'react-native-flash-message'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+
 import { useOrientation } from '../useOrientation'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUser } from '@/Features/users'
@@ -39,6 +41,8 @@ const IndexEditUserContainer = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const accessId = useSelector(state => state.user.accessId);
 
+  const [showDisplayCamOption, setShowDisplayCamOption] = useState(false)
+
   const [placeholder, setPlaceholder] = useState({
     fullName: 'FullName',
     contactNumber: 'Contact Number',
@@ -46,14 +50,33 @@ const IndexEditUserContainer = ({ navigation, route }) => {
     carPlateNum: 'Car Number',
   })
 
-  const uploadPhoto = () => {
+ const goPhotoGallery = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
-      includeBase64: true
+      includeBase64: true,
     }).then(image => {
-      setPhoto(image.data);
+      setPhoto(image.data)
+      setShowDisplayCamOption(false)
+    })
+  }
+
+  const goPhotoCamera = () => {
+    setPhoto(null)
+
+    ImagePicker.openCamera({
+      mediaType: 'photo',
+      width: 150,
+      height: 150,
+      compressImageMaxHeight: 150,
+      compressImageMaxWidth: 150,
+      cropping: true,
+      useFrontCamera: true,
+      includeBase64: true,
+    }).then(image => {
+      setPhoto(image.data)
+      setShowDisplayCamOption(false)
     })
   }
 
@@ -119,6 +142,113 @@ const IndexEditUserContainer = ({ navigation, route }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
+
+    <Modal
+    transparent
+    visible={showDisplayCamOption}
+    onRequestClose={() => setShowDisplayCamOption(false)}
+  >
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        backgroundColor: '#00000099',
+      }}
+    >
+      <View
+        style={{
+          width: 300,
+          height: 300,
+          backgroundColor: '#fff',
+          borderColor: '#184461',
+          borderWidth: 1,
+          borderRadius: 20,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: '#184461',
+            height: 50,
+            marginBottom: 10,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+            borderColor: '#184461',
+            borderWidth: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ color: '#fff', fontWeight: '700' }}>
+            Please select any option
+          </Text>
+        </View>
+
+        <View
+          style={{ justifyContent: 'center', alignItems: 'center' }}
+        >
+          <View style={{ marginTop: 20 }}>
+            <TouchableOpacity
+              onPress={goPhotoGallery}
+              style={{
+                borderWidth: 1,
+                borderColor: '#184461',
+                padding: 10,
+                borderRadius: 15,
+                width: 125,
+                backgroundColor: '#F0F0F0',
+              }}
+            >
+              <Text style={{ color: '#000000', textAlign: 'center' }}>
+                Open Gallery
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ marginTop: 20 }}>
+            <TouchableOpacity
+              onPress={goPhotoCamera}
+              style={{
+                borderWidth: 1,
+                borderColor: '#184461',
+                padding: 10,
+                borderRadius: 15,
+                width: 125,
+                backgroundColor: '#F0F0F0',
+              }}
+            >
+              <Text style={{ color: '#000000', textAlign: 'center' }}>
+                Open Camera
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+        <TouchableOpacity
+        onPress={()=> setShowDisplayCamOption(false)}>
+          <View
+            style={{
+              width: 299,
+              height: 50,
+              borderColor: '#184461',
+              backgroundColor: 'lightblue',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderBottomLeftRadius: 15,
+              borderBottomRightRadius: 15,
+            }}
+          >
+            <Text
+              style={{ fontSize: 18, color: '#000', fontWeight: '900' }}>
+              Close
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      </View>
+    </View>
+  </Modal>
       <View style={{ height: 55, backgroundColor: '#184461' }}>
         <View
           style={{
@@ -205,7 +335,7 @@ const IndexEditUserContainer = ({ navigation, route }) => {
               ]}
             >
               <TouchableOpacity
-                onPress={() => uploadPhoto()}
+                onPress={() =>  setShowDisplayCamOption(true)}
                 activeOpacity={0.9}
                 style={[
                   Layout.center,

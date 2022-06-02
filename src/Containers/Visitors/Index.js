@@ -46,6 +46,7 @@ const IndexVisitorContainer = ({ navigation }) => {
   const accessId = useSelector(state => state.user.accessId);
   const defaultCardID = useSelector(state => state.virtualCard.defaultCard);
   const [custom_refresher, set_custom_refresher] = useState(false);
+ 
 
   const onChange = (event, selectedDate) => {
     setShow(false)
@@ -180,9 +181,9 @@ const IndexVisitorContainer = ({ navigation }) => {
         return -1
       })
       if (displayRegisterVisitor) {
-        setCustomized_visitors(_filtered_visitors)
+        setCustomized_visitors(_filtered_visitors);
       } else {
-        setCustomized_visitors_history(_filtered_visitors)
+        setCustomized_visitors_history(_filtered_visitors);
       }
     }
   }
@@ -190,36 +191,36 @@ const IndexVisitorContainer = ({ navigation }) => {
   // search hist
   useEffect(() => {
     if (searchHistoryVisitor.length < 1) {
-      resetVisitorHistory()
+      resetVisitorHistory();
     }
     if (searchHistoryVisitor.length > 0) {
-      handleVisitorHistory()
+      handleVisitorHistory();
     }
   }, [searchHistoryVisitor])
 
   // search reg
   useEffect(() => {
     if (searchRegisterVisitor.length < 1) {
-      resetRegVisitor()
+      resetRegVisitor();
     }
     if (searchRegisterVisitor.length > 0) {
-      handleRegVisitor()
+      handleRegVisitor();
     }
   }, [searchRegisterVisitor])
 
   // switch between tabs
   useEffect(() => {
     if (selectedIndex === 0) {
-      setDisplayRegisterVisitor(true)
+      setDisplayRegisterVisitor(true);
     } else {
-      setDisplayRegisterVisitor(false)
+      setDisplayRegisterVisitor(false);
     }
   }, [selectedIndex])
 
   // make api request to get all visitors and access
   const getData = async () => {
-    await getAllVisitors()
-    await getAllVisitorsHistory()
+    await getAllVisitors();
+    await getAllVisitorsHistory();
     setLoading(false);
   }
 
@@ -231,19 +232,20 @@ const IndexVisitorContainer = ({ navigation }) => {
   }, [isFocused, custom_refresher])
 
   const getAllVisitors = async () => {
-    const req_vis = await getVisitors(accessId, defaultCardID.BuildingName)
-    const visitors = await req_vis.json()
-    setAllRegisteredVisitor(visitors.Visitors)
-    setCustomized_visitors(visitors.Visitors)
-    setLoading(false)
+    const req_vis = await getVisitors(accessId, defaultCardID.BuildingName);
+    const visitors = await req_vis.json();
+    console.log("visitors==>", visitors);
+    setAllRegisteredVisitor(visitors.Visitors);
+    setCustomized_visitors(visitors.Visitors);
+    setLoading(false);
   }
 
   const getAllVisitorsHistory = async () => {
-    const req_vis = await getVisitorsHistory(accessId, defaultCardID.BuildingName,)
-    const visitors_hist = await req_vis.json()
-    setAllVisitorsHistory(visitors_hist.Visitors)
-    setCustomized_visitors_history(visitors_hist.Visitors)
-    setLoading(false)
+    const req_vis = await getVisitorsHistory(accessId, defaultCardID.BuildingName,);
+    const visitors_hist = await req_vis.json();
+    setAllVisitorsHistory(visitors_hist.Visitors);
+    setCustomized_visitors_history(visitors_hist.Visitors);
+    setLoading(false);
   }
 
   const handleDeleteVisitor = async ({VisitorInvitationId}) => {
@@ -1121,7 +1123,7 @@ const IndexVisitorContainer = ({ navigation }) => {
 
                                 <View style={{ flex: 1 }}>
                                   <Image
-                                    source={Images.KlccLogo}
+                                 source={{ uri: `data:image/png;base64,${defaultCardID.BuildingLogo}`}}
                                     style={{
                                       width: 80,
                                       height: 48,

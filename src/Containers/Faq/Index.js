@@ -5,7 +5,7 @@ import { useTheme } from '@/Hooks'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-dynamic-vector-icons'
 
-function IndexUsersFaqContainer() {
+function IndexUsersFaqContainer({navigation}) {
   const { Gutters, Colors, Images, Fonts, Layout } = useTheme()
   const [currentIndex, setCurrentIndex] = useState(false)
   const user = useSelector(user => user.user.profile)
@@ -24,7 +24,7 @@ function IndexUsersFaqContainer() {
               id: 1,
               subtext:
                 'Download through Apps Store and Play Store.',
-              subImage: Images.pexelsmeetupIcon,
+             
              
             },
           ],
@@ -49,8 +49,8 @@ function IndexUsersFaqContainer() {
           subCatergory: [
             {
               subtext:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu erat auctor',
-              subImage: Images.pexelsmeetupIcon,
+                'Simply login with the OTP verification which is sent to your mobile phone. You can get access to your account anytime.',
+              
               
             },
           ],
@@ -64,8 +64,6 @@ function IndexUsersFaqContainer() {
               id: 4,
               subtext:
                 'To collect user data and setup the details in Ezxcess.',
-              subImage: Images.pexelsmeetupIcon,
-             
             },
           ],
         },
@@ -85,8 +83,6 @@ function IndexUsersFaqContainer() {
               id: 5,
               subtext:
                 'An access card is required to access the building or community registered Ezxess system.',
-              subImage: Images.pexelsmeetupIcon,
-             
             },
           ],
         },
@@ -120,8 +116,6 @@ function IndexUsersFaqContainer() {
               id: 7,
               subtext:
                 '- Tap on register here button at home section to register your visitor.',
-              subImage: Images.pexelsmeetupIcon,
-             
             },
           ],
         },
@@ -134,8 +128,6 @@ function IndexUsersFaqContainer() {
               id: 8,
               subtext:
                 '- Tap on registered visitor name at visitor tab and share link through other apps.',
-              subImage: Images.pexelsmeetupIcon,
-             
             },
           ],
         },
@@ -154,8 +146,6 @@ function IndexUsersFaqContainer() {
               id: 9,
               subtext:
                 '- To be contacted in the event of a medical emergency.',
-              subImage: Images.pexelsmeetupIcon,
-            
             },
           ],
         },
@@ -168,8 +158,6 @@ function IndexUsersFaqContainer() {
               id: 10,
               subtext:
                 '- Please contact Helpdesk.',
-              subImage: Images.pexelsmeetupIcon,
-             
             },
           ],
         },
@@ -303,24 +291,7 @@ function IndexUsersFaqContainer() {
                                         {listofObject.subtext_01}
                                       </Text>
 
-                                      <View
-                                      style={{
-                                        marginTop: 5,
-                                        marginBottom: 5,
-                                      }}
-                                    >
-                                      <Image
-                                        source={listofObject.subImage}
-                                        style={[
-                                          Layout.selfCenter,
-                                          {
-                                            width: 150,
-                                            height: 150,
-                                            resizeMode: 'contain',
-                                          },
-                                        ]}
-                                      />
-                                    </View>
+                                    
                                     </View>
                                   )
                                 },

@@ -210,9 +210,6 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
                   style={[
                     Layout.center,
                     {
-                      width: 300,
-                      height: 300,
-                      borderRadius: 150,
                       backgroundColor: '#ffffff',
                       shadowColor: ' rgba(0, 0, 0, 0.25)',
                       elevation: 10,
@@ -221,9 +218,9 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
                 >
                   <Image
                     source={{ uri: `data:image/png;base64,${image.Image}` }}
-                    style={{ width: 200, height: 120, resizeMode: 'contain' }}
-                    width={200}
-                    height={120}
+                    style={{ width: 300, height: 300, resizeMode: 'contain' }}
+                    width={300}
+                    height={300}
                   />
                 </View>
               </DropShadow>

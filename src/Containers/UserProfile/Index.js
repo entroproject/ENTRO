@@ -23,6 +23,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
     dispatch(setDefaultCard(item))
   }
 
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
       {/* header start */}
@@ -312,7 +313,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
       >
         <View style={{ flex: 1, marginHorizontal: 16 }}>
           {
-            VirtualCard?.length === 0
+            VirtualCard.VirtualKey?.length === 0
             ?
             <View>
               <Text style={{
@@ -321,7 +322,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
                 fontSize: 16
               }}>No Virtual card has been assigned to you yet</Text>
             </View>
-            :VirtualCard?.map((item, index) => (
+            :VirtualCard.VirtualKey?.map((item, index) => (
             <TouchableOpacity
               style={{
                 width: '100%',

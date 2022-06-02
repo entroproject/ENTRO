@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Modal,
 } from 'react-native'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import ImagePicker from 'react-native-image-crop-picker'
@@ -170,7 +171,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
   const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
   const [showUploadScreen, setShowUploadScreen] = useState(false)
-  
+  const [showDisplayCamOption, setShowDisplayCamOption] = useState(false)
 
   const [placeholder, setPlaceholder] = useState({
     fname: 'FullName',
@@ -179,16 +180,33 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
     phone: 'Phone Number',
   })
 
- 
-
   const handleAttachLogo = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
-      includeBase64: true
+      includeBase64: true,
     }).then(response => {
-      setLogo(response.data);
+      setLogo(response.data)
+      setShowDisplayCamOption(false)
+    })
+  }
+
+  const goPhotoCamera = () => {
+    setLogo(null)
+
+    ImagePicker.openCamera({
+      mediaType: 'photo',
+      width: 150,
+      height: 150,
+      compressImageMaxHeight: 150,
+      compressImageMaxWidth: 150,
+      cropping: true,
+      useFrontCamera: true,
+      includeBase64: true,
+    }).then(image => {
+      setLogo(image.data)
+      setShowDisplayCamOption(false)
     })
   }
 
@@ -197,7 +215,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
       width: 300,
       height: 400,
       cropping: true,
-      includeBase64: true
+      includeBase64: true,
     }).then(response => {
       if (location === 'front') {
         setCardFront(response.data)
@@ -293,6 +311,112 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
     <ScrollView style={{ backgroundColor: '#F1F1F1', flex: 1 }}>
       {/* header start */}
 
+      <Modal
+        transparent
+        visible={showDisplayCamOption}
+        onRequestClose={() => setShowDisplayCamOption(false)}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#00000099',
+          }}
+        >
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: '#fff',
+              borderColor: '#184461',
+              borderWidth: 1,
+              borderRadius: 20,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                height: 50,
+                marginBottom: 10,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                borderColor: '#184461',
+                borderWidth: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: '#fff', fontWeight: '700' }}>
+                Please select any option
+              </Text>
+            </View>
+
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  onPress={handleAttachLogo}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    width: 125,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    Open Gallery
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  onPress={goPhotoCamera}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    width: 125,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    Open Camera
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <TouchableOpacity
+              onPress={()=> setShowDisplayCamOption(false)}>
+                <View
+                  style={{
+                    width: 299,
+                    height: 50,
+                    borderColor: '#184461',
+                    backgroundColor: 'lightblue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomLeftRadius: 15,
+                    borderBottomRightRadius: 15,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <View style={{ height: 55, backgroundColor: '#184461' }}>
         <View
           style={{
@@ -377,7 +501,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   fontSize: 20,
                   fontWeight: '900',
                   paddingBottom: 0,
-                  color:'#457C9A'
+                  color: '#457C9A',
                 }}
                 value={fname}
                 placeholder={placeholder.fname}
@@ -417,7 +541,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   fontSize: 20,
                   fontWeight: '900',
                   paddingBottom: 0,
-                  color:'#457C9A'
+                  color: '#457C9A',
                 }}
                 value={bname}
                 placeholder={placeholder.bname}
@@ -456,7 +580,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   fontSize: 20,
                   fontWeight: '900',
                   paddingBottom: 0,
-                  color:'#457C9A'
+                  color: '#457C9A',
                 }}
                 value={bwebsite}
                 placeholder={placeholder.bwebsite}
@@ -495,8 +619,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   fontSize: 20,
                   fontWeight: '900',
                   paddingBottom: 0,
-                  color:'#457C9A'
-                 
+                  color: '#457C9A',
                 }}
                 value={phone}
                 placeholder={placeholder.phone}
@@ -537,7 +660,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 }}
               >
                 <TouchableOpacity
-                  onPress={handleAttachLogo}
+                  onPress={() => setShowDisplayCamOption(true)}
                   style={{
                     borderWidth: 1,
                     borderColor: '#184461',
@@ -552,12 +675,11 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </DropShadow>
-             
 
               <View style={{ marginTop: 6, alignItems: 'flex-end' }}>
                 {logo ? (
                   <Image
-                    source={{ uri: `data:image/jpeg;base64,${logo}`}}
+                    source={{ uri: `data:image/jpeg;base64,${logo}` }}
                     style={{
                       resizeMode: 'cover',
                       width: 100,
@@ -625,7 +747,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </DropShadow>
-            
+
               <View
                 style={{
                   marginTop: 20,

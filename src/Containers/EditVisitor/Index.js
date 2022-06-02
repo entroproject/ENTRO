@@ -6,6 +6,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Modal
 } from 'react-native'
 import moment from 'moment'
 import { useTheme } from '@/Hooks'
@@ -41,7 +42,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
 
   const accessId = useSelector(state => state.user.accessId);
   const defaultCard = useSelector(state => state.virtualCard.defaultCard);
-
+  const [showDisplayCamOption, setShowDisplayCamOption] = useState(false);
 
   useEffect(()=> {
     const {visitor} = route.params;
@@ -88,15 +89,39 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
     }
   }
 
+ 
+
   const goPhotoGallery = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
       cropping: true,
+      includeBase64: true,
     }).then(image => {
-      setPhoto(image)
+      setPhoto(image.data)
+      setShowDisplayCamOption(false)
     })
   }
+
+  const goPhotoCamera = () => {
+    setPhoto(null)
+
+    ImagePicker.openCamera({
+      mediaType: 'photo',
+      width: 150,
+      height: 150,
+      compressImageMaxHeight: 150,
+      compressImageMaxWidth: 150,
+      cropping: true,
+      useFrontCamera: true,
+      includeBase64: true,
+    }).then(image => {
+      console.log(image)
+      setPhoto(image.data)
+      setShowDisplayCamOption(false)
+    })
+  }
+
 
   const SubmitForm = async () => {
    try{
@@ -175,6 +200,115 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
+    <Modal
+    transparent
+    visible={showDisplayCamOption}
+    onRequestClose={() => setShowDisplayCamOption(false)}
+  >
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        backgroundColor: '#00000099',
+      }}
+    >
+      <View
+        style={{
+          width: 300,
+          height: 300,
+          backgroundColor: '#fff',
+          borderColor: '#184461',
+          borderWidth: 1,
+          borderRadius: 20,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: '#184461',
+            height: 50,
+            marginBottom: 10,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+            borderColor: '#184461',
+            borderWidth: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ color: '#fff', fontWeight: '700' }}>
+            Please select any option
+          </Text>
+        </View>
+
+        <View
+          style={{ justifyContent: 'center', alignItems: 'center' }}
+        >
+          <View style={{ marginTop: 20 }}>
+            <TouchableOpacity
+              onPress={goPhotoGallery}
+              style={{
+                borderWidth: 1,
+                borderColor: '#184461',
+                padding: 10,
+                borderRadius: 15,
+                width: 125,
+                backgroundColor: '#F0F0F0',
+              }}
+            >
+              <Text style={{ color: '#000000', textAlign: 'center' }}>
+                Open Gallery
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ marginTop: 20 }}>
+            <TouchableOpacity
+              onPress={goPhotoCamera}
+              style={{
+                borderWidth: 1,
+                borderColor: '#184461',
+                padding: 10,
+                borderRadius: 15,
+                width: 125,
+                backgroundColor: '#F0F0F0',
+              }}
+            >
+              <Text style={{ color: '#000000', textAlign: 'center' }}>
+                Open Camera
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+        <TouchableOpacity
+        onPress={()=> setShowDisplayCamOption(false)}>
+          <View
+            style={{
+              width: 299,
+              height: 50,
+              borderColor: '#184461',
+              backgroundColor: 'lightblue',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderBottomLeftRadius: 15,
+              borderBottomRightRadius: 15,
+            }}
+          >
+            <Text
+              style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+            >
+              Close
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      </View>
+    </View>
+  </Modal>
+
       <View style={{ height: 51, backgroundColor: '#184461' }}>
         <View
           style={{
@@ -591,7 +725,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
             }}
           >
             <TouchableOpacity
-              onPress={goPhotoGallery}
+              onPress={()=> setShowDisplayCamOption(true)}
               style={{
                 borderWidth: 1,
                 borderColor: '#184461',
@@ -602,7 +736,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
               }}
             >
               <Text style={{ color: '#000000', textAlign: 'center' }}>
-                Visitor Image
+                Add Image
               </Text>
             </TouchableOpacity>
           </DropShadow>
@@ -634,7 +768,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
             ) : (
               <View>
                 <Image
-                  source={photo ? { uri: photo.path } : Images.profilepic}
+                  source={{uri: photo ? `data:image/png;base64,${photo}` : '',}}
                   style={{
                     width: 80,
                     height: 80,

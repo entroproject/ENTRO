@@ -30,5 +30,6 @@ export default function () {
     pexelsmeetupIcon: require('@/Assets/Images/Pexelsmeetup.jpg'),
     goodMark: require('@/Assets/Images/CorrectMark.png'),
     addBtnBiz: require('@/Assets/Images/Addbutton.png'),
+    corporateLogo: require('@/Assets/Images/EzxcessLogo.png'),
   }
 }

@@ -73,7 +73,7 @@ const IndexLoginContainer = ({route}) => {
         navigation.navigate('Register');
       }else{
         showMessage({
-          message: 'OTP was sent successfully!',
+          message: 'OTP sent successfully!',
           backgroundColor: 'green',
           duration: 2000
         });
@@ -164,9 +164,11 @@ const IndexLoginContainer = ({route}) => {
   >
 
   <ScrollView>
+
   <Image
-  source={Images.logoGreen}
-  style={{ width: 230, height: 55, marginTop: 57, marginLeft: 20 }}
+  source={Images.corporateLogo}
+  resizeMode={'contain'}
+  style={{  marginTop: 20,  marginLeft: 20}}
 />
 <View style={{ marginLeft: 32 }}>
   <Text
@@ -186,7 +188,17 @@ const IndexLoginContainer = ({route}) => {
       fontWeight: '500',
     }}
   >
-    Login to access your entro account
+    Login to access your
+  </Text>
+
+  <Text
+    style={{
+      fontSize: 12,
+      color: Colors.textColor,
+      fontWeight: '500',
+    }}
+  >
+    Ezxcess account
   </Text>
 </View>
 <View style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal:5}}>

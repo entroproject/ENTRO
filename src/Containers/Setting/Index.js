@@ -106,7 +106,7 @@ const IndexSettingContainer = () => {
         <Text style={{ fontSize: 14, color: '#184461', marginTop: 20 }}>
           Contact our support at{' '}
           <Text style={{ textDecorationLine: 'underline', fontWeight: '500', color:'#184461',  }}>
-            entro@support.com
+            Ezxcess@support.com
           </Text>
         </Text>
       </View>
@@ -155,14 +155,13 @@ const IndexSettingContainer = () => {
           marginHorizontal: 10,
           marginTop: 20,
         }}
-      ></View>
+      />
 
       <View style={{marginTop:30}}>
       <Image 
-      source={Images.logoGreen}   
+      source={Images.corporateLogo}   
       />
 
-      <Text style={{marginLeft:15, color:'#184461', fontWeight:'500'}}>Management</Text>
       </View>
     </ScrollView>
   )

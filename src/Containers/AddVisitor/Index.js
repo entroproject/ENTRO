@@ -21,7 +21,7 @@ import { Dropdown } from 'react-native-element-dropdown'
 import { useSelector } from 'react-redux'
 
 const IndexAddVisitorContainer = ({ navigation }) => {
-  const {Layout, Images, Colors } = useTheme()
+  const { Layout, Images, Colors } = useTheme()
   const [fullName, setFullName] = useState('')
   const [ICNumber, setICNumber] = useState('')
   const [mobileNumber, setMobileNumber] = useState('')
@@ -93,10 +93,14 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   }
 
   const goPhotoCamera = () => {
+    setPhoto(null)
+
     ImagePicker.openCamera({
       mediaType: 'photo',
-      width: 300,
-      height: 400,
+      width: 150,
+      height: 150,
+      compressImageMaxHeight: 150,
+      compressImageMaxWidth: 150,
       cropping: true,
       useFrontCamera: true,
       includeBase64: true,
@@ -339,6 +343,31 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
+
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity
+                onPress={()=> setShowDisplayCamOption(false)}>
+                  <View
+                    style={{
+                      width: 299,
+                      height: 50,
+                      borderColor: '#184461',
+                      backgroundColor: 'lightblue',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomLeftRadius: 15,
+                      borderBottomRightRadius: 15,
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
               </View>
             </View>
           </Modal>
@@ -741,7 +770,9 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               ) : (
                 <View>
                   <Image
-                    source={{uri: photo ? `data:image/png;base64,${photo}` : ''}}
+                    source={{
+                      uri: photo ? `data:image/png;base64,${photo}` : '',
+                    }}
                     style={{
                       width: 80,
                       height: 80,

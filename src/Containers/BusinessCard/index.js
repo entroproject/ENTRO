@@ -44,12 +44,14 @@ const CardComponent = ({
   }
 
   const onShare = async card => {
+
+  
     try {
       await Share.open({
         title: 'Business Card',
         message: `
         Name: ${card.fullname}
-        Company: ${card.businessname}
+        Company: ${card.businessName}
         Website: https://${card.businessWebsite}
         Phone: ${card.phone}
         `,
@@ -153,7 +155,7 @@ const CardComponent = ({
 
                     <Text
                       style={{
-                        fontSize: 11,
+                        fontSize: 12,
                         fontWeight: '500',
                         color: '#184461',
                         marginTop: 3,
@@ -170,10 +172,11 @@ const CardComponent = ({
                     >
                       <Text
                         style={{
-                          fontSize: 11,
+                          fontSize: 13,
                           fontWeight: '500',
                           color: '#184461',
                           marginTop: 3,
+                          
                         }}
                       >
                         {businessCards[key].businessWebsite}

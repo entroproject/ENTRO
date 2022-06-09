@@ -13,7 +13,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "ENTRO";
+    return "EzXcess";
   }
 
   // for react-native-screens

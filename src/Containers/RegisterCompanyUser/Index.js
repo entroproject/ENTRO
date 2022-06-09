@@ -293,10 +293,11 @@ const IndexRegisterCompanyUserContainer = ({navigation, route}) => {
         style={{ width: '100%', height: '100%' }}
       >
         <ScrollView>
-          <Image
-            source={Images.logoGreen}
-            style={{ width: 230, height: 55, marginTop: 57, marginLeft: 20 }}
-          />
+        <Image
+        source={Images.corporateLogo}
+        resizeMode={'contain'}
+        style={{  marginTop: 20,  marginLeft: 20}}
+      />
           <View style={{ marginLeft: 32 }}>
             <Text
               style={{
@@ -315,8 +316,10 @@ const IndexRegisterCompanyUserContainer = ({navigation, route}) => {
                 fontWeight: '500',
               }}
             >
-              Create an account to begin your journey
+              Create an account to begin!
             </Text>
+
+          
           </View>
           <View
             style={{

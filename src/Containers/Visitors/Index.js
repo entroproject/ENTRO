@@ -9,20 +9,19 @@ import {
   TextInput,
   Modal,
   Alert,
-} from 'react-native'
-import moment from 'moment'
-import { useTheme } from '@/Hooks'
-import { useOrientation } from '../useOrientation'
-import { ButtonGroup } from 'react-native-elements'
-import { deleteVisitor, getVisitors, getVisitorsHistory } from '@/api-utils'
-import * as Constants from '@/Assets/Constants'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
-import Icon from 'react-native-dynamic-vector-icons'
-import DropShadow from 'react-native-drop-shadow'
-import { Picker } from '@react-native-picker/picker'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import { useSelector } from 'react-redux'
-import { showMessage } from 'react-native-flash-message'
+} from 'react-native';
+import { useTheme } from '@/Hooks';
+import { ButtonGroup } from 'react-native-elements';
+import { deleteVisitor, getVisitors, getVisitorsHistory } from '@/api-utils';
+import * as Constants from '@/Assets/Constants';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-dynamic-vector-icons';
+import DropShadow from 'react-native-drop-shadow';
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useSelector } from 'react-redux';
+import { showMessage } from 'react-native-flash-message';
+import Share from 'react-native-share';
 
 const IndexVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -42,11 +41,10 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [currentIndex, setCurrentIndex] = useState(false)
   const [date, setDate] = useState(new Date())
   const [mode, setMode] = useState('date')
-  const [show, setShow] = useState(false);
-  const accessId = useSelector(state => state.user.accessId);
-  const defaultCardID = useSelector(state => state.virtualCard.defaultCard);
-  const [custom_refresher, set_custom_refresher] = useState(false);
- 
+  const [show, setShow] = useState(false)
+  const accessId = useSelector(state => state.user.accessId)
+  const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
+  const [custom_refresher, set_custom_refresher] = useState(false)
 
   const onChange = (event, selectedDate) => {
     setShow(false)
@@ -181,9 +179,9 @@ const IndexVisitorContainer = ({ navigation }) => {
         return -1
       })
       if (displayRegisterVisitor) {
-        setCustomized_visitors(_filtered_visitors);
+        setCustomized_visitors(_filtered_visitors)
       } else {
-        setCustomized_visitors_history(_filtered_visitors);
+        setCustomized_visitors_history(_filtered_visitors)
       }
     }
   }
@@ -191,93 +189,98 @@ const IndexVisitorContainer = ({ navigation }) => {
   // search hist
   useEffect(() => {
     if (searchHistoryVisitor.length < 1) {
-      resetVisitorHistory();
+      resetVisitorHistory()
     }
     if (searchHistoryVisitor.length > 0) {
-      handleVisitorHistory();
+      handleVisitorHistory()
     }
   }, [searchHistoryVisitor])
 
   // search reg
   useEffect(() => {
     if (searchRegisterVisitor.length < 1) {
-      resetRegVisitor();
+      resetRegVisitor()
     }
     if (searchRegisterVisitor.length > 0) {
-      handleRegVisitor();
+      handleRegVisitor()
     }
   }, [searchRegisterVisitor])
 
   // switch between tabs
   useEffect(() => {
     if (selectedIndex === 0) {
-      setDisplayRegisterVisitor(true);
+      setDisplayRegisterVisitor(true)
     } else {
-      setDisplayRegisterVisitor(false);
+      setDisplayRegisterVisitor(false)
     }
   }, [selectedIndex])
 
   // make api request to get all visitors and access
   const getData = async () => {
-    await getAllVisitors();
-    await getAllVisitorsHistory();
-    setLoading(false);
+    await getAllVisitors()
+    await getAllVisitorsHistory()
+    setLoading(false)
   }
 
   useEffect(() => {
-    setLoading(true);
-    if(defaultCardID){
-      getData();
-  }
+    setLoading(true)
+    if (defaultCardID) {
+      getData()
+    }
   }, [isFocused, custom_refresher])
 
   const getAllVisitors = async () => {
-    const req_vis = await getVisitors(accessId, defaultCardID.BuildingName);
-    const visitors = await req_vis.json();
-    console.log("visitors==>", visitors);
-    setAllRegisteredVisitor(visitors.Visitors);
-    setCustomized_visitors(visitors.Visitors);
-    setLoading(false);
+    const req_vis = await getVisitors(accessId, defaultCardID.BuildingName)
+    const visitors = await req_vis.json()
+    console.log('visitors==>', visitors)
+    setAllRegisteredVisitor(visitors.Visitors)
+    setCustomized_visitors(visitors.Visitors)
+    setLoading(false)
   }
 
   const getAllVisitorsHistory = async () => {
-    const req_vis = await getVisitorsHistory(accessId, defaultCardID.BuildingName,);
-    const visitors_hist = await req_vis.json();
-    setAllVisitorsHistory(visitors_hist.Visitors);
-    setCustomized_visitors_history(visitors_hist.Visitors);
-    setLoading(false);
+    const req_vis = await getVisitorsHistory(
+      accessId,
+      defaultCardID.BuildingName,
+    )
+    const visitors_hist = await req_vis.json()
+    setAllVisitorsHistory(visitors_hist.Visitors)
+    setCustomized_visitors_history(visitors_hist.Visitors)
+    setLoading(false)
   }
 
-  const handleDeleteVisitor = async ({VisitorInvitationId}) => {
+  const handleDeleteVisitor = async ({ VisitorInvitationId }) => {
     try {
       const deleteAction = async () => {
         const del_req = await deleteVisitor(
           accessId,
           defaultCardID.BuildingName,
           defaultCardID.VirtualKey,
-          VisitorInvitationId
+          VisitorInvitationId,
         )
-        const response = await del_req.json();
-        if(response.StatusCode === '200'){
+        const response = await del_req.json()
+        if (response.StatusCode === '200') {
           showMessage({
-            message: "Visitor Deleted",
+            message: 'Visitor successfully deleted !',
             duration: 2000,
-            backgroundColor: "green"
+            backgroundColor: 'green',
           })
-          set_custom_refresher(!custom_refresher);
+          set_custom_refresher(!custom_refresher)
         }
       }
-      Alert.alert("Delete Visitor", "Are you sure you want to delete visitor?", [
-        {
-          text: "Yes",
-          onPress: deleteAction
-        },
-        {
-          text: "No",
-        }
-      ])
-
-
+      Alert.alert(
+        'Delete Visitor',
+        'Are you sure you want to delete visitor?',
+        [
+          {
+            text: 'Yes',
+            onPress: deleteAction,
+          },
+          {
+            text: 'No',
+          },
+        ],
+      )
     } catch (err) {
       console.log(err)
       showMessage({
@@ -286,6 +289,22 @@ const IndexVisitorContainer = ({ navigation }) => {
         color: 'white',
         duration: 2000,
       })
+    }
+  }
+
+  const onShare = async v => {
+
+   
+    try {
+      await Share.open({
+        title: 'Visitor Invite',
+        message: `
+        InviteLink: ${v.ShareUrl}
+        `,
+        
+      })
+    } catch (error) {
+      alert(error.message)
     }
   }
 
@@ -737,58 +756,57 @@ const IndexVisitorContainer = ({ navigation }) => {
               Please wait...
             </Text>
           </View>
-        ) : 
-        typeof defaultCardID.BuildingLogo === 'undefined' ? (
-        <View
-          style={{
-            height: 500,
-            padding: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Text
+        ) : typeof defaultCardID.BuildingLogo === 'undefined' ? (
+          <View
             style={{
-              fontSize: 30,
-              fontWeight: 'bold',
-              color: '#184461',
-              textAlign: 'center',
-            }}
-          >
-            Oops
-          </Text>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: 'bold',
-              color: '#184461',
-              textAlign: 'center',
-            }}
-          >
-            You haven't set up your default access card yet. Go to your profile
-            and set it.
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('UserProfile')}
-            style={{
-              padding: 15,
-              backgroundColor: '#184461',
-              marginVertical: 20,
-              borderRadius: 10,
+              height: 500,
+              padding: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <Text
               style={{
-                textAlign: 'center',
-                color: '#fff',
+                fontSize: 30,
                 fontWeight: 'bold',
+                color: '#184461',
+                textAlign: 'center',
               }}
             >
-              Set it now
+              Oops
             </Text>
-          </TouchableOpacity>
-        </View>)
-        :displayRegisterVisitor ? (
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                color: '#184461',
+                textAlign: 'center',
+              }}
+            >
+              You haven't set up your default access card yet. Go to your
+              profile and set it.
+            </Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('UserProfile')}
+              style={{
+                padding: 15,
+                backgroundColor: '#184461',
+                marginVertical: 20,
+                borderRadius: 10,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                }}
+              >
+                Set it now
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : displayRegisterVisitor ? (
           <View>
             <View
               style={{
@@ -809,54 +827,57 @@ const IndexVisitorContainer = ({ navigation }) => {
               ) : (
                 customized_visitors.map((v, key) => (
                   <View
-                    key={1+key}
+                    key={1 + key}
                     style={{
                       justifyContent: 'center',
                       alignItems: 'center',
                       marginTop: 10,
                     }}
                   >
-                    <TouchableOpacity
-                      activeOpacity={1.0}
-                      onPress={() => {
-                        setCurrentIndex(
-                          key === currentIndex ? null : key,
-                        )
+                    <View
+                      style={{
+                        width: '100%',
+                        backgroundColor: '#fff',
+                        borderRadius: 10,
+                        elevation: 10,
+                        marginTop: 5,
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
                       }}
                     >
                       <View
                         style={{
-                          width: '100%',
-                          backgroundColor: '#fff',
-                          borderRadius: 10,
-                          elevation: 10,
-                          marginTop: 5,
-                          shadowColor: '#000',
-                          shadowRadius: 10,
-                          shadowOpacity: 0.6,
-                          elevation: 8,
-                          shadowOffset: {
-                            width: 0,
-                            height: 4,
-                          },
+                          flexDirection: 'row',
+                          marginStart: 20,
+                          marginEnd: 20,
+                          marginVertical: 14,
+                          flex: 1,
                         }}
                       >
                         <View
                           style={{
                             flexDirection: 'row',
-                            marginStart: 20,
-                            marginEnd: 20,
-                            marginVertical: 14,
-                            flex: 1,
+                            justifyContent: 'space-evenly',
                           }}
                         >
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-evenly',
-                            }}
-                          >
-                            <View style={{ width: '20%' }}>
+                          <View style={{ width: '20%' }}>
+                            {v.VisitorImageLogo === '' ? (
+                              <Image
+                                source={Images.defaultUserBgImage}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  borderRadius: 21,
+                                }}
+                                resizeMode={'contain'}
+                              />
+                            ) : (
                               <Image
                                 source={{
                                   uri: `data:image/png;base64,${v.VisitorImageLogo}`,
@@ -866,351 +887,369 @@ const IndexVisitorContainer = ({ navigation }) => {
                                   height: 42,
                                   borderRadius: 21,
                                 }}
-                                resizeMode={'cover'}
+                                resizeMode={'contain'}
                               />
-                            </View>
-
-                            <View style={{ marginStart: 10, width: '70%' }}>
-                              <Text
-                                style={{
-                                  fontSize: 14,
-                                  fontWeight: '700',
-                                  color: '#184461',
-                                  flexWrap: 'wrap',
-                                }}
-                                numberOfLines={2}
-                              >
-                                {v.VisitorName}
-                              </Text>
-                              <Text
-                                style={{
-                                  fontSize: 11,
-                                  fontWeight: '500',
-                                  color: '#184461',
-                                  marginTop: 3,
-                                }}
-                              >
-                                {new Date(
-                                  Number(
-                                    v.StartDateTime.replace(/\/date\(/gi, '')
-                                      .replace(/\//gi, '')
-                                      .replace(/\)/gi, ''),
-                                  ),
-                                ).toLocaleString()}
-                              </Text>
-                            </View>
+                            )}
                           </View>
 
-                          <View style={{ flex: 1 }}>
-                            <Icon
-                              name={'ellipsis-v'}
-                              type={'FontAwesome'}
-                              size={30}
-                              color={'#184461'}
-                              style={{ alignSelf: 'flex-end' }}
-                            />
+                          <View style={{ marginStart: 10, width: '60%' }}>
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '700',
+                                color: '#184461',
+                                flexWrap: 'wrap',
+                              }}
+                              numberOfLines={2}
+                            >
+                              {v.VisitorName}
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 11,
+                                fontWeight: '500',
+                                color: '#184461',
+                                marginTop: 3,
+                              }}
+                            >
+                              {new Date(
+                                Number(
+                                  v.StartDateTime.replace(/\/date\(/gi, '')
+                                    .replace(/\//gi, '')
+                                    .replace(/\)/gi, ''),
+                                ),
+                              ).toLocaleString()}
+                            </Text>
                           </View>
                         </View>
-                      </View>
 
-                      {key === currentIndex ? (
-                        <DropShadow
+                        <View style={{ }}>
+                      
+                          <TouchableOpacity
+                            activeOpacity={1.0}
+                            style={{padding: 8}}
+                            onPress={() => {
+                              setCurrentIndex(key === currentIndex ? null : key)
+                            }}
+                          >
+                            <View style={{   }}>
+                              <Icon
+                                name={'ellipsis-v'}
+                                type={'FontAwesome'}
+                                size={30}
+                                color={'#184461'}
+                                style={{ alignSelf: 'flex-end' }}
+                              />
+                            </View>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+
+                    {key === currentIndex ? (
+                      <DropShadow
+                        style={{
+                          shadowColor: '#F0F0F0',
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 1,
+                          shadowRadius: 2,
+                        }}
+                      >
+                        <View
                           style={{
-                            shadowColor: '#F0F0F0',
-                            shadowOffset: {
-                              width: 0,
-                              height: 3,
-                            },
-                            shadowOpacity: 1,
-                            shadowRadius: 2,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: 1,
                           }}
                         >
                           <View
                             style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              marginTop: 1,
+                              width: '100%',
+                              padding:10,
+                              backgroundColor: '#fff',
+                              elevation: 10,
+                              marginBottom: 10,
+                              shadowColor: '#000',
+                              shadowOpacity: 0.6,
+                              elevation: 8,
+                              shadowOffset: {
+                                width: 2,
+                                height: 4,
+                              },
+                              borderBottomLeftRadius: 10,
+                              borderBottomRightRadius: 10,
                             }}
                           >
                             <View
                               style={{
-                                width: '95%',
+                                flexDirection: 'row',
+                                marginStart: 20,
+                                marginEnd: 8,
+                                marginTop: 14,
+                              }}
+                            >
+                              <View style={{ justifyContent: 'center' }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                  <View style={{ width: 80 }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Location
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Purpose of visit
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Badge No
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Vehicle No
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '400',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      Status
+                                    </Text>
+                                  </View>
 
-                                backgroundColor: '#fff',
-                                elevation: 10,
-                                marginBottom: 10,
-                                shadowColor: '#000',
-                                shadowOpacity: 0.6,
-                                elevation: 8,
-                                shadowOffset: {
-                                  width: 2,
-                                  height: 4,
-                                },
-                                borderBottomLeftRadius: 10,
-                                borderBottomRightRadius: 10,
+                                  <View style={{ marginHorizontal: 5 }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: 'bold',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      :
+                                    </Text>
+                                  </View>
+
+                                  <View style={{ marginHorizontal: 5 }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      {defaultCardID.BuildingName}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      {v.Visitortype}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      CA2014
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      {v.VehicleNumber}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontSize: 11,
+                                        fontWeight: '700',
+                                        color: '#184461',
+                                        marginVertical: 1,
+                                      }}
+                                    >
+                                      {v.VisitorStatus}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </View>
+
+                              <View style={{ flex: 1 }}>
+                                <Image
+                                  source={{
+                                    uri: `data:image/png;base64,${defaultCardID.BuildingLogo}`,
+                                  }}
+                                  style={{
+                                    width: 80,
+                                    height: 48,
+                                    alignSelf: 'flex-end',
+                                    marginTop: 20,
+                                  }}
+                                  resizeMode={'contain'}
+                                />
+                              </View>
+                            </View>
+
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end',
+                                marginHorizontal: 20,
+                                marginVertical: 10,
                               }}
                             >
                               <View
                                 style={{
                                   flexDirection: 'row',
-                                  marginStart: 20,
-                                  marginEnd: 8,
-                                  marginTop: 14,
+                                  width: 140,
+                                  justifyContent: 'space-between',
                                 }}
                               >
-                                <View style={{ justifyContent: 'center' }}>
-                                  <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ width: 80 }}>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '400',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        Location
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '400',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        Purpose of visit
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '400',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        Badge No
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '400',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        Vehicle No
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '400',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        Status
-                                      </Text>
-                                    </View>
+                                {/**share business card */}
+                                <TouchableOpacity
 
-                                    <View style={{ marginHorizontal: 5 }}>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: 'bold',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        :
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: 'bold',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        :
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: 'bold',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        :
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: 'bold',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        :
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: 'bold',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        :
-                                      </Text>
-                                    </View>
-
-                                    <View style={{ marginHorizontal: 5 }}>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '700',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        Suria KLCC
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '700',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        {v.Visitortype}
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '700',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        CA2014
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '700',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        {v.VehicleNumber}
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontSize: 11,
-                                          fontWeight: '700',
-                                          color: '#184461',
-                                          marginVertical: 1,
-                                        }}
-                                      >
-                                        {v.VisitorStatus}
-                                      </Text>
-                                    </View>
-                                  </View>
-                                </View>
-
-                                <View style={{ flex: 1 }}>
-                                  <Image
-                                 source={{ uri: `data:image/png;base64,${defaultCardID.BuildingLogo}`}}
-                                    style={{
-                                      width: 80,
-                                      height: 48,
-                                      alignSelf: 'flex-end',
-                                      marginTop: 20,
-                                    }}
-                                    resizeMode={'contain'}
-                                  />
-                                </View>
-                              </View>
-
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  justifyContent: 'flex-end',
-                                  marginHorizontal: 20,
-                                  marginVertical: 10,
+                                onPress={()=>{
+                              
+                                  onShare(v)
                                 }}
-                              >
-                                <View
                                   style={{
                                     flexDirection: 'row',
-                                    width: 140,
-                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                   }}
                                 >
-                                  {/**share business card */}
-                                  <TouchableOpacity
-                                    style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                    }}
-                                  >
-                                    <Icon
-                                      type="Entypo"
-                                      name="share"
-                                      size={23}
-                                      color="#184461"
-                                    />
-                                  </TouchableOpacity>
-                                  {/**share business card ends here */}
+                                  <Icon
+                                    type="Entypo"
+                                    name="share"
+                                    size={23}
+                                    color="#184461"
+                                  />
+                                </TouchableOpacity>
+                                {/**share business card ends here */}
 
-                                  {/**edit business card */}
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      navigation.navigate('EditVistorInfo', {
-                                        visitor: v,
-                                      })
-                                    }
-                                    style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                    }}
-                                  >
-                                    <Icon
-                                      type="FontAwesome"
-                                      name="edit"
-                                      size={23}
-                                      color="#184461"
-                                    />
-                                  </TouchableOpacity>
-                                  {/**edit business card ends here */}
+                                {/**edit business card */}
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    navigation.navigate('EditVistorInfo', {
+                                      visitor: v,
+                                    })
+                                  }
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <Icon
+                                    type="FontAwesome"
+                                    name="edit"
+                                    size={23}
+                                    color="#184461"
+                                  />
+                                </TouchableOpacity>
+                                {/**edit business card ends here */}
 
-                                  {/**delete business card */}
-                                  <TouchableOpacity
-                                    onPress={() => handleDeleteVisitor(v)}
-                                    style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                    }}
-                                  >
-                                    <Icon
-                                      type="Foundation"
-                                      name="trash"
-                                      size={23}
-                                      color="#184461"
-                                    />
-                                  </TouchableOpacity>
+                                {/**delete business card */}
+                                <TouchableOpacity
+                                  onPress={() => handleDeleteVisitor(v)}
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <Icon
+                                    type="Foundation"
+                                    name="trash"
+                                    size={23}
+                                    color="#184461"
+                                  />
+                                </TouchableOpacity>
 
-                                  {/**delete business card ends here */}
-                                </View>
+                                {/**delete business card ends here */}
                               </View>
                             </View>
                           </View>
-                        </DropShadow>
-                      ) : null}
-                    </TouchableOpacity>
+                        </View>
+                      </DropShadow>
+                    ) : null}
                   </View>
                 ))
               )}
@@ -1229,7 +1268,7 @@ const IndexVisitorContainer = ({ navigation }) => {
             ) : (
               customized_visitors_history.map((v, key) => (
                 <View
-                  key={2+key}
+                  key={2 + key}
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -1522,17 +1561,6 @@ const IndexVisitorContainer = ({ navigation }) => {
                             alignSelf: 'flex-end',
                           }}
                           resizeMode={'cover'}
-                        />
-
-                        <Image
-                          source={Images.Plaza33Logo}
-                          style={{
-                            width: 80,
-                            height: 48,
-                            alignSelf: 'flex-end',
-                            marginTop: 20,
-                          }}
-                          resizeMode={'contain'}
                         />
                       </View>
                     </View>

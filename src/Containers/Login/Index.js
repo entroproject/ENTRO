@@ -63,7 +63,6 @@ const IndexLoginContainer = ({route}) => {
     const req = await validateNumber(phoneNumber);
     const res = await req.json();
     if(res.StatusCode === "200"){
-        console.log(res)
       if(res.IsAlreadyRegistered === false){
         showMessage({
           message: 'Please register your mobile number!',
@@ -109,7 +108,6 @@ const IndexLoginContainer = ({route}) => {
 
     const otp_req = await validateOTP(phoneNumber, otp); 
     const otp_res = await otp_req.json();
-    console.log(otp_res);
     if(otp_res.StatusCode !== '200'){
       setLoading(false);
       showMessage({

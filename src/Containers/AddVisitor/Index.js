@@ -122,7 +122,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       return false
     }
 
-    if (ICNumber.length < 12 || ICNumber.length > 15) {
+    if (ICNumber.length < 5 || ICNumber.length > 30) {
       showMessage({
         message: 'Please Indicate a valid IC-Number',
         backgroundColor: 'red',
@@ -148,6 +148,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
         VehicleNumber: carPlateNum,
         StartDateTime: visitStartDate,
         EndDateTime: visitEndDate,
+        VisitorImageLogo: photo,
       }
       const req_invite = await inviteVisitors(_data)
       const resp = await req_invite.json()
@@ -431,7 +432,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               }}
               value={ICNumber}
               placeholder={placeholder.ICNumber}
-              keyboardType={'number-pad'}
               onChangeText={text => setICNumber(text)}
               placeholderTextColor={'#A6A2A2'}
               onFocus={() => {
@@ -770,9 +770,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               ) : (
                 <View>
                   <Image
-                    source={{
-                      uri: photo ? `data:image/png;base64,${photo}` : '',
-                    }}
+                    source={photo ? { uri: `data:image/png;base64,${photo}` } : ''}
                     style={{
                       width: 80,
                       height: 80,

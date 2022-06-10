@@ -21,6 +21,7 @@ import {
   IndexAddVisitorContainer,
   IndexAddVisitDateTypeContainer,
   IndexUsersFaqContainer,
+  IndexExampleContainer,
 } from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
@@ -41,6 +42,15 @@ const ApplicationNavigator = () => {
       <NavigationContainer theme={{colors: { background: '#000' }}} ref={navigationRef} >
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen
+              name="MainNav"
+              component={TabNavigation}
+              options={{
+                animationEnabled: false,
+                
+              }}
+            
+          />
           <Stack.Screen name="Startup" component={StartupContainer} />
           <Stack.Screen
             name="Login"
@@ -207,6 +217,14 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
+
+              <Stack.Screen
+              name="ExampleTest"
+              component={IndexExampleContainer}
+              options={{
+                animationEnabled: false,
+              }}
+            />
             </Stack.Group>
           )}
         </Stack.Navigator>

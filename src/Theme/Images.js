@@ -31,5 +31,6 @@ export default function () {
     goodMark: require('@/Assets/Images/CorrectMark.png'),
     addBtnBiz: require('@/Assets/Images/Addbutton.png'),
     corporateLogo: require('@/Assets/Images/EzxcessLogo.png'),
+    defaultUserBgImage: require('@/Assets/Images/Userbgimage.png'),
   }
 }

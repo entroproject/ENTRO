@@ -218,9 +218,9 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
                 >
                   <Image
                     source={{ uri: `data:image/png;base64,${image.Image}` }}
-                    style={{ width: 300, height: 300, resizeMode: 'contain' }}
-                    width={300}
-                    height={300}
+                    style={{  resizeMode: 'contain' }}
+                    width={280}
+                    height={210}
                   />
                 </View>
               </DropShadow>

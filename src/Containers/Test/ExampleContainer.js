@@ -277,7 +277,7 @@ const CardComponent = ({businessCards, selectedCardID, Images, handleChangeSelec
 
 
 
-const IndexBusinessCardContainer = ({ navigation }) => {
+const IndexExampleContainer = ({ navigation }) => {
   const { Images } = useTheme()
   const isFocused = useIsFocused()
   const [selectedCardID, setSelectedCardID] = useState({});
@@ -519,4 +519,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default IndexBusinessCardContainer
+export default IndexExampleContainer

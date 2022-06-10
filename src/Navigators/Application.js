@@ -21,6 +21,7 @@ import {
   IndexAddVisitorContainer,
   IndexAddVisitDateTypeContainer,
   IndexUsersFaqContainer,
+  IndexExampleContainer,
 } from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
@@ -207,6 +208,14 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
+
+              <Stack.Screen
+              name="ExampleTest"
+              component={IndexExampleContainer}
+              options={{
+                animationEnabled: false,
+              }}
+            />
             </Stack.Group>
           )}
         </Stack.Navigator>

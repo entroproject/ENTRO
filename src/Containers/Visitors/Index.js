@@ -13,11 +13,9 @@ import {
 import { useTheme } from '@/Hooks';
 import { ButtonGroup } from 'react-native-elements';
 import { deleteVisitor, getVisitors, getVisitorsHistory } from '@/api-utils';
-import * as Constants from '@/Assets/Constants';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-dynamic-vector-icons';
 import DropShadow from 'react-native-drop-shadow';
-import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector } from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
@@ -44,7 +42,12 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [show, setShow] = useState(false)
   const accessId = useSelector(state => state.user.accessId)
   const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
-  const [custom_refresher, set_custom_refresher] = useState(false)
+  const [custom_refresher, set_custom_refresher] = useState(false);
+
+  const [showDisplayCamOption, setShowDisplayCamOption] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [deleteVisitoroObj, setDeleteVisitoroObj] = useState(null);
+  const [editVisitoroObj, setEditVisitoroObj] = useState(null);
 
   const onChange = (event, selectedDate) => {
     setShow(false)
@@ -227,12 +230,18 @@ const IndexVisitorContainer = ({ navigation }) => {
     if (defaultCardID) {
       getData()
     }
-  }, [isFocused, custom_refresher])
+  }, [isFocused])
+
+  useEffect(() => {
+    setLoading(true)
+    if (defaultCardID) {
+      getData()
+    }
+  }, [custom_refresher])
 
   const getAllVisitors = async () => {
     const req_vis = await getVisitors(accessId, defaultCardID.BuildingName)
     const visitors = await req_vis.json()
-    console.log('visitors==>', visitors)
     setAllRegisteredVisitor(visitors.Visitors)
     setCustomized_visitors(visitors.Visitors)
     setLoading(false)
@@ -249,38 +258,28 @@ const IndexVisitorContainer = ({ navigation }) => {
     setLoading(false)
   }
 
-  const handleDeleteVisitor = async ({ VisitorInvitationId }) => {
+  const handleDeleteVisitor = async () => {
+    setShowDisplayCamOption(false);
     try {
-      const deleteAction = async () => {
-        const del_req = await deleteVisitor(
-          accessId,
-          defaultCardID.BuildingName,
-          defaultCardID.VirtualKey,
-          VisitorInvitationId,
-        )
-        const response = await del_req.json()
-        if (response.StatusCode === '200') {
-          showMessage({
+        if(deleteVisitoroObj !== null){
+          const { VisitorInvitationId } = deleteVisitoroObj;
+          const del_req = await deleteVisitor(
+            accessId,
+            defaultCardID.BuildingName,
+            defaultCardID.VirtualKey,
+            VisitorInvitationId,
+          )
+          const response = await del_req.json()
+          if (response.StatusCode === '200') {
+            showMessage({
             message: 'Visitor successfully deleted !',
             duration: 2000,
             backgroundColor: 'green',
           })
-          set_custom_refresher(!custom_refresher)
+          set_custom_refresher(!custom_refresher);
+          setDeleteVisitoroObj(null);
         }
       }
-      Alert.alert(
-        'Delete Visitor',
-        'Are you sure you want to delete visitor?',
-        [
-          {
-            text: 'Yes',
-            onPress: deleteAction,
-          },
-          {
-            text: 'No',
-          },
-        ],
-      )
     } catch (err) {
       console.log(err)
       showMessage({
@@ -290,6 +289,28 @@ const IndexVisitorContainer = ({ navigation }) => {
         duration: 2000,
       })
     }
+  };
+
+  const handleShowModal = (v) => {
+    setShowDisplayCamOption(true);
+    setDeleteVisitoroObj(v);
+  }
+
+
+  const handleEditVisitor = () => {
+    if(editVisitoroObj !== null){
+      setShowEdit(false);
+        navigation.navigate('EditVistorInfo', {
+        visitor: editVisitoroObj,
+      })
+    }
+    setEditVisitoroObj(null)
+  }
+
+  const handleShowEdit = (v) => {
+    console.log(v);
+    setEditVisitoroObj(v);
+    setShowEdit(true);
   }
 
   const onShare = async v => {
@@ -311,6 +332,224 @@ const IndexVisitorContainer = ({ navigation }) => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
       <View>
+      <Modal
+            transparent
+            visible={showDisplayCamOption}
+            onRequestClose={() => setShowDisplayCamOption(false)}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                backgroundColor: '#00000099',
+              }}
+            >
+              <View
+                style={{
+                  width: 300,
+                  height: 300,
+                  backgroundColor: '#fff',
+                  borderColor: '#184461',
+                  borderWidth: 1,
+                  borderRadius: 20,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#184461',
+                    height: 50,
+                    marginBottom: 10,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                    borderColor: '#184461',
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontWeight: '700' }}>
+                    Are you sure you want to delete visitor?
+                  </Text>
+                </View>
+
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={handleDeleteVisitor}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        Yes
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={()=> setShowDisplayCamOption(false)}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        No
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity
+                onPress={()=> setShowDisplayCamOption(false)}>
+                  <View
+                    style={{
+                      width: 299,
+                      height: 50,
+                      borderColor: '#184461',
+                      backgroundColor: 'lightblue',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomLeftRadius: 15,
+                      borderBottomRightRadius: 15,
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              </View>
+            </View>
+      </Modal>
+
+      {/* edit */}
+      <Modal
+            transparent
+            visible={showEdit}
+            onRequestClose={() => setShowDisplayCamOption(false)}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                backgroundColor: '#00000099',
+              }}
+            >
+              <View
+                style={{
+                  width: 300,
+                  height: 300,
+                  backgroundColor: '#fff',
+                  borderColor: '#184461',
+                  borderWidth: 1,
+                  borderRadius: 20,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#184461',
+                    height: 50,
+                    marginBottom: 10,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                    borderColor: '#184461',
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontWeight: '700' }}>
+                    Are you sure you want to edit visitor?
+                  </Text>
+                </View>
+
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={handleEditVisitor}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        Yes
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={()=> setShowEdit(false)}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        No
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity
+                onPress={()=> setShowEdit(false)}>
+                  <View
+                    style={{
+                      width: 299,
+                      height: 50,
+                      borderColor: '#184461',
+                      backgroundColor: 'lightblue',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomLeftRadius: 15,
+                      borderBottomRightRadius: 15,
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              </View>
+            </View>
+      </Modal>
         <View
           style={{
             height: 144,
@@ -1208,11 +1447,7 @@ const IndexVisitorContainer = ({ navigation }) => {
 
                                 {/**edit business card */}
                                 <TouchableOpacity
-                                  onPress={() =>
-                                    navigation.navigate('EditVistorInfo', {
-                                      visitor: v,
-                                    })
-                                  }
+                                  onPress={() => handleShowEdit(v)}
                                   style={{
                                     flexDirection: 'row',
                                     alignItems: 'center',
@@ -1229,7 +1464,7 @@ const IndexVisitorContainer = ({ navigation }) => {
 
                                 {/**delete business card */}
                                 <TouchableOpacity
-                                  onPress={() => handleDeleteVisitor(v)}
+                                  onPress={() => handleShowModal(v)}
                                   style={{
                                     flexDirection: 'row',
                                     alignItems: 'center',

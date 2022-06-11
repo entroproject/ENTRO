@@ -1,27 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   View,
-  ActivityIndicator,
   Text,
   Image,
   TouchableOpacity,
   ScrollView,
   Animated,
-  Easing,
+  Modal
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import LottieView from 'lottie-react-native'
 import { logoutUser } from '@/Features/users'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
 import { useDispatch, useSelector } from 'react-redux'
+import { Colors } from '@/Theme/Variables'
+import { Images } from '@/Theme'
+
 
 const IndexSettingContainer = () => {
-  const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
-  const [progress, setProgress] = useState(new Animated.Value(0))
   const user = useSelector(user => user.user.profile)
   const dispatch = useDispatch();
-
-  const buttonRef = useRef < LottieView > null
+  const [showModal, setShowModal] = useState(true);
 
   const signOutApp = () => {
     navigateAndSimpleReset("MainNav");
@@ -30,6 +29,114 @@ const IndexSettingContainer = () => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
+          <Modal
+            transparent
+            visible={showModal}
+            onRequestClose={() => setShowModal(false)}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                backgroundColor: '#00000099',
+              }}
+            >
+              <View
+                style={{
+                  width: 300,
+                  height: 300,
+                  backgroundColor: '#fff',
+                  borderColor: '#184461',
+                  borderWidth: 1,
+                  borderRadius: 20,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#184461',
+                    height: 50,
+                    marginBottom: 10,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                    borderColor: '#184461',
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontWeight: '700' }}>
+                    Are you sure you want to logout?
+                  </Text>
+                </View>
+
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={signOutApp}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        Yes
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={()=> setShowModal(false)}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        No
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity
+                onPress={()=> setShowModal(false)}>
+                  <View
+                    style={{
+                      width: 299,
+                      height: 50,
+                      borderColor: '#184461',
+                      backgroundColor: 'lightblue',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomLeftRadius: 15,
+                      borderBottomRightRadius: 15,
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              </View>
+            </View>
+      </Modal>
       <View
         style={{
           height: 90,
@@ -64,7 +171,7 @@ const IndexSettingContainer = () => {
       </View>
 
       <View style={{}}>
-        <TouchableOpacity onPress={() => signOutApp()}>
+        <TouchableOpacity onPress={() => setShowModal(true)}>
           <View
             style={{
               width: 60,

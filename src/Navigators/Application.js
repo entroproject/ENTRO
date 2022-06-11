@@ -42,15 +42,6 @@ const ApplicationNavigator = () => {
       <NavigationContainer theme={{colors: { background: '#000' }}} ref={navigationRef} >
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-              name="MainNav"
-              component={TabNavigation}
-              options={{
-                animationEnabled: false,
-                
-              }}
-            
-          />
           <Stack.Screen name="Startup" component={StartupContainer} />
           <Stack.Screen
             name="Login"
@@ -59,7 +50,6 @@ const ApplicationNavigator = () => {
               animationEnabled: false,
             }}
           />
-
           <Stack.Screen
             name="Register"
             component={IndexRegisterContainer}
@@ -67,7 +57,6 @@ const ApplicationNavigator = () => {
               animationEnabled: false,
             }}
           />
-
           <Stack.Screen
             name="RegisterCompanyUser"
             component={IndexRegisterCompanyUserContainer}
@@ -75,7 +64,6 @@ const ApplicationNavigator = () => {
               animationEnabled: false,
             }}
           />
-
           {isLogged && (
             <Stack.Group>
             
@@ -86,7 +74,6 @@ const ApplicationNavigator = () => {
               animationEnabled: false,
               
             }}
-           
           />
               <Stack.Screen
                 name="MainHome"
@@ -97,7 +84,6 @@ const ApplicationNavigator = () => {
                   cardStyle: { opacity: 1 }
                 }}
               />
-
               <Stack.Screen
                 name="UserProfile"
                 component={IndexUserProfileContainer}
@@ -105,7 +91,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="EditUserProfile"
                 component={IndexEditUserContainer}
@@ -113,7 +98,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="BusinessCard"
                 component={IndexBusinessCardContainer}
@@ -121,7 +105,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="AddBusinessCard"
                 component={IndexAddBusinessCardContainer}
@@ -129,7 +112,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="EditBusinessCard"
                 component={IndexEditBusinessCardContainer}
@@ -137,7 +119,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="TutorialSlide"
                 component={IndexTutorialSlideContainer}
@@ -145,7 +126,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="VirtualAccessCard"
                 component={IndexVirtualAccessContainer}
@@ -153,7 +133,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="VistorsRecord"
                 component={IndexVisitorContainer}
@@ -161,7 +140,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="CommunityContact"
                 component={IndexCommunityContainer}
@@ -169,7 +147,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="Settings"
                 component={IndexSettingContainer}
@@ -177,7 +154,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="Announcementdetails"
                 component={IndexAnnouncmentContainer}
@@ -185,7 +161,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="AddVistorInfo"
                 component={IndexAddVisitorContainer}
@@ -193,7 +168,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="EditVistorInfo"
                 component={IndexEditVisitorContainer}
@@ -201,7 +175,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="VisitDateType"
                 component={IndexAddVisitDateTypeContainer}
@@ -209,7 +182,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
                 name="FaqAnswer"
                 component={IndexUsersFaqContainer}
@@ -217,7 +189,6 @@ const ApplicationNavigator = () => {
                   animationEnabled: false,
                 }}
               />
-
               <Stack.Screen
               name="ExampleTest"
               component={IndexExampleContainer}

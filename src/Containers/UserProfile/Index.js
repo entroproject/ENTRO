@@ -14,7 +14,6 @@ const IndexUserProfileContainer = ({ navigation }) => {
 
   const dispatch = useDispatch()
   const handCardSelected = item => {
-    console.log('card selected==>', item)
     dispatch(setDefaultCard(item))
   }
 

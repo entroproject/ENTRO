@@ -46,6 +46,16 @@ const IndexVisitorContainer = ({ navigation }) => {
   const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
   const [custom_refresher, set_custom_refresher] = useState(false)
 
+
+  const resetCalendar = () =>{
+    if (displayRegisterVisitor){
+      setCustomized_visitors(allRegisteredVisitor)
+    }else{
+      setCustomized_visitors_history(allVisitorsHistory)
+    }
+   
+  }
+
   const onChange = (event, selectedDate) => {
     setShow(false)
     let data
@@ -293,8 +303,6 @@ const IndexVisitorContainer = ({ navigation }) => {
   }
 
   const onShare = async v => {
-
-   
     try {
       await Share.open({
         title: 'Visitor Invite',
@@ -318,6 +326,14 @@ const IndexVisitorContainer = ({ navigation }) => {
           }}
         >
           {/**search calendar area starts here */}
+
+         {/** 
+          <View style={{flexDirection: 'row',
+          alignContent: 'center',
+          justifyContent:'center',
+          marginVertical: 10,
+          flex: 1,}}> 
+          <View style={{flex:3,  width: '100%'}}>   
           <TouchableOpacity activeOpacity={1.2} onPress={() => setShow(true)}>
             <DropShadow
               style={{
@@ -383,6 +399,152 @@ const IndexVisitorContainer = ({ navigation }) => {
               </View>
             </DropShadow>
           </TouchableOpacity>
+
+          </View>  
+                </View> **/}
+
+          <View
+          style={{
+            flexDirection: 'row',
+            alignContent: 'center',
+            marginTop: 30,
+            flex: 1,
+          }}
+        >
+          <View style={{ flex: 3, width: '100%' }}>
+            <TouchableOpacity
+              activeOpacity={1.2}
+              onPress={() => setShow(true)}
+            >
+              <DropShadow
+                style={{
+                  shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  shadowOffset: {
+                    width: 1,
+                    height: 2,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 2,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#fff',
+                    height: 40,
+                    borderRadius: 7,
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    shadowColor: '#000',
+                    shadowRadius: 10,
+                    shadowOpacity: 0.6,
+                    elevation: 8,
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    marginStart: 20,
+                  }}
+                >
+                  <DropShadow
+                    style={{
+                      shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                      shadowOffset: {
+                        width: 0,
+                        height: 3,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 2,
+                    }}
+                  >
+                    <Icon
+                      type="Feathers"
+                      name="search"
+                      color="#184461"
+                      size={27}
+                    />
+                  </DropShadow>
+
+                  <Text
+                    style={{
+                      color: '#184461',
+                      fontWeight: '700',
+                      fontSize: 12,
+                    }}
+                  >
+                    Calendar
+                  </Text>
+                </View>
+              </DropShadow>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              activeOpacity={1.2}
+              onPress={() => {
+                
+                resetCalendar()
+              }}
+            >
+              <DropShadow
+                style={{
+                  shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  shadowOffset: {
+                    width: 1,
+                    height: 2,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 2,
+                }}
+              >
+                <View
+                  style={{
+                    borderRadius: 7,
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    backgroundColor: '#fff',
+                    shadowColor: '#000',
+                    shadowRadius: 10,
+                    shadowOpacity: 0.6,
+                    elevation: 8,
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    height: 40,
+                    width: '70%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginStart: 10,
+                    marginEnd: 20,
+                  }}
+                >
+                  <DropShadow
+                    style={{
+                      shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                      shadowOffset: {
+                        width: 0,
+                        height: 3,
+                      },
+                      shadowOpacity: 1,
+                      shadowRadius: 2,
+                    }}
+                  >
+                  <Text style={{textAlign:'center', color:'#184461'}}>Reset date</Text>
+                   
+                  </DropShadow>
+                </View>
+              </DropShadow>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+
+
+
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -400,7 +562,7 @@ const IndexVisitorContainer = ({ navigation }) => {
               style={{
                 flexDirection: 'row',
                 alignContent: 'center',
-                marginVertical: 10,
+                marginVertical: 3,
                 flex: 1,
               }}
             >
@@ -561,7 +723,7 @@ const IndexVisitorContainer = ({ navigation }) => {
             >
               <View
                 style={{
-                  marginTop: 10,
+                  marginBottom: 17,
                   backgroundColor: '#fff',
                   height: 40,
                   marginHorizontal: 20,
@@ -624,7 +786,7 @@ const IndexVisitorContainer = ({ navigation }) => {
             >
               <View
                 style={{
-                  marginTop: 10,
+                  marginBottom: 17,
                   backgroundColor: '#fff',
                   height: 40,
                   marginHorizontal: 20,
@@ -929,6 +1091,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                             activeOpacity={1.0}
                             style={{padding: 8}}
                             onPress={() => {
+                              console.log(v)
                               setCurrentIndex(key === currentIndex ? null : key)
                             }}
                           >
@@ -1128,7 +1291,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                                         marginVertical: 1,
                                       }}
                                     >
-                                      CA2014
+                                      {defaultCardID.VirtualKey}
                                     </Text>
                                     <Text
                                       style={{

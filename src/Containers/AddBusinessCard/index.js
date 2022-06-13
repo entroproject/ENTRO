@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
+  Platform
 } from 'react-native'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import ImagePicker from 'react-native-image-crop-picker'
@@ -193,18 +194,23 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
   }
 
   const goPhotoCamera = () => {
-    setLogo(null)
+    if (logo !== null) {
+      setLogo(null)
+    }
 
     ImagePicker.openCamera({
-      mediaType: 'photo',
-      width: 150,
-      height: 150,
-      compressImageMaxHeight: 150,
-      compressImageMaxWidth: 150,
+      path: Platform.OS === 'android',
+      width: 1000,
+      height: 750,
       cropping: true,
+      freeStyleCropEnabled: true,
+      compressImageMaxWidth: 500,
+      compressImageMaxHeight: 500,
+      compressImageQuality: 0.5,
       useFrontCamera: true,
       includeBase64: true,
     }).then(image => {
+      console.log(image)
       setLogo(image.data)
       setShowDisplayCamOption(false)
     })
@@ -426,15 +432,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
             padding: 10,
           }}
         >
-          <TouchableOpacity
-            onPress={() =>
-              showUploadScreen
-                ? setShowUploadScreen(false)
-                : navigation.goBack()
-            }
-          >
-            <Icon name="arrow-left" type="Feather" size={35} color="#fff" />
-          </TouchableOpacity>
+         
 
           <Text
             style={{
@@ -446,13 +444,22 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
           >
             Business Card
           </Text>
+          <TouchableOpacity
+            onPress={() =>
+              showUploadScreen
+                ? setShowUploadScreen(false)
+                : navigation.goBack()
+            }
+          >
           <Icon
-            name="x"
-            type="Feather"
-            size={35}
-            color="#fff"
-            onPress={() => {}}
-          />
+          name="x"
+          type="Feather"
+          size={35}
+          color="#fff"
+        
+        />
+          </TouchableOpacity>
+         
         </View>
       </View>
 

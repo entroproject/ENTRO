@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { View, Image, TouchableOpacity } from 'react-native'
+import { View, Image, TouchableOpacity,Text } from 'react-native'
 import {
   IndexBusinessCardContainer,
   IndexHomeContainer,
@@ -32,7 +32,7 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
               fill={'#ffffff'}
             />
           </Svg>
-          <View style={{ flex: 1, backgroundColor: '#ffffff' }}></View>
+          <View style={{ flex: 1, backgroundColor: '#fff' }}></View>
         </View>
 
         <TouchableOpacity
@@ -132,7 +132,7 @@ const TabNavigation = () => {
             <Image
             source={Images.homeToggle}
             resizeMode={'contain'}
-            style={{ width: 30, height: 30 }}
+            style={{ width: 30, height: 30, }}
           /> : 
             <Icon
               type="Ionicons"
@@ -142,7 +142,9 @@ const TabNavigation = () => {
             />
           ),
           tabBarButton: props => <TabBarCustomButton {...props} />,
+        
         }}
+       
       />
 
       <Tab.Screen

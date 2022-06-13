@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   View,
   Text,
@@ -8,24 +8,24 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-} from 'react-native'
-import { useTheme } from '@/Hooks'
-import { useOrientation } from '../useOrientation'
-import Icon from 'react-native-dynamic-vector-icons'
+} from 'react-native';
+import { useTheme } from '@/Hooks';
+import { useOrientation } from '../useOrientation';
+import Icon from 'react-native-dynamic-vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 
 const IndexAnnouncmentContainer = ({ navigation, route }) => {
-  const orientation = useOrientation()
-  const user = useSelector(user => user.user.profile)
-  const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme()
+  const orientation = useOrientation();
+  const user = useSelector(user => user.user.profile);
+  const { Fonts, Gutters, Layout, Colors, Images, MetricsSizes } = useTheme();
   const { itemTitle, itemIcon, itemDesc, itemDate, itemDateEnd, itemPlace, itemDistance,  } =
     route.params
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
       <View
         style={{
-          height: 90,
+          height: 55,
           backgroundColor: '#184461',
           flexDirection: 'row',
           alignItems: 'center',

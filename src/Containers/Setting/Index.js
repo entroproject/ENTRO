@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   ActivityIndicator,
@@ -8,14 +8,15 @@ import {
   ScrollView,
   Animated,
   Easing,
-} from 'react-native'
-import { useTheme } from '@/Hooks'
-import LottieView from 'lottie-react-native'
-import { logoutUser } from '@/Features/users'
-import { navigateAndSimpleReset } from '@/Navigators/utils'
-import { useDispatch, useSelector } from 'react-redux'
+} from 'react-native';
+import { useTheme } from '@/Hooks';
+import LottieView from 'lottie-react-native';
+import { logoutUser } from '@/Features/users';
+import { navigateAndSimpleReset } from '@/Navigators/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import Icon from 'react-native-dynamic-vector-icons'
 
-const IndexSettingContainer = () => {
+const IndexSettingContainer = ({navigation}) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
   const [progress, setProgress] = useState(new Animated.Value(0))
   const user = useSelector(user => user.user.profile)
@@ -32,7 +33,7 @@ const IndexSettingContainer = () => {
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
       <View
         style={{
-          height: 90,
+          height: 55,
           backgroundColor: '#184461',
           flexDirection: 'row',
           alignItems: 'center',
@@ -50,17 +51,15 @@ const IndexSettingContainer = () => {
           Settings
         </Text>
 
-        <Image
-        source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
-          style={{
-            width: 60,
-            height: 60,
-            marginEnd: 20,
-            borderRadius: 30,
-            borderWidth: 2,
-            borderColor: '#FFFEFE',
-          }}
-        />
+        <Icon
+            name="x"
+            type="Feather"
+            size={35}
+            color="#fff"
+            onPress={() => {
+              navigation.goBack()
+            }}
+          />
       </View>
 
       <View style={{}}>
@@ -159,7 +158,7 @@ const IndexSettingContainer = () => {
 
       <View style={{marginTop:30}}>
       <Image 
-      source={Images.corporateLogo}   
+      source={Images.newLogoImage}   
       />
 
       </View>

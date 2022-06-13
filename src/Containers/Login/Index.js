@@ -25,11 +25,9 @@ import { addCard } from '@/Features/virtualCards'
 
 const IndexLoginContainer = ({route}) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
+  const navigation = useNavigation()
   const SCREEN_WIDTH = useWindowDimensions().width
   const SCREEN_HEIGHT = useWindowDimensions().height
-
-  const navigation = useNavigation()
-
   const [phoneNumber, setPhoneNumber] = useState('');
   const [numValidated, setNumValidated] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -168,7 +166,7 @@ const IndexLoginContainer = ({route}) => {
   <ScrollView>
 
   <Image
-  source={Images.corporateLogo}
+  source={Images.newLogoImage}
   resizeMode={'contain'}
   style={{  marginTop: 20,  marginLeft: 20}}
 />

@@ -174,7 +174,7 @@ function IndexUsersFaqContainer({navigation}) {
     >
       <View
         style={{
-          height: 90,
+          height: 55,
           backgroundColor: '#184461',
           flexDirection: 'row',
           alignItems: 'center',

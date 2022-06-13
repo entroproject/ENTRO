@@ -54,7 +54,7 @@ const IndexHomeContainer = ({ navigation }) => {
   }, [isFocused])
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#ddd' }}>
       {/* header start */}
       <View style={{ backgroundColor: '#184461', height: 144 }}></View>
       {/* header end */}
@@ -155,10 +155,6 @@ const IndexHomeContainer = ({ navigation }) => {
                 style={{ width: 120, marginTop:3}}
               />
             </View>
-            
-          
-              
-               
 
               <Text
                 style={{

@@ -14,10 +14,11 @@ import { logoutUser } from '@/Features/users'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { Colors } from '@/Theme/Variables'
-import { Images } from '@/Theme'
+import Icon from 'react-native-dynamic-vector-icons'
 
 
-const IndexSettingContainer = () => {
+const IndexSettingContainer = ({navigation}) => {
+  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
   const user = useSelector(user => user.user.profile)
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(true);

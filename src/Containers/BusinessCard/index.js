@@ -30,7 +30,7 @@ const CardComponent = ({
   selectedCardID,
   Images,
   handleShowDeleteModal,
-  handleShowEditCard
+  handleShowEditCard,
 }) => {
   const [showModal, setShowmodal] = useState(false)
   const [modalID, setModalID] = useState('')
@@ -44,8 +44,6 @@ const CardComponent = ({
   }
 
   const onShare = async card => {
-
-  
     try {
       await Share.open({
         title: 'Business Card',
@@ -72,312 +70,299 @@ const CardComponent = ({
           key={businessCards[key].id}
           style={{ justifyContent: 'center', alignItems: 'center' }}
         >
-          <TouchableOpacity
-            activeOpacity={1.0}
-            onPress={() => {
-              setCurrentIndex(
-                businessCards[key].id === currentIndex
-                  ? null
-                  : businessCards[key].id,
-              )
+          <View
+            style={{
+              width: '93%',
+              backgroundColor: '#fff',
+              borderRadius: 10,
+              elevation: 10,
+              marginTop: 5,
+              shadowColor: '#000',
+              shadowRadius: 10,
+              shadowOpacity: 0.6,
+              elevation: 8,
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              marginVertical: 10,
             }}
-            style={{ justifyContent: 'center', alignItems: 'center' }}
           >
             <View
               style={{
-                width: '93%',
-                backgroundColor: '#fff',
-                borderRadius: 10,
-                elevation: 10,
-                marginTop: 5,
-                shadowColor: '#000',
-                shadowRadius: 10,
-                shadowOpacity: 0.6,
-                elevation: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                marginVertical: 10,
+                flexDirection: 'row',
+                marginStart: 20,
+                marginEnd: 20,
+                marginVertical: 14,
               }}
             >
               <View
                 style={{
                   flexDirection: 'row',
-                  marginStart: 20,
-                  marginEnd: 20,
-                  marginVertical: 14,
+                  justifyContent: 'space-evenly',
                 }}
               >
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                  }}
-                >
-                  <View style={{}}>
-                    <Image
-                      source={{
-                        uri: `data:image/jpeg;base64,${businessCards[
-                          key
-                        ].logoChunks.join('')}`,
-                      }}
-                      style={{
-                        width: 80,
-                        height: 40,
-                      }}
-                      resizeMode={'cover'}
-                    />
-                  </View>
+                <View style={{}}>
+                  <Image
+                    source={{
+                      uri: `data:image/jpeg;base64,${businessCards[
+                        key
+                      ].logoChunks.join('')}`,
+                    }}
+                    style={{
+                      width: 80,
+                      height: 40,
+                    }}
+                    resizeMode={'cover'}
+                  />
+                </View>
 
-                  <View style={{ marginStart: 15, width: '70%' }}>
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontWeight: '900',
-                        color: '#184461',
-                        flexWrap: 'wrap',
-                      }}
-                      numberOfLines={2}
-                    >
-                      {businessCards[key].fullname}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: '700',
-                        color: '#184461',
-                        marginTop: 3,
-                      }}
-                    >
-                      {businessCards[key].businessName}
-                    </Text>
+                <View style={{ marginStart: 15, width: '70%' }}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: '900',
+                      color: '#184461',
+                      flexWrap: 'wrap',
+                    }}
+                    numberOfLines={2}
+                  >
+                    {businessCards[key].fullname}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '700',
+                      color: '#184461',
+                      marginTop: 3,
+                    }}
+                  >
+                    {businessCards[key].businessName}
+                  </Text>
 
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '500',
+                      color: '#184461',
+                      marginTop: 3,
+                    }}
+                  >
+                    {businessCards[key].phone}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Linking.openURL(
+                        'https://' + businessCards[key].businessWebsite,
+                      ).catch(err => console.log(err))
+                    }}
+                  >
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: '500',
                         color: '#184461',
                         marginTop: 3,
                       }}
                     >
-                      {businessCards[key].phone}
+                      {businessCards[key].businessWebsite}
                     </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ justifyContent: 'space-between' }}>
+                  <View style={{ marginStart: 10 }}>
                     <TouchableOpacity
+                      activeOpacity={1.0}
+                      
                       onPress={() => {
-                        Linking.openURL(
-                          'https://' + businessCards[key].businessWebsite,
-                        ).catch(err => console.log(err))
+                        setCurrentIndex(
+                          businessCards[key].id === currentIndex
+                            ? null
+                            : businessCards[key].id,
+                        )
                       }}
+                      style={{ justifyContent: 'center', alignItems: 'center',  padding:8 }}
                     >
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          fontWeight: '500',
-                          color: '#184461',
-                          marginTop: 3,
-                          
-                        }}
-                      >
-                        {businessCards[key].businessWebsite}
-                      </Text>
+                      <Icon
+                        name={'ellipsis-v'}
+                        type={'FontAwesome'}
+                        size={30}
+                        color={'#000'}
+                        style={{ alignSelf: 'flex-end' }}
+                      />
                     </TouchableOpacity>
                   </View>
-                  <View style={{ justifyContent: 'space-between' }}>
-                    <View style={{ marginStart: 10 }}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          handleOpenModal(
-                            businessCards[key].id,
-                            console.log(businessCards[key]),
-                          )
-                        }
-                        style={{ padding: 3 }}
-                      >
-                        <Icon
-                          name={'ellipsis-v'}
-                          type={'FontAwesome'}
-                          size={30}
-                          color={'#000'}
-                          style={{ alignSelf: 'flex-end' }}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={{}}>
-                      {selectedCardID === businessCards[key].id && (
-                        <Image
-                          source={Images.defaultCardIcon}
-                          style={{ width: 20, height: 20, margin: 3 }}
-                          resizeMode={'contain'}
-                        />
-                      )}
-                    </View>
+                  <View style={{}}>
+                    {selectedCardID === businessCards[key].id && (
+                      <Image
+                        source={Images.defaultCardIcon}
+                        style={{ width: 20, height: 20, margin: 3 }}
+                        resizeMode={'contain'}
+                      />
+                    )}
                   </View>
                 </View>
               </View>
-              <View
-                style={{ marginStart: 10, marginTop: -20, marginBottom: 8 }}
-              >
-                <Image
-                  source={Images.companyQrcode}
-                  style={{ width: 30, height: 30, margin: 3 }}
-                />
-              </View>
             </View>
-            {businessCards[key].id === currentIndex ? (
-              <DropShadow
+            <View style={{ marginStart: 10, marginTop: -20, marginBottom: 8 }}>
+              <Image
+                source={Images.companyQrcode}
+                style={{ width: 30, height: 30, margin: 3 }}
+              />
+            </View>
+          </View>
+          {businessCards[key].id === currentIndex ? (
+            <DropShadow
+              style={{
+                shadowColor: '#F0F0F0',
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 2,
+              }}
+            >
+              <View
                 style={{
-                  shadowColor: '#F0F0F0',
-                  shadowOffset: {
-                    width: 0,
-                    height: 3,
-                  },
-                  shadowOpacity: 1,
-                  shadowRadius: 2,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+
+                  marginBottom: 20,
                 }}
               >
                 <View
                   style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-
-                    marginBottom: 20,
+                    backgroundColor: '#fff',
+                    elevation: 10,
+                    marginBottom: 10,
+                    shadowColor: '#000',
+                    shadowOpacity: 0.6,
+                    elevation: 8,
+                    shadowOffset: {
+                      width: 2,
+                      height: 4,
+                    },
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    marginTop: -9,
                   }}
                 >
                   <View
                     style={{
-                      backgroundColor: '#fff',
-                      elevation: 10,
-                      marginBottom: 10,
-                      shadowColor: '#000',
-                      shadowOpacity: 0.6,
-                      elevation: 8,
-                      shadowOffset: {
-                        width: 2,
-                        height: 4,
-                      },
-                      borderBottomLeftRadius: 10,
-                      borderBottomRightRadius: 10,
-                      marginTop: -9,
+                      marginTop: 8,
+                      marginHorizontal: 10,
+                      alignSelf: 'center',
+                      width: '90%',
+                      padding: orientation === 'PORTRAIT' ? null : 20,
+                    }}
+                  >
+                    <View style={{ padding: 8 }}>
+                      <Image
+                        source={{
+                          uri: `data:image/jpeg;base64,${businessCards[
+                            key
+                          ].cardFrontChunks.join('')}`,
+                        }}
+                        style={{
+                          width: orientation === 'PORTRAIT' ? 270 : 420,
+                          height: orientation === 'PORTRAIT' ? 140 : 200,
+                        }}
+                        resizeMode={'cover'}
+                      />
+                    </View>
+                    <View style={{ padding: 8 }}>
+                      <Image
+                        source={{
+                          uri: `data:image/jpeg;base64,${businessCards[
+                            key
+                          ].cardBackChunks.join('')}`,
+                        }}
+                        style={{
+                          width: orientation === 'PORTRAIT' ? 270 : 420,
+                          height: orientation === 'PORTRAIT' ? 140 : 200,
+                        }}
+                        resizeMode={'cover'}
+                      />
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      marginHorizontal: 20,
+                      marginVertical: 10,
                     }}
                   >
                     <View
                       style={{
-                      
-                        marginTop: 8,
-                        marginHorizontal: 10,
-                        alignSelf: 'center',
-                        width: '90%',
-                        padding: orientation === 'PORTRAIT' ? null : 20,
-                      }}
-                    >
-                      <View style={{ padding: 8 }}>
-                        <Image
-                          source={{
-                            uri: `data:image/jpeg;base64,${businessCards[
-                              key
-                            ].cardFrontChunks.join('')}`,
-                          }}
-                          style={{
-                            width: orientation === 'PORTRAIT' ? 270 : 420,
-                            height: orientation === 'PORTRAIT' ? 140 : 200,
-                          }}
-                          resizeMode={'cover'}
-                        />
-                      </View>
-                      <View style={{ padding: 8 }}>
-                        <Image
-                          source={{
-                            uri: `data:image/jpeg;base64,${businessCards[
-                              key
-                            ].cardBackChunks.join('')}`,
-                          }}
-                          style={{
-                            width: orientation === 'PORTRAIT' ? 270 : 420,
-                            height: orientation === 'PORTRAIT' ? 140 : 200,
-                          }}
-                          resizeMode={'cover'}
-                        />
-                      </View>
-                    </View>
-
-                    <View
-                      style={{
                         flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        marginHorizontal: 20,
-                        marginVertical: 10,
+                        width: 140,
+                        justifyContent: 'space-between',
                       }}
                     >
-                      <View
+                      {/**share business card */}
+                      <TouchableOpacity
+                        onPress={() => {
+                          onShare(businessCards[key])
+                        }}
                         style={{
                           flexDirection: 'row',
-                          width: 110,
-                          justifyContent: 'space-evenly',
+                          alignItems: 'center',
                         }}
                       >
-                        {/**share business card */}
-                        <TouchableOpacity
-                          onPress={() => {
-                            onShare(businessCards[key])
-                          }}
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Icon
-                            type="Entypo"
-                            name="share"
-                            size={23}
-                            color="#184461"
-                          />
-                        </TouchableOpacity>
-                        {/**share business card ends here */}
+                        <Icon
+                          type="Entypo"
+                          name="share"
+                          size={23}
+                          color="#184461"
+                        />
+                      </TouchableOpacity>
+                      {/**share business card ends here */}
 
-                        {/**edit business card */}
-                        <TouchableOpacity
-                          onPress={() => handleShowEditCard(key) }
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Icon
-                            type="FontAwesome"
-                            name="edit"
-                            size={23}
-                            color="#184461"
-                          />
-                        </TouchableOpacity>
-                        {/**edit business card ends here */}
+                      {/**edit business card */}
+                      <TouchableOpacity
+                        onPress={() => handleShowEditCard(key)}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Icon
+                          type="FontAwesome"
+                          name="edit"
+                          size={23}
+                          color="#184461"
+                        />
+                      </TouchableOpacity>
+                      {/**edit business card ends here */}
 
-                        {/**delete business card */}
-                        <TouchableOpacity
-                          onPress={() => {
-                            handleShowDeleteModal(key)
-                          }}
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Icon
-                            type="Foundation"
-                            name="trash"
-                            size={23}
-                            color="#184461"
-                          />
-                        </TouchableOpacity>
+                      {/**delete business card */}
+                      <TouchableOpacity
+                        onPress={() => {
+                          handleShowDeleteModal(key)
+                        }}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Icon
+                          type="Foundation"
+                          name="trash"
+                          size={23}
+                          color="#184461"
+                        />
+                      </TouchableOpacity>
 
-                        {/**delete business card ends here */}
-                      </View>
+                      {/**delete business card ends here */}
                     </View>
                   </View>
                 </View>
-              </DropShadow>
-            ) : null}
-          </TouchableOpacity>
+              </View>
+            </DropShadow>
+          ) : null}
         </View>
       ))}
     </View>
@@ -395,11 +380,11 @@ const IndexBusinessCardContainer = ({ navigation }) => {
   const [searchText, setSearchText] = useState('')
   const user = useSelector(user => user.user.profile)
 
-  const [showEditCardModal, setShowEditCard] = useState(false);
-  const [showDeleteCardModal, setShowDeleteModal] = useState(false);
+  const [showEditCardModal, setShowEditCard] = useState(false)
+  const [showDeleteCardModal, setShowDeleteModal] = useState(false)
 
-  const [deleteCardID, setDeleteCardID] = useState(null);
-  const [editCardID, setEditCardID] = useState(null);
+  const [deleteCardID, setDeleteCardID] = useState(null)
+  const [editCardID, setEditCardID] = useState(null)
 
   const handleChangeSelectedCardID = async id => {
     setSelectedCardID(id)
@@ -413,24 +398,24 @@ const IndexBusinessCardContainer = ({ navigation }) => {
 
   const handleDeleteCard = async () => {
     try {
-     if(deleteCardID !== null){
-      const ser_cards = await AsyncStorage.getItem('businesscards')
-      const des_cards = JSON.parse(ser_cards)
-      const businessCards = {
-        ...des_cards,
+      if (deleteCardID !== null) {
+        const ser_cards = await AsyncStorage.getItem('businesscards')
+        const des_cards = JSON.parse(ser_cards)
+        const businessCards = {
+          ...des_cards,
+        }
+        delete businessCards[deleteCardID]
+        const _ser_cards = JSON.stringify(businessCards)
+        await AsyncStorage.setItem('businesscards', _ser_cards)
+        showMessage({
+          message: 'Card deleted successfully',
+          backgroundColor: 'green',
+          duration: 3000,
+        })
+        retrieveCards()
+        setDeleteCardID(null)
+        setShowEditCard(false)
       }
-      delete businessCards[deleteCardID]
-      const _ser_cards = JSON.stringify(businessCards)
-      await AsyncStorage.setItem('businesscards', _ser_cards)
-      showMessage({
-        message: 'Card deleted successfully',
-        backgroundColor: 'green',
-        duration: 3000,
-      })
-      retrieveCards()
-      setDeleteCardID(null);
-      setShowEditCard(false);
-     }
     } catch (err) {
       console.log(err)
       showMessage({
@@ -441,25 +426,24 @@ const IndexBusinessCardContainer = ({ navigation }) => {
     }
   }
 
-  const handleShowDeleteModal = (id) => {
-    setShowDeleteModal(true);
-    setDeleteCardID(id);
+  const handleShowDeleteModal = id => {
+    setShowDeleteModal(true)
+    setDeleteCardID(id)
   }
 
-
   const handleEditCard = () => {
-    if(editCardID !== null){
+    if (editCardID !== null) {
       navigation.navigate('EditBusinessCard', {
         card: businessCards[editCardID],
       })
     }
-    setEditCardID(null);
+    setEditCardID(null)
     setShowEditCard
   }
-  const handleShowEditCard = (id) => {
-    console.log(id);
-    setEditCardID(id);
-    setShowEditCard(true);
+  const handleShowEditCard = id => {
+    console.log(id)
+    setEditCardID(id)
+    setShowEditCard(true)
   }
 
   const retrieveCards = async () => {
@@ -780,21 +764,18 @@ const IndexBusinessCardContainer = ({ navigation }) => {
         </View>
       ) : Object.keys(businessCards).length > 0 ? (
         <CardComponent
-         showEditCardModal={showEditCardModal}
-         setShowEditCard={setShowEditCard}
-         showDeleteCardModal={showDeleteCardModal} 
-         setShowDeleteModal={setShowDeleteModal}
-         deleteCardID={deleteCardID} 
-         setDeleteCardID={setDeleteCardID}
-         editCardID={editCardID} 
-         setEditCardID={setEditCardID}
-
-         handleChangeSelectedCardID={handleChangeSelectedCardID}
-         handleShowDeleteModal={handleShowDeleteModal}
-         handleEditCard={handleEditCard}
-         handleShowEditCard={handleShowEditCard}
-         
-
+          showEditCardModal={showEditCardModal}
+          setShowEditCard={setShowEditCard}
+          showDeleteCardModal={showDeleteCardModal}
+          setShowDeleteModal={setShowDeleteModal}
+          deleteCardID={deleteCardID}
+          setDeleteCardID={setDeleteCardID}
+          editCardID={editCardID}
+          setEditCardID={setEditCardID}
+          handleChangeSelectedCardID={handleChangeSelectedCardID}
+          handleShowDeleteModal={handleShowDeleteModal}
+          handleEditCard={handleEditCard}
+          handleShowEditCard={handleShowEditCard}
           businessCards={businessCards}
           selectedCardID={selectedCardID}
           Images={Images}
@@ -838,222 +819,214 @@ const IndexBusinessCardContainer = ({ navigation }) => {
       )}
 
       <Modal
-            transparent
-            visible={showDeleteCardModal}
-            onRequestClose={() => setShowDeleteModal(false)}
+        transparent
+        visible={showDeleteCardModal}
+        onRequestClose={() => setShowDeleteModal(false)}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#00000099',
+          }}
+        >
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: '#fff',
+              borderColor: '#184461',
+              borderWidth: 1,
+              borderRadius: 20,
+            }}
           >
             <View
               style={{
+                backgroundColor: '#184461',
+                height: 50,
+                marginBottom: 10,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                borderColor: '#184461',
+                borderWidth: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                flex: 1,
-                backgroundColor: '#00000099',
               }}
             >
-              <View
-                style={{
-                  width: 300,
-                  height: 300,
-                  backgroundColor: '#fff',
-                  borderColor: '#184461',
-                  borderWidth: 1,
-                  borderRadius: 20,
-                }}
-              >
-                <View
+              <Text style={{ color: '#fff', fontWeight: '700' }}>
+                Do you wish to delete Business card?
+              </Text>
+            </View>
+
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  onPress={handleDeleteCard}
                   style={{
-                    backgroundColor: '#184461',
-                    height: 50,
-                    marginBottom: 10,
-                    borderTopLeftRadius: 15,
-                    borderTopRightRadius: 15,
-                    borderColor: '#184461',
                     borderWidth: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    width: 125,
+                    backgroundColor: '#F0F0F0',
                   }}
                 >
-                  <Text style={{ color: '#fff', fontWeight: '700' }}>
-                    Are you sure you want to delete card?
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    Yes
                   </Text>
-                </View>
-
-                <View
-                  style={{ justifyContent: 'center', alignItems: 'center' }}
-                >
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={handleDeleteCard}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#184461',
-                        padding: 10,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: '#F0F0F0',
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        Yes
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={()=> setShowDeleteModal(false)}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#184461',
-                        padding: 10,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: '#F0F0F0',
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        No
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                <TouchableOpacity
-                onPress={()=> setShowDeleteModal(false)}>
-                  <View
-                    style={{
-                      width: 299,
-                      height: 50,
-                      borderColor: '#184461',
-                      backgroundColor: 'lightblue',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderBottomLeftRadius: 15,
-                      borderBottomRightRadius: 15,
-                    }}
-                  >
-                    <Text
-                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
-                    >
-                      Close
-                    </Text>
-                  </View>
                 </TouchableOpacity>
               </View>
 
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  onPress={() => setShowDeleteModal(false)}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    width: 125,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    No
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
+
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <TouchableOpacity onPress={() => setShowDeleteModal(false)}>
+                <View
+                  style={{
+                    width: 299,
+                    height: 50,
+                    borderColor: '#184461',
+                    backgroundColor: 'lightblue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomLeftRadius: 15,
+                    borderBottomRightRadius: 15,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </Modal>
 
       {/* edit */}
       <Modal
-            transparent
-            visible={showEditCardModal}
-            onRequestClose={() => setShowDeleteModal(false)}
+        transparent
+        visible={showEditCardModal}
+        onRequestClose={() => setShowDeleteModal(false)}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#00000099',
+          }}
+        >
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: '#fff',
+              borderColor: '#184461',
+              borderWidth: 1,
+              borderRadius: 20,
+            }}
           >
             <View
               style={{
+                backgroundColor: '#184461',
+                height: 50,
+                marginBottom: 10,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                borderColor: '#184461',
+                borderWidth: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                flex: 1,
-                backgroundColor: '#00000099',
               }}
             >
-              <View
-                style={{
-                  width: 300,
-                  height: 300,
-                  backgroundColor: '#fff',
-                  borderColor: '#184461',
-                  borderWidth: 1,
-                  borderRadius: 20,
-                }}
-              >
-                <View
+              <Text style={{ color: '#fff', fontWeight: '700' }}>
+                Do you wish to edit business card?
+              </Text>
+            </View>
+
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  onPress={handleEditCard}
                   style={{
-                    backgroundColor: '#184461',
-                    height: 50,
-                    marginBottom: 10,
-                    borderTopLeftRadius: 15,
-                    borderTopRightRadius: 15,
-                    borderColor: '#184461',
                     borderWidth: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    width: 125,
+                    backgroundColor: '#F0F0F0',
                   }}
                 >
-                  <Text style={{ color: '#fff', fontWeight: '700' }}>
-                    Are you sure you want to edit card?
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    Yes
                   </Text>
-                </View>
-
-                <View
-                  style={{ justifyContent: 'center', alignItems: 'center' }}
-                >
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={handleEditCard}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#184461',
-                        padding: 10,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: '#F0F0F0',
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        Yes
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={()=> setShowEditCard(false)}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#184461',
-                        padding: 10,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: '#F0F0F0',
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        No
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                <TouchableOpacity
-                onPress={()=> setShowEditCard(false)}>
-                  <View
-                    style={{
-                      width: 299,
-                      height: 50,
-                      borderColor: '#184461',
-                      backgroundColor: 'lightblue',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderBottomLeftRadius: 15,
-                      borderBottomRightRadius: 15,
-                    }}
-                  >
-                    <Text
-                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
-                    >
-                      Close
-                    </Text>
-                  </View>
                 </TouchableOpacity>
               </View>
 
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  onPress={() => setShowEditCard(false)}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    width: 125,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    No
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
+
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <TouchableOpacity onPress={() => setShowEditCard(false)}>
+                <View
+                  style={{
+                    width: 299,
+                    height: 50,
+                    borderColor: '#184461',
+                    backgroundColor: 'lightblue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomLeftRadius: 15,
+                    borderBottomRightRadius: 15,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </Modal>
     </ScrollView>
   )

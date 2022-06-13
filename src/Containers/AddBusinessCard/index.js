@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
-  Platform
+  Platform,
 } from 'react-native'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import ImagePicker from 'react-native-image-crop-picker'
@@ -186,6 +186,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
       width: 300,
       height: 400,
       cropping: true,
+      freeStyleCropEnabled: true,
       includeBase64: true,
     }).then(response => {
       setLogo(response.data)
@@ -221,6 +222,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
       width: 300,
       height: 400,
       cropping: true,
+      freeStyleCropEnabled: true,
       includeBase64: true,
     }).then(response => {
       if (location === 'front') {
@@ -397,8 +399,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
             </View>
 
             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-              <TouchableOpacity
-              onPress={()=> setShowDisplayCamOption(false)}>
+              <TouchableOpacity onPress={() => setShowDisplayCamOption(false)}>
                 <View
                   style={{
                     width: 299,
@@ -432,8 +433,6 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
             padding: 10,
           }}
         >
-         
-
           <Text
             style={{
               color: Colors.white,
@@ -451,15 +450,8 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 : navigation.goBack()
             }
           >
-          <Icon
-          name="x"
-          type="Feather"
-          size={35}
-          color="#fff"
-        
-        />
+            <Icon name="x" type="Feather" size={35} color="#fff" />
           </TouchableOpacity>
-         
         </View>
       </View>
 

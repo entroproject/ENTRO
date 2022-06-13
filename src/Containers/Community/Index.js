@@ -16,6 +16,7 @@ import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { useDispatch, useSelector } from 'react-redux'
 import { getContacts } from '@/api-utils'
+import Share from 'react-native-share'
 
 const IndexCommunityContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
@@ -118,6 +119,34 @@ const IndexCommunityContainer = ({ navigation }) => {
       handleSearchCommunity()
     }
   }, [searchCommunity])
+
+  const onShareService = async serv => {
+    try {
+      await Share.open({
+        title: 'Emergency Service',
+        message: `
+        Emergency: ${serv.Name}
+        Contact No: ${serv.PhoneNo}
+        `,
+      })
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+  const onShareComm = async com => {
+    try {
+      await Share.open({
+        title: 'Community Service',
+        message: `
+        Community: ${com.Name}
+        Contact No: ${com.PhoneNo}
+        `,
+      })
+    } catch (error) {
+      alert(error.message)
+    }
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
@@ -487,103 +516,107 @@ const IndexCommunityContainer = ({ navigation }) => {
                 </Text>
               ) : (
                 userEmergencyFilter.map((serv, key) => (
-                  <Pressable
+                  <View
                     key={key}
-                    onPress={() => {
-                      Linking.openURL(`tel:${serv.PhoneNo}`)
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     <View
                       style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        width: '93%',
+                        backgroundColor: 'white',
+                        borderRadius: 15,
+                        elevation: 10,
+                        marginBottom: 10,
+                        marginTop: 5,
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
                       }}
                     >
-                      <View
-                        style={{
-                          width: '93%',
-                          backgroundColor: 'white',
-                          borderRadius: 15,
-                          elevation: 10,
-                          marginBottom: 10,
-                          marginTop: 5,
-                          shadowColor: '#000',
-                          shadowRadius: 10,
-                          shadowOpacity: 0.6,
-                          elevation: 8,
-                          shadowOffset: {
-                            width: 0,
-                            height: 4,
-                          },
-                        }}
-                      >
-                        <View style={{ flexDirection: 'row' }}>
-                          <View style={{ justifyContent: 'center' }}>
-                            <Icon
-                              type="MaterialIcons"
-                              name="account-circle"
-                              color="#184461"
-                              size={40}
-                              style={{
-                                marginHorizontal: 17,
-                                marginVertical: 14,
-                              }}
-                            />
-                          </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <View style={{ justifyContent: 'center' }}>
+                          <Icon
+                            type="MaterialIcons"
+                            name="account-circle"
+                            color="#184461"
+                            size={40}
+                            style={{
+                              marginHorizontal: 17,
+                              marginVertical: 14,
+                            }}
+                          />
+                        </View>
 
+                        <View
+                          style={{
+                            justifyContent: 'center',
+                            marginStart: 8,
+                            width: 125,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: '#184461',
+                              fontWeight: '700',
+                              marginBottom: 5,
+                              flexWrap: 'wrap',
+                              fontSize: 16,
+                            }}
+                            numberOfLines={1}
+                          >
+                            {serv.Name}
+                          </Text>
                           <View
                             style={{
-                              justifyContent: 'center',
-                              marginStart: 8,
-                              width: 125,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginBottom: 5,
                             }}
                           >
                             <Text
                               style={{
                                 color: '#184461',
-                                fontWeight: '700',
-                                marginBottom: 5,
-                                flexWrap: 'wrap',
-                                fontSize: 16,
+                                fontWeight: '500',
+                                fontSize: 12,
                               }}
-                              numberOfLines={1}
                             >
-                              {serv.Name}
+                              {serv.PhoneNo}
                             </Text>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginBottom: 5,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  color: '#184461',
-                                  fontWeight: '500',
-                                  fontSize: 12,
-                                }}
-                              >
-                                {serv.PhoneNo}
-                              </Text>
-                            </View>
                           </View>
+                        </View>
 
+                        <View
+                          style={{
+                            marginStart: 2,
+                            marginEnd: 20,
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}
+                        >
                           <View
                             style={{
-                              marginStart: 2,
-                              marginEnd: 20,
-                              flex: 1,
-                              justifyContent: 'center',
-                              alignItems: 'center',
                               flexDirection: 'row',
+                              justifyContent: 'space-evenly',
+                              flex: 1,
                             }}
                           >
-                            <View
+                            <TouchableOpacity
+                              onPress={() => {
+                                onShareService(serv)
+                              }}
                               style={{
                                 flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                flex: 1,
+                                alignItems: 'center',
                               }}
                             >
                               <Icon
@@ -591,19 +624,28 @@ const IndexCommunityContainer = ({ navigation }) => {
                                 name="share"
                                 color="#184461"
                                 size={25}
+                                style={{ backgroundColor: 'red', padding: 5 }}
                               />
+                            </TouchableOpacity>
+                            <Pressable
+                              key={key}
+                              onPress={() => {
+                                Linking.openURL(`tel:${serv.PhoneNo}`)
+                              }}
+                            >
                               <Icon
                                 type="FontAwesome"
                                 name="phone"
                                 color="#184461"
                                 size={25}
+                                style={{ backgroundColor: 'red', padding: 5 }}
                               />
-                            </View>
+                            </Pressable>
                           </View>
                         </View>
                       </View>
                     </View>
-                  </Pressable>
+                  </View>
                 ))
               )}
             </ScrollView>
@@ -622,103 +664,107 @@ const IndexCommunityContainer = ({ navigation }) => {
                 </Text>
               ) : (
                 userCommunityFilter.map((com, key) => (
-                  <Pressable
+                  <View
                     key={key}
-                    onPress={() => {
-                      Linking.openURL(`tel:${com.PhoneNo}`)
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     <View
                       style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        width: '93%',
+                        backgroundColor: 'white',
+                        borderRadius: 15,
+                        elevation: 10,
+                        marginBottom: 10,
+                        marginTop: 5,
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
                       }}
                     >
-                      <View
-                        style={{
-                          width: '93%',
-                          backgroundColor: 'white',
-                          borderRadius: 15,
-                          elevation: 10,
-                          marginBottom: 10,
-                          marginTop: 5,
-                          shadowColor: '#000',
-                          shadowRadius: 10,
-                          shadowOpacity: 0.6,
-                          elevation: 8,
-                          shadowOffset: {
-                            width: 0,
-                            height: 4,
-                          },
-                        }}
-                      >
-                        <View style={{ flexDirection: 'row' }}>
-                          <View style={{ justifyContent: 'center' }}>
-                            <Icon
-                              type="MaterialIcons"
-                              name="account-circle"
-                              color="#184461"
-                              size={40}
-                              style={{
-                                marginHorizontal: 17,
-                                marginVertical: 14,
-                              }}
-                            />
-                          </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <View style={{ justifyContent: 'center' }}>
+                          <Icon
+                            type="MaterialIcons"
+                            name="account-circle"
+                            color="#184461"
+                            size={40}
+                            style={{
+                              marginHorizontal: 17,
+                              marginVertical: 14,
+                            }}
+                          />
+                        </View>
 
+                        <View
+                          style={{
+                            justifyContent: 'center',
+                            marginStart: 8,
+                            width: 125,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: '#184461',
+                              fontWeight: '700',
+                              marginBottom: 5,
+                              flexWrap: 'wrap',
+                              fontSize: 16,
+                            }}
+                            numberOfLines={1}
+                          >
+                            {com.Name}
+                          </Text>
                           <View
                             style={{
-                              justifyContent: 'center',
-                              marginStart: 8,
-                              width: 125,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginBottom: 5,
                             }}
                           >
                             <Text
                               style={{
                                 color: '#184461',
-                                fontWeight: '700',
-                                marginBottom: 5,
-                                flexWrap: 'wrap',
-                                fontSize: 16,
+                                fontWeight: '500',
+                                fontSize: 12,
                               }}
-                              numberOfLines={1}
                             >
-                              {com.Name}
+                              {com.PhoneNo}
                             </Text>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginBottom: 5,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  color: '#184461',
-                                  fontWeight: '500',
-                                  fontSize: 12,
-                                }}
-                              >
-                                {com.PhoneNo}
-                              </Text>
-                            </View>
                           </View>
+                        </View>
 
+                        <View
+                          style={{
+                            marginStart: 2,
+                            marginEnd: 20,
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}
+                        >
                           <View
                             style={{
-                              marginStart: 2,
-                              marginEnd: 20,
-                              flex: 1,
-                              justifyContent: 'center',
-                              alignItems: 'center',
                               flexDirection: 'row',
+                              justifyContent: 'space-evenly',
+                              flex: 1,
                             }}
                           >
-                            <View
+                            <TouchableOpacity
+                              onPress={() => {
+                                onShareComm(com)
+                              }}
                               style={{
                                 flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                flex: 1,
+                                alignItems: 'center',
                               }}
                             >
                               <Icon
@@ -726,19 +772,28 @@ const IndexCommunityContainer = ({ navigation }) => {
                                 name="share"
                                 color="#184461"
                                 size={25}
+                                style={{ padding: 5 }}
                               />
+                            </TouchableOpacity>
+                            <Pressable
+                              key={key}
+                              onPress={() => {
+                                Linking.openURL(`tel:${com.PhoneNo}`)
+                              }}
+                            >
                               <Icon
                                 type="FontAwesome"
                                 name="phone"
                                 color="#184461"
                                 size={25}
+                                style={{ padding: 5 }}
                               />
-                            </View>
+                            </Pressable>
                           </View>
                         </View>
                       </View>
                     </View>
-                  </Pressable>
+                  </View>
                 ))
               )}
             </ScrollView>

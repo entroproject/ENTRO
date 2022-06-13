@@ -377,7 +377,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                   }}
                 >
                   <Text style={{ color: '#fff', fontWeight: '700' }}>
-                    Are you sure you want to delete visitor?
+                    Do you wish to delete registered visitor?
                   </Text>
                 </View>
 
@@ -487,7 +487,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                   }}
                 >
                   <Text style={{ color: '#fff', fontWeight: '700' }}>
-                    Are you sure you want to edit visitor?
+                    ADo you wish to edit visitor?
                   </Text>
                 </View>
 

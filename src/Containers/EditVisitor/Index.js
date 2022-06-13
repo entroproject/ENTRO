@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
+  Platform
 } from 'react-native'
 import moment from 'moment'
 import { useTheme } from '@/Hooks'
@@ -102,15 +103,19 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
   }
 
   const goPhotoCamera = () => {
-    setPhoto(null)
+    if (photo !== null) {
+      setPhoto(null)
+    }
 
     ImagePicker.openCamera({
-      mediaType: 'photo',
-      width: 150,
-      height: 150,
-      compressImageMaxHeight: 150,
-      compressImageMaxWidth: 150,
+      path: Platform.OS === 'android',
+      width: 1000,
+      height: 750,
       cropping: true,
+      freeStyleCropEnabled: true,
+      compressImageMaxWidth: 500,
+      compressImageMaxHeight: 500,
+      compressImageQuality: 0.5,
       useFrontCamera: true,
       includeBase64: true,
     }).then(image => {
@@ -133,7 +138,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
         return false
       }
 
-      if (ICNumber.length < 12 || ICNumber.length > 15) {
+      if (ICNumber.length < 5 || ICNumber.length > 30) {
         showMessage({
           message: 'Please Indicate a valid IC-Number',
           backgroundColor: 'red',
@@ -301,7 +306,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
         </View>
       </Modal>
 
-      <View style={{ height: 51, backgroundColor: '#184461' }}>
+      <View style={{ height: 55, backgroundColor: '#184461' }}>
         <View
           style={{
             flexDirection: 'row',
@@ -310,21 +315,13 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
             padding: 10,
           }}
         >
-          <Icon
-            name="arrow-left"
-            type="Feather"
-            size={30}
-            color="#fff"
-            onPress={() => {
-              navigation.goBack()
-            }}
-            style={{}}
-          />
+          
           <Text
             style={{
               color: Colors.white,
               fontWeight: '600',
               marginLeft: 15,
+              fontSize: 16,
             }}
           >
             Edit Visitor
@@ -333,7 +330,7 @@ const IndexEditVisitorContainer = ({ navigation, route }) => {
             onPress={() => navigation.goBack()}
             name="x"
             type="Feather"
-            size={30}
+            size={35}
             color="#fff"
           />
         </View>

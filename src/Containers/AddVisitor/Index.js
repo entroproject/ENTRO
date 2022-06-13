@@ -87,8 +87,10 @@ const IndexAddVisitorContainer = ({ navigation }) => {
       width: 300,
       height: 400,
       cropping: true,
+      freeStyleCropEnabled: true,
       includeBase64: true,
     }).then(image => {
+      console.log(image)
       setPhoto(image.data)
       setShowDisplayCamOption(false)
     })
@@ -97,15 +99,21 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   const goPhotoCamera = () => {
     setPhoto(null)
     ImagePicker.openCamera({
+      path: Platform.OS === 'android',
       mediaType: 'photo',
       width: 150,
       height: 150,
       compressImageMaxHeight: 150,
       compressImageMaxWidth: 150,
       cropping: true,
+      freeStyleCropEnabled: true,
+      //compressImageMaxWidth: 500,
+      //compressImageMaxHeight: 500,
+      //compressImageQuality: 0.5,
       useFrontCamera: true,
       includeBase64: true,
     }).then(image => {
+      console.log(image)
       setPhoto(image.data)
       setShowDisplayCamOption(false)
     })
@@ -149,7 +157,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
         VehicleNumber: carPlateNum,
         StartDateTime: visitStartDate,
         EndDateTime: visitEndDate,
-        VisitorImageLogo: photo,
       }
       const req_invite = await inviteVisitors(_data)
       const resp = await req_invite.json()
@@ -184,15 +191,6 @@ const IndexAddVisitorContainer = ({ navigation }) => {
             padding: 10,
           }}
         >
-          <Icon
-            name="arrow-left"
-            type="Feather"
-            size={35}
-            color="#fff"
-            onPress={() => {
-              navigation.goBack()
-            }}
-          />
           <Text
             style={{
               color: Colors.white,
@@ -347,29 +345,33 @@ const IndexAddVisitorContainer = ({ navigation }) => {
                 </View>
 
                 <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                <TouchableOpacity
-                onPress={()=> setShowDisplayCamOption(false)}>
-                  <View
-                    style={{
-                      width: 299,
-                      height: 50,
-                      borderColor: '#184461',
-                      backgroundColor: 'lightblue',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderBottomLeftRadius: 15,
-                      borderBottomRightRadius: 15,
-                    }}
+                  <TouchableOpacity
+                    onPress={() => setShowDisplayCamOption(false)}
                   >
-                    <Text
-                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    <View
+                      style={{
+                        width: 299,
+                        height: 50,
+                        borderColor: '#184461',
+                        backgroundColor: 'lightblue',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderBottomLeftRadius: 15,
+                        borderBottomRightRadius: 15,
+                      }}
                     >
-                      Close
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          color: '#000',
+                          fontWeight: '900',
+                        }}
+                      >
+                        Close
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </Modal>
@@ -771,7 +773,9 @@ const IndexAddVisitorContainer = ({ navigation }) => {
               ) : (
                 <View>
                   <Image
-                    source={photo ? { uri: `data:image/png;base64,${photo}` } : ''}
+                    source={
+                      photo ? { uri: `data:image/png;base64,${photo}` } : ''
+                    }
                     style={{
                       width: 80,
                       height: 80,

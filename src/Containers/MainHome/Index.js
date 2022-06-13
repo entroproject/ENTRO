@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,40 +6,37 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator
-} from 'react-native'
-import { useTheme } from '@/Hooks'
-import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
-import Icon from 'react-native-dynamic-vector-icons'
-import DropShadow from 'react-native-drop-shadow'
-import { useOrientation } from '../useOrientation'
-import { useDispatch, useSelector } from 'react-redux'
-import { getAnnouncements, getVirtualKeys } from '@/api-utils'
-import { addAnnouncement } from '@/Features/announcements'
-import LottieView from 'lottie-react-native'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
-import { addCard } from '@/Features/virtualCards'
-
+  ActivityIndicator,
+} from 'react-native';
+import { useTheme } from '@/Hooks';
+import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent';
+import Icon from 'react-native-dynamic-vector-icons';
+import DropShadow from 'react-native-drop-shadow';
+import { useOrientation } from '../useOrientation';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAnnouncements, getVirtualKeys } from '@/api-utils';
+import { addAnnouncement } from '@/Features/announcements';
+import LottieView from 'lottie-react-native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { addCard } from '@/Features/virtualCards';
 
 const IndexHomeContainer = ({ navigation }) => {
-  const { Images, MetricsSizes, Layout } = useTheme()
-  const orientation = useOrientation()
-  const user = useSelector(user => user.user.profile)
-  const [announcementsLoading, setAnnouncementLoading] = useState(true)
-  const announcements = useSelector(
-    state => state.announcement.announcements,
-  )
-  const dispatch = useDispatch()
+  const { Images, MetricsSizes, Layout } = useTheme();
+  const orientation = useOrientation();
+  const user = useSelector(user => user.user.profile);
+  const [announcementsLoading, setAnnouncementLoading] = useState(true);
+  const announcements = useSelector(state => state.announcement.announcements);
+  const dispatch = useDispatch();
 
   const accessId = useSelector(state => state.user.accessId);
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
 
   const handleGetAnnouncements = async () => {
-    setAnnouncementLoading(true)
-    const req_ann = await getAnnouncements(accessId, "Plaza33");
-    const ann = await req_ann.json()
-    dispatch(addAnnouncement(ann.Announcement))
-    setAnnouncementLoading(false)
+    setAnnouncementLoading(true);
+    const req_ann = await getAnnouncements(accessId, 'Plaza33');
+    const ann = await req_ann.json();
+    dispatch(addAnnouncement(ann.Announcement));
+    setAnnouncementLoading(false);
   }
 
   const getAccess = async () => {
@@ -49,8 +46,8 @@ const IndexHomeContainer = ({ navigation }) => {
   }
 
   useEffect(() => {
-    handleGetAnnouncements();
-    getAccess();
+    handleGetAnnouncements()
+    getAccess()
   }, [isFocused])
 
   return (
@@ -129,36 +126,28 @@ const IndexHomeContainer = ({ navigation }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: 20,
-                
               }}
             >
+              <View
+                style={{
+                  width: '70%',
+                  height: 35,
+                  marginTop: 10,
 
-            <View
-              style={{
-                width: '70%',
-                height: 35,
-                marginTop: 10,
-               
-                flexDirection:'row',
-               
-                justifyContent:'center',
-                alignItems:'center'
-              }}
-            >
+                  flexDirection: 'row',
 
-            
-            <Text style={{ fontSize: 28, marginRight:-10,  }}>🤩</Text> 
-              <LottieView
-                source={require('../../Assets/Lottie/welcome.json')}
-                autoPlay
-                loop
-                style={{ width: 120, marginTop:3}}
-              />
-            </View>
-            
-          
-              
-               
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ fontSize: 28, marginRight: -10 }}>🤩</Text>
+                <LottieView
+                  source={require('../../Assets/Lottie/welcome.json')}
+                  autoPlay
+                  loop
+                  style={{ width: 120, marginTop: 3 }}
+                />
+              </View>
 
               <Text
                 style={{
@@ -273,8 +262,9 @@ const IndexHomeContainer = ({ navigation }) => {
 
           <Text
             style={{
-              color: '#000',
+              color: '#184461',
               marginTop: 10,
+              fontWeight: '400',
             }}
           >
             Profile
@@ -318,7 +308,8 @@ const IndexHomeContainer = ({ navigation }) => {
 
           <Text
             style={{
-              color: '#000',
+              color: '#184461',
+              fontWeight: '400',
               marginTop: 10,
             }}
           >
@@ -363,7 +354,8 @@ const IndexHomeContainer = ({ navigation }) => {
 
           <Text
             style={{
-              color: '#000',
+              color: '#184461',
+              fontWeight: '400',
               marginTop: 10,
             }}
           >
@@ -409,7 +401,8 @@ const IndexHomeContainer = ({ navigation }) => {
           <View style={{ width: 60, alignItems: 'center' }}>
             <Text
               style={{
-                color: '#000',
+                color: '#184461',
+                fontWeight: '400',
                 marginTop: 10,
                 flexWrap: 'wrap',
                 textAlign: 'center',
@@ -458,7 +451,8 @@ const IndexHomeContainer = ({ navigation }) => {
           <View style={{ width: 60, alignItems: 'center' }}>
             <Text
               style={{
-                color: '#000',
+                color: '#184461',
+                fontWeight: '400',
                 marginTop: 10,
                 flexWrap: 'wrap',
                 textAlign: 'center',
@@ -506,7 +500,8 @@ const IndexHomeContainer = ({ navigation }) => {
 
           <Text
             style={{
-              color: '#000',
+              color: '#184461',
+              fontWeight: '400',
               marginTop: 10,
             }}
           >
@@ -567,7 +562,7 @@ const IndexHomeContainer = ({ navigation }) => {
             {announcementsLoading ? (
               <ActivityIndicator
                 size={50}
-                color='#184461'
+                color="#184461"
                 style={{
                   alignSelf: 'center',
                 }}
@@ -586,7 +581,6 @@ const IndexHomeContainer = ({ navigation }) => {
                       itemDateEnd: ann.EventEndAt,
                       itemPlace: ann.Location,
                       itemDistance: '3.5miles',
-
                     })
                   }
                 >

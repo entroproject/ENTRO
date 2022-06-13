@@ -3,14 +3,13 @@ import Icon from 'react-native-dynamic-vector-icons'
 import {
   View,
   Text,
-  ImageBackground,
   Image,
   ScrollView,
-  Animated,
   TextInput,
   StyleSheet,
   Modal,
   TouchableOpacity,
+  Platform
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
@@ -66,15 +65,18 @@ const IndexEditUserContainer = ({ navigation, route }) => {
     setPhoto(null)
 
     ImagePicker.openCamera({
-      mediaType: 'photo',
-      width: 150,
-      height: 150,
-      compressImageMaxHeight: 150,
-      compressImageMaxWidth: 150,
+      path: Platform.OS === 'android',
+      width: 1000,
+      height: 750,
       cropping: true,
+      freeStyleCropEnabled: true,
+      compressImageMaxWidth: 500,
+      compressImageMaxHeight: 500,
+      compressImageQuality: 0.5,
       useFrontCamera: true,
       includeBase64: true,
     }).then(image => {
+      console.log(image)
       setPhoto(image.data)
       setShowDisplayCamOption(false)
     })
@@ -258,16 +260,7 @@ const IndexEditUserContainer = ({ navigation, route }) => {
             padding: 10,
           }}
         >
-          <Icon
-            name="arrow-left"
-            type="Feather"
-            size={35}
-            color="#fff"
-            onPress={() => {
-              navigation.goBack()
-            }}
-            style={{}}
-          />
+        
           <Text
             style={{
               color: Colors.white,
@@ -283,7 +276,9 @@ const IndexEditUserContainer = ({ navigation, route }) => {
             type="Feather"
             size={35}
             color="#fff"
-            onPress={() => {}}
+            onPress={() => {
+              navigation.goBack()
+            }}
           />
         </View>
       </View>

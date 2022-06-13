@@ -29,6 +29,7 @@ import TabNavigation from './TabNavigation'
 import IndexEditBusinessCardContainer from '@/Containers/EditBusinessCard/Index'
 import { useSelector } from 'react-redux'
 import IndexEditVisitorContainer from '@/Containers/EditVisitor/Index'
+import TabBottomNavigation from './TabBottonNavigation'
 
 const Stack = createStackNavigator()
 
@@ -69,7 +70,7 @@ const ApplicationNavigator = () => {
             
             <Stack.Screen
             name="MainNav"
-            component={TabNavigation}
+            component={TabBottomNavigation}
             options={{
               animationEnabled: false,
               

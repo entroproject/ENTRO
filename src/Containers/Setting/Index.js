@@ -14,10 +14,11 @@ import { logoutUser } from '@/Features/users'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { Colors } from '@/Theme/Variables'
-import { Images } from '@/Theme'
+import Icon from 'react-native-dynamic-vector-icons'
 
 
-const IndexSettingContainer = () => {
+const IndexSettingContainer = ({navigation}) => {
+  const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
   const user = useSelector(user => user.user.profile)
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(true);
@@ -139,7 +140,7 @@ const IndexSettingContainer = () => {
       </Modal>
       <View
         style={{
-          height: 90,
+          height: 55,
           backgroundColor: '#184461',
           flexDirection: 'row',
           alignItems: 'center',
@@ -157,17 +158,15 @@ const IndexSettingContainer = () => {
           Settings
         </Text>
 
-        <Image
-        source={{ uri: `data:image/png;base64,${user.ProfileLogo}` }}
-          style={{
-            width: 60,
-            height: 60,
-            marginEnd: 20,
-            borderRadius: 30,
-            borderWidth: 2,
-            borderColor: '#FFFEFE',
-          }}
-        />
+        <Icon
+            name="x"
+            type="Feather"
+            size={35}
+            color="#fff"
+            onPress={() => {
+              navigation.goBack()
+            }}
+          />
       </View>
 
       <View style={{}}>
@@ -266,7 +265,7 @@ const IndexSettingContainer = () => {
 
       <View style={{marginTop:30}}>
       <Image 
-      source={Images.corporateLogo}   
+      source={Images.newLogoImage}   
       />
 
       </View>

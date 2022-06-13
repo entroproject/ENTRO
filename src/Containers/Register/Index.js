@@ -138,7 +138,7 @@ const IndexRegisterContainer = ({ route }) => {
       >
         <ScrollView>
         <Image
-        source={Images.corporateLogo}
+        source={Images.newLogoImage}
         resizeMode={'contain'}
         style={{  marginTop: 20,  marginLeft: 20}}
       />

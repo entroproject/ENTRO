@@ -210,9 +210,6 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
                   style={[
                     Layout.center,
                     {
-                      width: 300,
-                      height: 300,
-                      borderRadius: 150,
                       backgroundColor: '#ffffff',
                       shadowColor: ' rgba(0, 0, 0, 0.25)',
                       elevation: 10,

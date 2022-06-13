@@ -14,9 +14,9 @@ const IndexUserProfileContainer = ({ navigation }) => {
 
   const dispatch = useDispatch()
   const handCardSelected = item => {
-    console.log('card selected==>', item)
     dispatch(setDefaultCard(item))
   }
+
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
@@ -326,8 +326,8 @@ const IndexUserProfileContainer = ({ navigation }) => {
       >
         <View style={{ flex: 1, marginHorizontal: 16 }}>
           {
-           //typeof VirtualCard === 'undefined' 
-        VirtualCard?.length === 0  
+          //typeof VirtualCard === 'undefined' 
+         VirtualCard?.length === 0  
            ? (
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text

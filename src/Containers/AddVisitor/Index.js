@@ -7,7 +7,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Platform,
+  Platform
 } from 'react-native'
 import moment from 'moment'
 import { useTheme } from '@/Hooks'
@@ -20,6 +20,7 @@ import { inviteVisitors } from '@/api-utils'
 import Icon from 'react-native-dynamic-vector-icons'
 import { Dropdown } from 'react-native-element-dropdown'
 import { useSelector } from 'react-redux'
+import { launchCamera } from 'react-native-image-picker'
 
 const IndexAddVisitorContainer = ({ navigation }) => {
   const { Layout, Images, Colors } = useTheme()
@@ -96,10 +97,7 @@ const IndexAddVisitorContainer = ({ navigation }) => {
   }
 
   const goPhotoCamera = () => {
-    if (photo !== null) {
-      setPhoto(null)
-    }
-
+    setPhoto(null)
     ImagePicker.openCamera({
       path: Platform.OS === 'android',
       mediaType: 'photo',

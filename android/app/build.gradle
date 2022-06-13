@@ -139,6 +139,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    dexOptions {
+        javaMaxHeapSize "4G"
+    }
+
     defaultConfig {
         applicationId "com.entro"
         minSdkVersion rootProject.ext.minSdkVersion

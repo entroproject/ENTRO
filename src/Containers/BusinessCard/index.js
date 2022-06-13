@@ -29,8 +29,8 @@ const CardComponent = ({
   businessCards,
   selectedCardID,
   Images,
-  handleChangeSelectedCardID,
-  handleDeleteCard,
+  handleShowDeleteModal,
+  handleShowEditCard
 }) => {
   const [showModal, setShowmodal] = useState(false)
   const [modalID, setModalID] = useState('')
@@ -337,11 +337,7 @@ const CardComponent = ({
 
                         {/**edit business card */}
                         <TouchableOpacity
-                          onPress={() =>
-                            navigation.navigate('EditBusinessCard', {
-                              card: businessCards[key],
-                            })
-                          }
+                          onPress={() => handleShowEditCard(key) }
                           style={{
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -359,7 +355,7 @@ const CardComponent = ({
                         {/**delete business card */}
                         <TouchableOpacity
                           onPress={() => {
-                            handleDeleteCard(key)
+                            handleShowDeleteModal(key)
                           }}
                           style={{
                             flexDirection: 'row',
@@ -399,6 +395,12 @@ const IndexBusinessCardContainer = ({ navigation }) => {
   const [searchText, setSearchText] = useState('')
   const user = useSelector(user => user.user.profile)
 
+  const [showEditCardModal, setShowEditCard] = useState(false);
+  const [showDeleteCardModal, setShowDeleteModal] = useState(false);
+
+  const [deleteCardID, setDeleteCardID] = useState(null);
+  const [editCardID, setEditCardID] = useState(null);
+
   const handleChangeSelectedCardID = async id => {
     setSelectedCardID(id)
     await AsyncStorage.setItem('defaultBCard', id)
@@ -409,14 +411,15 @@ const IndexBusinessCardContainer = ({ navigation }) => {
     setSearchText('')
   }
 
-  const handleDeleteCard = async id => {
+  const handleDeleteCard = async () => {
     try {
+     if(deleteCardID !== null){
       const ser_cards = await AsyncStorage.getItem('businesscards')
       const des_cards = JSON.parse(ser_cards)
       const businessCards = {
         ...des_cards,
       }
-      delete businessCards[id]
+      delete businessCards[deleteCardID]
       const _ser_cards = JSON.stringify(businessCards)
       await AsyncStorage.setItem('businesscards', _ser_cards)
       showMessage({
@@ -425,6 +428,9 @@ const IndexBusinessCardContainer = ({ navigation }) => {
         duration: 3000,
       })
       retrieveCards()
+      setDeleteCardID(null);
+      setShowEditCard(false);
+     }
     } catch (err) {
       console.log(err)
       showMessage({
@@ -433,6 +439,27 @@ const IndexBusinessCardContainer = ({ navigation }) => {
         duration: 3000,
       })
     }
+  }
+
+  const handleShowDeleteModal = (id) => {
+    setShowDeleteModal(true);
+    setDeleteCardID(id);
+  }
+
+
+  const handleEditCard = () => {
+    if(editCardID !== null){
+      navigation.navigate('EditBusinessCard', {
+        card: businessCards[editCardID],
+      })
+    }
+    setEditCardID(null);
+    setShowEditCard
+  }
+  const handleShowEditCard = (id) => {
+    console.log(id);
+    setEditCardID(id);
+    setShowEditCard(true);
   }
 
   const retrieveCards = async () => {
@@ -753,11 +780,25 @@ const IndexBusinessCardContainer = ({ navigation }) => {
         </View>
       ) : Object.keys(businessCards).length > 0 ? (
         <CardComponent
+         showEditCardModal={showEditCardModal}
+         setShowEditCard={setShowEditCard}
+         showDeleteCardModal={showDeleteCardModal} 
+         setShowDeleteModal={setShowDeleteModal}
+         deleteCardID={deleteCardID} 
+         setDeleteCardID={setDeleteCardID}
+         editCardID={editCardID} 
+         setEditCardID={setEditCardID}
+
+         handleChangeSelectedCardID={handleChangeSelectedCardID}
+         handleShowDeleteModal={handleShowDeleteModal}
+         handleEditCard={handleEditCard}
+         handleShowEditCard={handleShowEditCard}
+         
+
           businessCards={businessCards}
           selectedCardID={selectedCardID}
           Images={Images}
           handleDeleteCard={handleDeleteCard}
-          handleChangeSelectedCardID={handleChangeSelectedCardID}
         />
       ) : (
         <View
@@ -795,6 +836,225 @@ const IndexBusinessCardContainer = ({ navigation }) => {
           </View>
         </View>
       )}
+
+      <Modal
+            transparent
+            visible={showDeleteCardModal}
+            onRequestClose={() => setShowDeleteModal(false)}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                backgroundColor: '#00000099',
+              }}
+            >
+              <View
+                style={{
+                  width: 300,
+                  height: 300,
+                  backgroundColor: '#fff',
+                  borderColor: '#184461',
+                  borderWidth: 1,
+                  borderRadius: 20,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#184461',
+                    height: 50,
+                    marginBottom: 10,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                    borderColor: '#184461',
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontWeight: '700' }}>
+                    Are you sure you want to delete card?
+                  </Text>
+                </View>
+
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={handleDeleteCard}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        Yes
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={()=> setShowDeleteModal(false)}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        No
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity
+                onPress={()=> setShowDeleteModal(false)}>
+                  <View
+                    style={{
+                      width: 299,
+                      height: 50,
+                      borderColor: '#184461',
+                      backgroundColor: 'lightblue',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomLeftRadius: 15,
+                      borderBottomRightRadius: 15,
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              </View>
+            </View>
+      </Modal>
+
+      {/* edit */}
+      <Modal
+            transparent
+            visible={showEditCardModal}
+            onRequestClose={() => setShowDeleteModal(false)}
+          >
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                backgroundColor: '#00000099',
+              }}
+            >
+              <View
+                style={{
+                  width: 300,
+                  height: 300,
+                  backgroundColor: '#fff',
+                  borderColor: '#184461',
+                  borderWidth: 1,
+                  borderRadius: 20,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#184461',
+                    height: 50,
+                    marginBottom: 10,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                    borderColor: '#184461',
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontWeight: '700' }}>
+                    Are you sure you want to edit card?
+                  </Text>
+                </View>
+
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={handleEditCard}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        Yes
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity
+                      onPress={()=> setShowEditCard(false)}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#184461',
+                        padding: 10,
+                        borderRadius: 15,
+                        width: 125,
+                        backgroundColor: '#F0F0F0',
+                      }}
+                    >
+                      <Text style={{ color: '#000000', textAlign: 'center' }}>
+                        No
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity
+                onPress={()=> setShowEditCard(false)}>
+                  <View
+                    style={{
+                      width: 299,
+                      height: 50,
+                      borderColor: '#184461',
+                      backgroundColor: 'lightblue',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomLeftRadius: 15,
+                      borderBottomRightRadius: 15,
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              </View>
+            </View>
+      </Modal>
     </ScrollView>
   )
 }

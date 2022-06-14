@@ -67,14 +67,14 @@ const ApplicationNavigator = () => {
           {isLogged && (
             <Stack.Group>
             
-            <Stack.Screen
-            name="MainNav"
-            component={TabNavigation}
-            options={{
-              animationEnabled: false,
-              
-            }}
-          />
+              <Stack.Screen
+                name="MainNav"
+                component={TabNavigation}
+                options={{
+                  animationEnabled: false,
+                  
+                }}
+              />
               <Stack.Screen
                 name="MainHome"
                 

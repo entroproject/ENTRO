@@ -13,6 +13,24 @@
 
    <!-- Include this only if you are planning to use the microphone for video recording -->
    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+
+     <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="*/*" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+
+         <intent>
+            <action android:name="android.intent.action.OPEN" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+   
     
     <!-- android:requestLegacyExternalStorage="true" using this wasnt compatible with android v10 on camera-->
     <application
@@ -25,6 +43,7 @@
       android:usesCleartextTraffic="true"
       android:requestLegacyExternalStorage="true"
     >
+   
       <activity
         android:name=".SplashActivity"
         android:theme="@style/SplashTheme"
@@ -33,7 +52,9 @@
         <intent-filter>
           <action android:name="android.intent.action.MAIN" />
           <category android:name="android.intent.category.LAUNCHER" />
+          
         </intent-filter>
+        
       </activity>
 
       <activity
@@ -42,6 +63,7 @@
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustResize">
+        
         <intent-filter>
           <action android:name="android.intent.action.MAIN" />
         </intent-filter>

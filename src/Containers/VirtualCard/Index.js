@@ -206,16 +206,19 @@ const IndexVirtualAccessContainer = ({ navigation }) => {
                   shadowRadius: 5,
                 }}
               >
-                <View
-                  style={[
-                    Layout.center,
-                    {
-                      backgroundColor: '#ffffff',
-                      shadowColor: ' rgba(0, 0, 0, 0.25)',
-                      elevation: 10,
-                    },
-                  ]}
-                >
+              <View
+              style={[
+                Layout.center,
+                {
+                  width: 300,
+                  height: 300,
+                  borderRadius: 150,
+                  backgroundColor: '#ffffff',
+                  shadowColor: ' rgba(0, 0, 0, 0.25)',
+                  elevation: 10,
+                },
+              ]}
+            >
                   <Image
                     source={{ uri: `data:image/png;base64,${image.Image}` }}
                     style={{  resizeMode: 'contain' }}

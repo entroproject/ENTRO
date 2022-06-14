@@ -9,6 +9,7 @@ import {
   Linking,
   Pressable,
   TextInput,
+  Modal,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { ButtonGroup } from 'react-native-elements'
@@ -34,6 +35,9 @@ const IndexCommunityContainer = ({ navigation }) => {
   const [allCommunity, setAllCommunity] = useState([])
   const [userCommunityFilter, setUserCommunityFilter] = useState([])
   const [searchCommunity, setSearchCommunity] = useState('')
+  const [showDisplayNotShareService, setshowDisplayNotShareService] =
+    useState(false)
+  const [showDisplayNotShareComm, setshowDisplayNotShareComm] = useState(false)
 
   useEffect(() => {
     if (selectedIndex === 0) {
@@ -130,7 +134,7 @@ const IndexCommunityContainer = ({ navigation }) => {
         `,
       })
     } catch (error) {
-      alert(error.message)
+      setshowDisplayNotShareService(true)
     }
   }
 
@@ -144,12 +148,188 @@ const IndexCommunityContainer = ({ navigation }) => {
         `,
       })
     } catch (error) {
-      alert(error.message)
+      //alert(error.message)
+      setshowDisplayNotShareComm(true)
     }
   }
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
+      <Modal
+        transparent
+        visible={showDisplayNotShareService}
+        onRequestClose={() => setshowDisplayNotShareService(false)}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#00000099',
+          }}
+        >
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: '#fff',
+              borderColor: '#184461',
+              borderWidth: 1,
+              borderRadius: 20,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                height: 50,
+                marginBottom: 10,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                borderColor: '#184461',
+                borderWidth: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: '#fff', fontWeight: '900', fontSize: 18 }}>
+                Alert
+              </Text>
+            </View>
+
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    User did not share
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <TouchableOpacity
+                onPress={() => setshowDisplayNotShareService(false)}
+              >
+                <View
+                  style={{
+                    width: 299,
+                    height: 50,
+                    borderColor: '#184461',
+                    backgroundColor: 'lightblue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomLeftRadius: 15,
+                    borderBottomRightRadius: 15,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        transparent
+        visible={showDisplayNotShareComm}
+        onRequestClose={() => setshowDisplayNotShareComm(false)}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#00000099',
+          }}
+        >
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: '#fff',
+              borderColor: '#184461',
+              borderWidth: 1,
+              borderRadius: 20,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                height: 50,
+                marginBottom: 10,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                borderColor: '#184461',
+                borderWidth: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: '#fff', fontWeight: '900', fontSize: 18 }}>
+                Alert
+              </Text>
+            </View>
+
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    User did not share
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <TouchableOpacity
+                onPress={() => setshowDisplayNotShareComm(false)}
+              >
+                <View
+                  style={{
+                    width: 299,
+                    height: 50,
+                    borderColor: '#184461',
+                    backgroundColor: 'lightblue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomLeftRadius: 15,
+                    borderBottomRightRadius: 15,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       {typeof defaultCard.BuildingName === 'undefined' ? (
         <View
           style={{
@@ -624,7 +804,7 @@ const IndexCommunityContainer = ({ navigation }) => {
                                 name="share"
                                 color="#184461"
                                 size={25}
-                                style={{ backgroundColor: 'red', padding: 5 }}
+                                style={{ padding: 5 }}
                               />
                             </TouchableOpacity>
                             <Pressable
@@ -638,7 +818,7 @@ const IndexCommunityContainer = ({ navigation }) => {
                                 name="phone"
                                 color="#184461"
                                 size={25}
-                                style={{ backgroundColor: 'red', padding: 5 }}
+                                style={{ padding: 5 }}
                               />
                             </Pressable>
                           </View>

@@ -21,7 +21,7 @@ const IndexSettingContainer = ({navigation}) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
   const user = useSelector(user => user.user.profile)
   const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const signOutApp = () => {
     navigateAndSimpleReset("MainNav");

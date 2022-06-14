@@ -10,13 +10,14 @@ import {
   Dimensions,
   ActivityIndicator,
   TextInput,
+  Modal
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import Icon from 'react-native-dynamic-vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
-import Modal from 'react-native-modal'
+
 import { showMessage } from 'react-native-flash-message'
 import Share from 'react-native-share'
 import DropShadow from 'react-native-drop-shadow'
@@ -37,6 +38,7 @@ const CardComponent = ({
   const orientation = useOrientation()
   const navigation = useNavigation()
   const [currentIndex, setCurrentIndex] = useState(false)
+  const [showDisplayNotShare, setshowDisplayNotShare] = useState(false);
 
   const handleOpenModal = id => {
     setModalID(id)
@@ -59,12 +61,100 @@ const CardComponent = ({
         ],
       })
     } catch (error) {
-      alert(error.message)
+      //alert(error.message)
+      setshowDisplayNotShare(true)
     }
   }
 
   return (
     <View style={{ marginTop: 20 }}>
+    <Modal
+          transparent
+          visible={showDisplayNotShare}
+          onRequestClose={() => setshowDisplayNotShare(false)}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1,
+              backgroundColor: '#00000099',
+            }}
+          >
+            <View
+              style={{
+                width: 300,
+                height: 300,
+                backgroundColor: '#fff',
+                borderColor: '#184461',
+                borderWidth: 1,
+                borderRadius: 20,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: '#184461',
+                  height: 50,
+                  marginBottom: 10,
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                  borderColor: '#184461',
+                  borderWidth: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text
+                  style={{ color: '#fff', fontWeight: '900', fontSize: 18 }}
+                >
+                  Alert
+                </Text>
+              </View>
+
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ marginTop: 20 }}>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#184461',
+                      padding: 10,
+                      borderRadius: 15,
+                      backgroundColor: '#F0F0F0',
+                    }}
+                  >
+                    <Text style={{ color: '#000000', textAlign: 'center' }}>
+                      User did not share
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity onPress={() => setshowDisplayNotShare(false)}>
+                  <View
+                    style={{
+                      width: 299,
+                      height: 50,
+                      borderColor: '#184461',
+                      backgroundColor: 'lightblue',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomLeftRadius: 15,
+                      borderBottomRightRadius: 15,
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       {Object.keys(businessCards).map(key => (
         <View
           key={businessCards[key].id}

@@ -327,7 +327,7 @@ const IndexUserProfileContainer = ({ navigation }) => {
         <View style={{ flex: 1, marginHorizontal: 16 }}>
           {
           //typeof VirtualCard === 'undefined' 
-         VirtualCard?.length === 0  
+         VirtualCard?.length === 0  || typeof VirtualCard === 'undefined'
            ? (
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text

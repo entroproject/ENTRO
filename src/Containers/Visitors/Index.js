@@ -9,17 +9,17 @@ import {
   TextInput,
   Modal,
   Alert,
-} from 'react-native';
-import { useTheme } from '@/Hooks';
-import { ButtonGroup } from 'react-native-elements';
-import { deleteVisitor, getVisitors, getVisitorsHistory } from '@/api-utils';
-import { useIsFocused } from '@react-navigation/native';
-import Icon from 'react-native-dynamic-vector-icons';
-import DropShadow from 'react-native-drop-shadow';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { useSelector } from 'react-redux';
-import { showMessage } from 'react-native-flash-message';
-import Share from 'react-native-share';
+} from 'react-native'
+import { useTheme } from '@/Hooks'
+import { ButtonGroup } from 'react-native-elements'
+import { deleteVisitor, getVisitors, getVisitorsHistory } from '@/api-utils'
+import { useIsFocused } from '@react-navigation/native'
+import Icon from 'react-native-dynamic-vector-icons'
+import DropShadow from 'react-native-drop-shadow'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { useSelector } from 'react-redux'
+import { showMessage } from 'react-native-flash-message'
+import Share from 'react-native-share'
 
 const IndexVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -42,12 +42,21 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [show, setShow] = useState(false)
   const accessId = useSelector(state => state.user.accessId)
   const defaultCardID = useSelector(state => state.virtualCard.defaultCard)
-  const [custom_refresher, set_custom_refresher] = useState(false);
+  const [custom_refresher, set_custom_refresher] = useState(false)
 
-  const [showDisplayCamOption, setShowDisplayCamOption] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [deleteVisitoroObj, setDeleteVisitoroObj] = useState(null);
-  const [editVisitoroObj, setEditVisitoroObj] = useState(null);
+  const [showDisplayCamOption, setShowDisplayCamOption] = useState(false)
+  const [showDisplayNotShare, setshowDisplayNotShare] = useState(false)
+  const [showEdit, setShowEdit] = useState(false)
+  const [deleteVisitoroObj, setDeleteVisitoroObj] = useState(null)
+  const [editVisitoroObj, setEditVisitoroObj] = useState(null)
+
+  const resetCalendar = () => {
+    if (displayRegisterVisitor) {
+      setCustomized_visitors(allRegisteredVisitor)
+    } else {
+      setCustomized_visitors_history(allVisitorsHistory)
+    }
+  }
 
   const onChange = (event, selectedDate) => {
     setShow(false)
@@ -259,25 +268,25 @@ const IndexVisitorContainer = ({ navigation }) => {
   }
 
   const handleDeleteVisitor = async () => {
-    setShowDisplayCamOption(false);
+    setShowDisplayCamOption(false)
     try {
-        if(deleteVisitoroObj !== null){
-          const { VisitorInvitationId } = deleteVisitoroObj;
-          const del_req = await deleteVisitor(
-            accessId,
-            defaultCardID.BuildingName,
-            defaultCardID.VirtualKey,
-            VisitorInvitationId,
-          )
-          const response = await del_req.json()
-          if (response.StatusCode === '200') {
-            showMessage({
+      if (deleteVisitoroObj !== null) {
+        const { VisitorInvitationId } = deleteVisitoroObj
+        const del_req = await deleteVisitor(
+          accessId,
+          defaultCardID.BuildingName,
+          defaultCardID.VirtualKey,
+          VisitorInvitationId,
+        )
+        const response = await del_req.json()
+        if (response.StatusCode === '200') {
+          showMessage({
             message: 'Visitor successfully deleted !',
             duration: 2000,
             backgroundColor: 'green',
           })
-          set_custom_refresher(!custom_refresher);
-          setDeleteVisitoroObj(null);
+          set_custom_refresher(!custom_refresher)
+          setDeleteVisitoroObj(null)
         }
       }
     } catch (err) {
@@ -289,133 +298,110 @@ const IndexVisitorContainer = ({ navigation }) => {
         duration: 2000,
       })
     }
-  };
-
-  const handleShowModal = (v) => {
-    setShowDisplayCamOption(true);
-    setDeleteVisitoroObj(v);
   }
 
+  const handleShowModal = v => {
+    setShowDisplayCamOption(true)
+    setDeleteVisitoroObj(v)
+  }
 
   const handleEditVisitor = () => {
-    if(editVisitoroObj !== null){
-      setShowEdit(false);
-        navigation.navigate('EditVistorInfo', {
+    if (editVisitoroObj !== null) {
+      setShowEdit(false)
+      navigation.navigate('EditVistorInfo', {
         visitor: editVisitoroObj,
       })
     }
     setEditVisitoroObj(null)
   }
 
-  const handleShowEdit = (v) => {
-    console.log(v);
-    setEditVisitoroObj(v);
-    setShowEdit(true);
+  const handleShowEdit = v => {
+    console.log(v)
+    setEditVisitoroObj(v)
+    setShowEdit(true)
   }
 
   const onShare = async v => {
-
-   
     try {
       await Share.open({
         title: 'Visitor Invite',
         message: `
         InviteLink: ${v.ShareUrl}
         `,
-        
       })
     } catch (error) {
-      alert(error.message)
+      //alert(error.message)
+      setshowDisplayNotShare(true)
     }
   }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
       <View>
-      <Modal
-            transparent
-            visible={showDisplayCamOption}
-            onRequestClose={() => setShowDisplayCamOption(false)}
+        <Modal
+          transparent
+          visible={showDisplayNotShare}
+          onRequestClose={() => setshowDisplayNotShare(false)}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1,
+              backgroundColor: '#00000099',
+            }}
           >
             <View
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
-                backgroundColor: '#00000099',
+                width: 300,
+                height: 300,
+                backgroundColor: '#fff',
+                borderColor: '#184461',
+                borderWidth: 1,
+                borderRadius: 20,
               }}
             >
               <View
                 style={{
-                  width: 300,
-                  height: 300,
-                  backgroundColor: '#fff',
+                  backgroundColor: '#184461',
+                  height: 50,
+                  marginBottom: 10,
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
                   borderColor: '#184461',
                   borderWidth: 1,
-                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: '#184461',
-                    height: 50,
-                    marginBottom: 10,
-                    borderTopLeftRadius: 15,
-                    borderTopRightRadius: 15,
-                    borderColor: '#184461',
-                    borderWidth: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
+                <Text
+                  style={{ color: '#fff', fontWeight: '900', fontSize: 18 }}
                 >
-                  <Text style={{ color: '#fff', fontWeight: '700' }}>
-                    Are you sure you want to delete visitor?
-                  </Text>
+                  Alert
+                </Text>
+              </View>
+
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ marginTop: 20 }}>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#184461',
+                      padding: 10,
+                      borderRadius: 15,
+                      backgroundColor: '#F0F0F0',
+                    }}
+                  >
+                    <Text style={{ color: '#000000', textAlign: 'center' }}>
+                      User did not share
+                    </Text>
+                  </TouchableOpacity>
                 </View>
+              </View>
 
-                <View
-                  style={{ justifyContent: 'center', alignItems: 'center' }}
-                >
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={handleDeleteVisitor}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#184461',
-                        padding: 10,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: '#F0F0F0',
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        Yes
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={()=> setShowDisplayCamOption(false)}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#184461',
-                        padding: 10,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: '#F0F0F0',
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        No
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                <TouchableOpacity
-                onPress={()=> setShowDisplayCamOption(false)}>
+              <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity onPress={() => setshowDisplayNotShare(false)}>
                   <View
                     style={{
                       width: 299,
@@ -436,96 +422,93 @@ const IndexVisitorContainer = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
               </View>
-
-              </View>
             </View>
-      </Modal>
+          </View>
+        </Modal>
 
-      {/* edit */}
-      <Modal
-            transparent
-            visible={showEdit}
-            onRequestClose={() => setShowDisplayCamOption(false)}
+        <Modal
+          transparent
+          visible={showDisplayCamOption}
+          onRequestClose={() => setShowDisplayCamOption(false)}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1,
+              backgroundColor: '#00000099',
+            }}
           >
             <View
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
-                backgroundColor: '#00000099',
+                width: 300,
+                height: 300,
+                backgroundColor: '#fff',
+                borderColor: '#184461',
+                borderWidth: 1,
+                borderRadius: 20,
               }}
             >
               <View
                 style={{
-                  width: 300,
-                  height: 300,
-                  backgroundColor: '#fff',
+                  backgroundColor: '#184461',
+                  height: 50,
+                  marginBottom: 10,
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
                   borderColor: '#184461',
                   borderWidth: 1,
-                  borderRadius: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: '#184461',
-                    height: 50,
-                    marginBottom: 10,
-                    borderTopLeftRadius: 15,
-                    borderTopRightRadius: 15,
-                    borderColor: '#184461',
-                    borderWidth: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: '#fff', fontWeight: '700' }}>
-                    Are you sure you want to edit visitor?
-                  </Text>
+                <Text style={{ color: '#fff', fontWeight: '700' }}>
+                  Do you wish to delete registered visitor?
+                </Text>
+              </View>
+
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ marginTop: 20 }}>
+                  <TouchableOpacity
+                    onPress={handleDeleteVisitor}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#184461',
+                      padding: 10,
+                      borderRadius: 15,
+                      width: 125,
+                      backgroundColor: '#F0F0F0',
+                    }}
+                  >
+                    <Text style={{ color: '#000000', textAlign: 'center' }}>
+                      Yes
+                    </Text>
+                  </TouchableOpacity>
                 </View>
 
-                <View
-                  style={{ justifyContent: 'center', alignItems: 'center' }}
-                >
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={handleEditVisitor}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#184461',
-                        padding: 10,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: '#F0F0F0',
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        Yes
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity
-                      onPress={()=> setShowEdit(false)}
-                      style={{
-                        borderWidth: 1,
-                        borderColor: '#184461',
-                        padding: 10,
-                        borderRadius: 15,
-                        width: 125,
-                        backgroundColor: '#F0F0F0',
-                      }}
-                    >
-                      <Text style={{ color: '#000000', textAlign: 'center' }}>
-                        No
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                <View style={{ marginTop: 20 }}>
+                  <TouchableOpacity
+                    onPress={() => setShowDisplayCamOption(false)}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#184461',
+                      padding: 10,
+                      borderRadius: 15,
+                      width: 125,
+                      backgroundColor: '#F0F0F0',
+                    }}
+                  >
+                    <Text style={{ color: '#000000', textAlign: 'center' }}>
+                      No
+                    </Text>
+                  </TouchableOpacity>
                 </View>
+              </View>
 
-                <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <View style={{ flex: 1, justifyContent: 'flex-end' }}>
                 <TouchableOpacity
-                onPress={()=> setShowEdit(false)}>
+                  onPress={() => setShowDisplayCamOption(false)}
+                >
                   <View
                     style={{
                       width: 299,
@@ -546,10 +529,115 @@ const IndexVisitorContainer = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
               </View>
+            </View>
+          </View>
+        </Modal>
 
+        {/* edit */}
+        <Modal
+          transparent
+          visible={showEdit}
+          onRequestClose={() => setShowDisplayCamOption(false)}
+        >
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1,
+              backgroundColor: '#00000099',
+            }}
+          >
+            <View
+              style={{
+                width: 300,
+                height: 300,
+                backgroundColor: '#fff',
+                borderColor: '#184461',
+                borderWidth: 1,
+                borderRadius: 20,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: '#184461',
+                  height: 50,
+                  marginBottom: 10,
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                  borderColor: '#184461',
+                  borderWidth: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: '#fff', fontWeight: '700' }}>
+                  ADo you wish to edit visitor?
+                </Text>
+              </View>
+
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ marginTop: 20 }}>
+                  <TouchableOpacity
+                    onPress={handleEditVisitor}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#184461',
+                      padding: 10,
+                      borderRadius: 15,
+                      width: 125,
+                      backgroundColor: '#F0F0F0',
+                    }}
+                  >
+                    <Text style={{ color: '#000000', textAlign: 'center' }}>
+                      Yes
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ marginTop: 20 }}>
+                  <TouchableOpacity
+                    onPress={() => setShowEdit(false)}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: '#184461',
+                      padding: 10,
+                      borderRadius: 15,
+                      width: 125,
+                      backgroundColor: '#F0F0F0',
+                    }}
+                  >
+                    <Text style={{ color: '#000000', textAlign: 'center' }}>
+                      No
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <TouchableOpacity onPress={() => setShowEdit(false)}>
+                  <View
+                    style={{
+                      width: 299,
+                      height: 50,
+                      borderColor: '#184461',
+                      backgroundColor: 'lightblue',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomLeftRadius: 15,
+                      borderBottomRightRadius: 15,
+                    }}
+                  >
+                    <Text
+                      style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
-      </Modal>
+          </View>
+        </Modal>
         <View
           style={{
             height: 144,
@@ -557,6 +645,14 @@ const IndexVisitorContainer = ({ navigation }) => {
           }}
         >
           {/**search calendar area starts here */}
+
+          {/** 
+          <View style={{flexDirection: 'row',
+          alignContent: 'center',
+          justifyContent:'center',
+          marginVertical: 10,
+          flex: 1,}}> 
+          <View style={{flex:3,  width: '100%'}}>   
           <TouchableOpacity activeOpacity={1.2} onPress={() => setShow(true)}>
             <DropShadow
               style={{
@@ -622,6 +718,149 @@ const IndexVisitorContainer = ({ navigation }) => {
               </View>
             </DropShadow>
           </TouchableOpacity>
+
+          </View>  
+                </View> **/}
+
+          <View
+            style={{
+              flexDirection: 'row',
+              alignContent: 'center',
+              marginTop: 30,
+              flex: 1,
+            }}
+          >
+            <View style={{ flex: 3, width: '100%' }}>
+              <TouchableOpacity
+                activeOpacity={1.2}
+                onPress={() => setShow(true)}
+              >
+                <DropShadow
+                  style={{
+                    shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                    shadowOffset: {
+                      width: 1,
+                      height: 2,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 2,
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: '#fff',
+                      height: 40,
+                      borderRadius: 7,
+                      borderWidth: 1,
+                      borderColor: '#184461',
+                      shadowColor: '#000',
+                      shadowRadius: 10,
+                      shadowOpacity: 0.6,
+                      elevation: 8,
+                      shadowOffset: {
+                        width: 0,
+                        height: 4,
+                      },
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      marginStart: 20,
+                    }}
+                  >
+                    <DropShadow
+                      style={{
+                        shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                        shadowOffset: {
+                          width: 0,
+                          height: 3,
+                        },
+                        shadowOpacity: 1,
+                        shadowRadius: 2,
+                      }}
+                    >
+                      <Icon
+                        type="Feathers"
+                        name="search"
+                        color="#184461"
+                        size={27}
+                      />
+                    </DropShadow>
+
+                    <Text
+                      style={{
+                        color: '#184461',
+                        fontWeight: '700',
+                        fontSize: 12,
+                      }}
+                    >
+                      Calendar
+                    </Text>
+                  </View>
+                </DropShadow>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                activeOpacity={1.2}
+                onPress={() => {
+                  resetCalendar()
+                }}
+              >
+                <DropShadow
+                  style={{
+                    shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                    shadowOffset: {
+                      width: 1,
+                      height: 2,
+                    },
+                    shadowOpacity: 1,
+                    shadowRadius: 2,
+                  }}
+                >
+                  <View
+                    style={{
+                      borderRadius: 7,
+                      borderWidth: 1,
+                      borderColor: '#184461',
+                      backgroundColor: '#fff',
+                      shadowColor: '#000',
+                      shadowRadius: 10,
+                      shadowOpacity: 0.6,
+                      elevation: 8,
+                      shadowOffset: {
+                        width: 0,
+                        height: 4,
+                      },
+                      height: 40,
+                      width: '70%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginStart: 10,
+                      marginEnd: 20,
+                    }}
+                  >
+                    <DropShadow
+                      style={{
+                        shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                        shadowOffset: {
+                          width: 0,
+                          height: 3,
+                        },
+                        shadowOpacity: 1,
+                        shadowRadius: 2,
+                      }}
+                    >
+                      <Text style={{ textAlign: 'center', color: '#184461' }}>
+                        Reset date
+                      </Text>
+                    </DropShadow>
+                  </View>
+                </DropShadow>
+              </TouchableOpacity>
+            </View>
+          </View>
+
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -639,7 +878,7 @@ const IndexVisitorContainer = ({ navigation }) => {
               style={{
                 flexDirection: 'row',
                 alignContent: 'center',
-                marginVertical: 10,
+                marginVertical: 3,
                 flex: 1,
               }}
             >
@@ -800,7 +1039,7 @@ const IndexVisitorContainer = ({ navigation }) => {
             >
               <View
                 style={{
-                  marginTop: 10,
+                  marginBottom: 17,
                   backgroundColor: '#fff',
                   height: 40,
                   marginHorizontal: 20,
@@ -863,7 +1102,7 @@ const IndexVisitorContainer = ({ navigation }) => {
             >
               <View
                 style={{
-                  marginTop: 10,
+                  marginBottom: 17,
                   backgroundColor: '#fff',
                   height: 40,
                   marginHorizontal: 20,
@@ -1162,16 +1401,16 @@ const IndexVisitorContainer = ({ navigation }) => {
                           </View>
                         </View>
 
-                        <View style={{ }}>
-                      
+                        <View style={{}}>
                           <TouchableOpacity
                             activeOpacity={1.0}
-                            style={{padding: 8}}
+                            style={{ padding: 8 }}
                             onPress={() => {
+                              console.log(v)
                               setCurrentIndex(key === currentIndex ? null : key)
                             }}
                           >
-                            <View style={{   }}>
+                            <View style={{}}>
                               <Icon
                                 name={'ellipsis-v'}
                                 type={'FontAwesome'}
@@ -1207,7 +1446,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                           <View
                             style={{
                               width: '100%',
-                              padding:10,
+                              padding: 10,
                               backgroundColor: '#fff',
                               elevation: 10,
                               marginBottom: 10,
@@ -1367,7 +1606,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                                         marginVertical: 1,
                                       }}
                                     >
-                                      CA2014
+                                      {defaultCardID.VirtualKey}
                                     </Text>
                                     <Text
                                       style={{
@@ -1426,11 +1665,9 @@ const IndexVisitorContainer = ({ navigation }) => {
                               >
                                 {/**share business card */}
                                 <TouchableOpacity
-
-                                onPress={()=>{
-                              
-                                  onShare(v)
-                                }}
+                                  onPress={() => {
+                                    onShare(v)
+                                  }}
                                   style={{
                                     flexDirection: 'row',
                                     alignItems: 'center',

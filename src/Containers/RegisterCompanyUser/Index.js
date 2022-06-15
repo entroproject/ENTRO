@@ -8,7 +8,8 @@ import {
   TextInput,
   ScrollView,
   Modal,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
@@ -67,13 +68,19 @@ const IndexRegisterCompanyUserContainer = ({navigation, route}) => {
   }
 
   const goPhotoCamera = () => {
+    if (photo !== null) {
+      setPhoto(null)
+    }
+
     ImagePicker.openCamera({
-      mediaType: 'photo',
-      width: 150,
-      height: 150,
-      compressImageMaxHeight: 150,
-      compressImageMaxWidth: 150,
+      path: Platform.OS === 'android',
+      width: 1000,
+      height: 750,
       cropping: true,
+      freeStyleCropEnabled: true,
+      compressImageMaxWidth: 500,
+      compressImageMaxHeight: 500,
+      compressImageQuality: 0.5,
       useFrontCamera: true,
       includeBase64: true,
     }).then(image => {
@@ -294,7 +301,7 @@ const IndexRegisterCompanyUserContainer = ({navigation, route}) => {
       >
         <ScrollView>
         <Image
-        source={Images.corporateLogo}
+        source={Images.newLogoImage}
         resizeMode={'contain'}
         style={{  marginTop: 20,  marginLeft: 20}}
       />

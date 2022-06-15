@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
+  Platform,
 } from 'react-native'
 import PrimaryButttonComponent from '@/Components/Common/PrimaryButtonComponent'
 import ImagePicker from 'react-native-image-crop-picker'
@@ -170,8 +171,9 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
   const [bwebsite, setBwebsite] = useState('')
   const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showUploadScreen, setShowUploadScreen] = useState(false)
-  const [showDisplayCamOption, setShowDisplayCamOption] = useState(false)
+  const [showUploadScreen, setShowUploadScreen] = useState(false);
+  const [showDisplayCamOption, setShowDisplayCamOption] = useState(false);
+  const [location, setLocation] = useState("front");
 
   const [placeholder, setPlaceholder] = useState({
     fname: 'FullName',
@@ -185,44 +187,62 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
       width: 300,
       height: 400,
       cropping: true,
+      freeStyleCropEnabled: true,
       includeBase64: true,
     }).then(response => {
       setLogo(response.data)
       setShowDisplayCamOption(false)
-    })
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
-  const goPhotoCamera = () => {
-    setLogo(null)
+  const goGallery = () => {
+    setShowDisplayCamOption(false);
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      freeStyleCropEnabled: true,
+      includeBase64: true,
+    }).then(image => {
+      if (location === 'front') {
+        setCardFront(image.data)
+      } else {
+        setCardBack(image.data)
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  }
 
+  const goCamera = () => {
+    setShowDisplayCamOption(false);
     ImagePicker.openCamera({
+      path: Platform.OS === 'android',
       mediaType: 'photo',
       width: 150,
       height: 150,
       compressImageMaxHeight: 150,
       compressImageMaxWidth: 150,
       cropping: true,
+      freeStyleCropEnabled: true,
       useFrontCamera: true,
       includeBase64: true,
     }).then(image => {
-      setLogo(image.data)
-      setShowDisplayCamOption(false)
-    })
+      if (location === 'front') {
+        setCardFront(image.data)
+      } else {
+        setCardBack(image.data)
+      }
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   const handleAttachCard = (location = '') => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-      includeBase64: true,
-    }).then(response => {
-      if (location === 'front') {
-        setCardFront(response.data)
-      } else {
-        setCardBack(response.data)
-      }
-    })
+    setLocation(location);
+    setShowDisplayCamOption(true);
   }
 
   const handleSaveCard = async () => {
@@ -355,7 +375,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <View style={{ marginTop: 20 }}>
                 <TouchableOpacity
-                  onPress={handleAttachLogo}
+                  onPress={goGallery}
                   style={{
                     borderWidth: 1,
                     borderColor: '#184461',
@@ -373,7 +393,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
 
               <View style={{ marginTop: 20 }}>
                 <TouchableOpacity
-                  onPress={goPhotoCamera}
+                  onPress={goCamera}
                   style={{
                     borderWidth: 1,
                     borderColor: '#184461',
@@ -391,8 +411,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
             </View>
 
             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-              <TouchableOpacity
-              onPress={()=> setShowDisplayCamOption(false)}>
+              <TouchableOpacity onPress={() => setShowDisplayCamOption(false)}>
                 <View
                   style={{
                     width: 299,
@@ -426,16 +445,6 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
             padding: 10,
           }}
         >
-          <TouchableOpacity
-            onPress={() =>
-              showUploadScreen
-                ? setShowUploadScreen(false)
-                : navigation.goBack()
-            }
-          >
-            <Icon name="arrow-left" type="Feather" size={35} color="#fff" />
-          </TouchableOpacity>
-
           <Text
             style={{
               color: Colors.white,
@@ -446,13 +455,15 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
           >
             Business Card
           </Text>
-          <Icon
-            name="x"
-            type="Feather"
-            size={35}
-            color="#fff"
-            onPress={() => {}}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              showUploadScreen
+                ? setShowUploadScreen(false)
+                : navigation.goBack()
+            }
+          >
+            <Icon name="x" type="Feather" size={35} color="#fff" />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -660,7 +671,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
                 }}
               >
                 <TouchableOpacity
-                  onPress={() => setShowDisplayCamOption(true)}
+                  onPress={handleAttachLogo}
                   style={{
                     borderWidth: 1,
                     borderColor: '#184461',

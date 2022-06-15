@@ -9,6 +9,7 @@ import {
   Linking,
   Pressable,
   TextInput,
+  Modal,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { ButtonGroup } from 'react-native-elements'
@@ -16,6 +17,7 @@ import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import { useDispatch, useSelector } from 'react-redux'
 import { getContacts } from '@/api-utils'
+import Share from 'react-native-share'
 
 const IndexCommunityContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
@@ -33,6 +35,9 @@ const IndexCommunityContainer = ({ navigation }) => {
   const [allCommunity, setAllCommunity] = useState([])
   const [userCommunityFilter, setUserCommunityFilter] = useState([])
   const [searchCommunity, setSearchCommunity] = useState('')
+  const [showDisplayNotShareService, setshowDisplayNotShareService] =
+    useState(false)
+  const [showDisplayNotShareComm, setshowDisplayNotShareComm] = useState(false)
 
   useEffect(() => {
     if (selectedIndex === 0) {
@@ -119,8 +124,212 @@ const IndexCommunityContainer = ({ navigation }) => {
     }
   }, [searchCommunity])
 
+  const onShareService = async serv => {
+    try {
+      await Share.open({
+        title: 'Emergency Service',
+        message: `
+        Emergency: ${serv.Name}
+        Contact No: ${serv.PhoneNo}
+        `,
+      })
+    } catch (error) {
+      setshowDisplayNotShareService(true)
+    }
+  }
+
+  const onShareComm = async com => {
+    try {
+      await Share.open({
+        title: 'Community Service',
+        message: `
+        Community: ${com.Name}
+        Contact No: ${com.PhoneNo}
+        `,
+      })
+    } catch (error) {
+      //alert(error.message)
+      setshowDisplayNotShareComm(true)
+    }
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
+      <Modal
+        transparent
+        visible={showDisplayNotShareService}
+        onRequestClose={() => setshowDisplayNotShareService(false)}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#00000099',
+          }}
+        >
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: '#fff',
+              borderColor: '#184461',
+              borderWidth: 1,
+              borderRadius: 20,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                height: 50,
+                marginBottom: 10,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                borderColor: '#184461',
+                borderWidth: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: '#fff', fontWeight: '900', fontSize: 18 }}>
+                Alert
+              </Text>
+            </View>
+
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    User did not share
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <TouchableOpacity
+                onPress={() => setshowDisplayNotShareService(false)}
+              >
+                <View
+                  style={{
+                    width: 299,
+                    height: 50,
+                    borderColor: '#184461',
+                    backgroundColor: 'lightblue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomLeftRadius: 15,
+                    borderBottomRightRadius: 15,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        transparent
+        visible={showDisplayNotShareComm}
+        onRequestClose={() => setshowDisplayNotShareComm(false)}
+      >
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#00000099',
+          }}
+        >
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: '#fff',
+              borderColor: '#184461',
+              borderWidth: 1,
+              borderRadius: 20,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: '#184461',
+                height: 50,
+                marginBottom: 10,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                borderColor: '#184461',
+                borderWidth: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: '#fff', fontWeight: '900', fontSize: 18 }}>
+                Alert
+              </Text>
+            </View>
+
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#184461',
+                    padding: 10,
+                    borderRadius: 15,
+                    backgroundColor: '#F0F0F0',
+                  }}
+                >
+                  <Text style={{ color: '#000000', textAlign: 'center' }}>
+                    User did not share
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <TouchableOpacity
+                onPress={() => setshowDisplayNotShareComm(false)}
+              >
+                <View
+                  style={{
+                    width: 299,
+                    height: 50,
+                    borderColor: '#184461',
+                    backgroundColor: 'lightblue',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomLeftRadius: 15,
+                    borderBottomRightRadius: 15,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, color: '#000', fontWeight: '900' }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       {typeof defaultCard.BuildingName === 'undefined' ? (
         <View
           style={{
@@ -487,103 +696,107 @@ const IndexCommunityContainer = ({ navigation }) => {
                 </Text>
               ) : (
                 userEmergencyFilter.map((serv, key) => (
-                  <Pressable
+                  <View
                     key={key}
-                    onPress={() => {
-                      Linking.openURL(`tel:${serv.PhoneNo}`)
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     <View
                       style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        width: '93%',
+                        backgroundColor: 'white',
+                        borderRadius: 15,
+                        elevation: 10,
+                        marginBottom: 10,
+                        marginTop: 5,
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
                       }}
                     >
-                      <View
-                        style={{
-                          width: '93%',
-                          backgroundColor: 'white',
-                          borderRadius: 15,
-                          elevation: 10,
-                          marginBottom: 10,
-                          marginTop: 5,
-                          shadowColor: '#000',
-                          shadowRadius: 10,
-                          shadowOpacity: 0.6,
-                          elevation: 8,
-                          shadowOffset: {
-                            width: 0,
-                            height: 4,
-                          },
-                        }}
-                      >
-                        <View style={{ flexDirection: 'row' }}>
-                          <View style={{ justifyContent: 'center' }}>
-                            <Icon
-                              type="MaterialIcons"
-                              name="account-circle"
-                              color="#184461"
-                              size={40}
-                              style={{
-                                marginHorizontal: 17,
-                                marginVertical: 14,
-                              }}
-                            />
-                          </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <View style={{ justifyContent: 'center' }}>
+                          <Icon
+                            type="MaterialIcons"
+                            name="account-circle"
+                            color="#184461"
+                            size={40}
+                            style={{
+                              marginHorizontal: 17,
+                              marginVertical: 14,
+                            }}
+                          />
+                        </View>
 
+                        <View
+                          style={{
+                            justifyContent: 'center',
+                            marginStart: 8,
+                            width: 125,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: '#184461',
+                              fontWeight: '700',
+                              marginBottom: 5,
+                              flexWrap: 'wrap',
+                              fontSize: 16,
+                            }}
+                            numberOfLines={1}
+                          >
+                            {serv.Name}
+                          </Text>
                           <View
                             style={{
-                              justifyContent: 'center',
-                              marginStart: 8,
-                              width: 125,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginBottom: 5,
                             }}
                           >
                             <Text
                               style={{
                                 color: '#184461',
-                                fontWeight: '700',
-                                marginBottom: 5,
-                                flexWrap: 'wrap',
-                                fontSize: 16,
+                                fontWeight: '500',
+                                fontSize: 12,
                               }}
-                              numberOfLines={1}
                             >
-                              {serv.Name}
+                              {serv.PhoneNo}
                             </Text>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginBottom: 5,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  color: '#184461',
-                                  fontWeight: '500',
-                                  fontSize: 12,
-                                }}
-                              >
-                                {serv.PhoneNo}
-                              </Text>
-                            </View>
                           </View>
+                        </View>
 
+                        <View
+                          style={{
+                            marginStart: 2,
+                            marginEnd: 20,
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}
+                        >
                           <View
                             style={{
-                              marginStart: 2,
-                              marginEnd: 20,
-                              flex: 1,
-                              justifyContent: 'center',
-                              alignItems: 'center',
                               flexDirection: 'row',
+                              justifyContent: 'space-evenly',
+                              flex: 1,
                             }}
                           >
-                            <View
+                            <TouchableOpacity
+                              onPress={() => {
+                                onShareService(serv)
+                              }}
                               style={{
                                 flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                flex: 1,
+                                alignItems: 'center',
                               }}
                             >
                               <Icon
@@ -591,19 +804,28 @@ const IndexCommunityContainer = ({ navigation }) => {
                                 name="share"
                                 color="#184461"
                                 size={25}
+                                style={{ padding: 5 }}
                               />
+                            </TouchableOpacity>
+                            <Pressable
+                              key={key}
+                              onPress={() => {
+                                Linking.openURL(`tel:${serv.PhoneNo}`)
+                              }}
+                            >
                               <Icon
                                 type="FontAwesome"
                                 name="phone"
                                 color="#184461"
                                 size={25}
+                                style={{ padding: 5 }}
                               />
-                            </View>
+                            </Pressable>
                           </View>
                         </View>
                       </View>
                     </View>
-                  </Pressable>
+                  </View>
                 ))
               )}
             </ScrollView>
@@ -622,103 +844,107 @@ const IndexCommunityContainer = ({ navigation }) => {
                 </Text>
               ) : (
                 userCommunityFilter.map((com, key) => (
-                  <Pressable
+                  <View
                     key={key}
-                    onPress={() => {
-                      Linking.openURL(`tel:${com.PhoneNo}`)
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     <View
                       style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        width: '93%',
+                        backgroundColor: 'white',
+                        borderRadius: 15,
+                        elevation: 10,
+                        marginBottom: 10,
+                        marginTop: 5,
+                        shadowColor: '#000',
+                        shadowRadius: 10,
+                        shadowOpacity: 0.6,
+                        elevation: 8,
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
                       }}
                     >
-                      <View
-                        style={{
-                          width: '93%',
-                          backgroundColor: 'white',
-                          borderRadius: 15,
-                          elevation: 10,
-                          marginBottom: 10,
-                          marginTop: 5,
-                          shadowColor: '#000',
-                          shadowRadius: 10,
-                          shadowOpacity: 0.6,
-                          elevation: 8,
-                          shadowOffset: {
-                            width: 0,
-                            height: 4,
-                          },
-                        }}
-                      >
-                        <View style={{ flexDirection: 'row' }}>
-                          <View style={{ justifyContent: 'center' }}>
-                            <Icon
-                              type="MaterialIcons"
-                              name="account-circle"
-                              color="#184461"
-                              size={40}
-                              style={{
-                                marginHorizontal: 17,
-                                marginVertical: 14,
-                              }}
-                            />
-                          </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <View style={{ justifyContent: 'center' }}>
+                          <Icon
+                            type="MaterialIcons"
+                            name="account-circle"
+                            color="#184461"
+                            size={40}
+                            style={{
+                              marginHorizontal: 17,
+                              marginVertical: 14,
+                            }}
+                          />
+                        </View>
 
+                        <View
+                          style={{
+                            justifyContent: 'center',
+                            marginStart: 8,
+                            width: 125,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: '#184461',
+                              fontWeight: '700',
+                              marginBottom: 5,
+                              flexWrap: 'wrap',
+                              fontSize: 16,
+                            }}
+                            numberOfLines={1}
+                          >
+                            {com.Name}
+                          </Text>
                           <View
                             style={{
-                              justifyContent: 'center',
-                              marginStart: 8,
-                              width: 125,
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              marginBottom: 5,
                             }}
                           >
                             <Text
                               style={{
                                 color: '#184461',
-                                fontWeight: '700',
-                                marginBottom: 5,
-                                flexWrap: 'wrap',
-                                fontSize: 16,
+                                fontWeight: '500',
+                                fontSize: 12,
                               }}
-                              numberOfLines={1}
                             >
-                              {com.Name}
+                              {com.PhoneNo}
                             </Text>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginBottom: 5,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  color: '#184461',
-                                  fontWeight: '500',
-                                  fontSize: 12,
-                                }}
-                              >
-                                {com.PhoneNo}
-                              </Text>
-                            </View>
                           </View>
+                        </View>
 
+                        <View
+                          style={{
+                            marginStart: 2,
+                            marginEnd: 20,
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}
+                        >
                           <View
                             style={{
-                              marginStart: 2,
-                              marginEnd: 20,
-                              flex: 1,
-                              justifyContent: 'center',
-                              alignItems: 'center',
                               flexDirection: 'row',
+                              justifyContent: 'space-evenly',
+                              flex: 1,
                             }}
                           >
-                            <View
+                            <TouchableOpacity
+                              onPress={() => {
+                                onShareComm(com)
+                              }}
                               style={{
                                 flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                flex: 1,
+                                alignItems: 'center',
                               }}
                             >
                               <Icon
@@ -726,19 +952,28 @@ const IndexCommunityContainer = ({ navigation }) => {
                                 name="share"
                                 color="#184461"
                                 size={25}
+                                style={{ padding: 5 }}
                               />
+                            </TouchableOpacity>
+                            <Pressable
+                              key={key}
+                              onPress={() => {
+                                Linking.openURL(`tel:${com.PhoneNo}`)
+                              }}
+                            >
                               <Icon
                                 type="FontAwesome"
                                 name="phone"
                                 color="#184461"
                                 size={25}
+                                style={{ padding: 5 }}
                               />
-                            </View>
+                            </Pressable>
                           </View>
                         </View>
                       </View>
                     </View>
-                  </Pressable>
+                  </View>
                 ))
               )}
             </ScrollView>

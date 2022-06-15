@@ -518,7 +518,9 @@ const IndexBusinessCardContainer = ({ navigation }) => {
     if (editCardID !== null) {
       navigation.navigate('EditBusinessCard', {
         card: businessCards[editCardID],
+        
       })
+      
     }
     setEditCardID(null)
     setShowEditCard
@@ -846,6 +848,7 @@ const IndexBusinessCardContainer = ({ navigation }) => {
           <ActivityIndicator size={50} color="#184461" />
         </View>
       ) : Object.keys(businessCards).length > 0 ? (
+        console.log("business card==>", businessCards),
         <CardComponent
           showEditCardModal={showEditCardModal}
           setShowEditCard={setShowEditCard}

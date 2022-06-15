@@ -11,8 +11,6 @@
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
   <!-- Include this only if you are planning to use the microphone for video recording -->
    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-<<<<<<< HEAD
-=======
 
 
      <queries>
@@ -33,7 +31,6 @@
    
     
     <!-- android:requestLegacyExternalStorage="true" using this wasnt compatible with android v10 on camera-->
->>>>>>> f0da8f5a50cea1d1cd145024935e037c76edbb03
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"

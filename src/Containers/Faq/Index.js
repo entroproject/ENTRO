@@ -82,7 +82,7 @@ function IndexUsersFaqContainer({navigation}) {
             {
               id: 5,
               subtext:
-                'An access card is required to access the building or community registered Ezxess system.',
+                'An access card is required to access the building or community registered Ezxcess system.',
             },
           ],
         },

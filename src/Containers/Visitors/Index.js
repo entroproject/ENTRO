@@ -571,7 +571,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                 }}
               >
                 <Text style={{ color: '#fff', fontWeight: '700' }}>
-                  ADo you wish to edit visitor?
+                  Do you wish to edit visitor?
                 </Text>
               </View>
 
@@ -851,9 +851,12 @@ const IndexVisitorContainer = ({ navigation }) => {
                         shadowRadius: 2,
                       }}
                     >
-                      <Text style={{ textAlign: 'center', color: '#184461' }}>
-                        Reset date
-                      </Text>
+                    <Icon
+                    type="Feathers"
+                    name="refresh"
+                    color="#184461"
+                    size={27}
+                  />
                     </DropShadow>
                   </View>
                 </DropShadow>

@@ -36,14 +36,8 @@ const CardComponent = ({
   const [showModal, setShowmodal] = useState(false)
   const [modalID, setModalID] = useState('')
   const orientation = useOrientation()
-  const navigation = useNavigation()
   const [currentIndex, setCurrentIndex] = useState(false)
   const [showDisplayNotShare, setshowDisplayNotShare] = useState(false);
-
-  const handleOpenModal = id => {
-    setModalID(id)
-    setShowmodal(true)
-  }
 
   const onShare = async card => {
     try {
@@ -406,6 +400,7 @@ const CardComponent = ({
 
                       {/**edit business card */}
                       <TouchableOpacity
+                        // onPress={() => handleShowEditCard(key)}
                         onPress={() => handleShowEditCard(key)}
                         style={{
                           flexDirection: 'row',
@@ -445,7 +440,7 @@ const CardComponent = ({
                 </View>
               </View>
             </DropShadow>
-          ) : null}
+          ) : <View/>}
         </View>
       ))}
     </View>
@@ -518,15 +513,12 @@ const IndexBusinessCardContainer = ({ navigation }) => {
     if (editCardID !== null) {
       navigation.navigate('EditBusinessCard', {
         card: businessCards[editCardID],
-        
       })
-      
     }
-    setEditCardID(null)
-    setShowEditCard
+    setEditCardID(null);
+    setShowEditCard(false);
   }
   const handleShowEditCard = id => {
-    console.log(id)
     setEditCardID(id)
     setShowEditCard(true)
   }
@@ -580,8 +572,8 @@ const IndexBusinessCardContainer = ({ navigation }) => {
   }, [searchText])
 
   useEffect(() => {
-    setLoading(true)
     retrieveCards()
+    setLoading(true)
   }, [isFocused])
 
   return (
@@ -848,7 +840,6 @@ const IndexBusinessCardContainer = ({ navigation }) => {
           <ActivityIndicator size={50} color="#184461" />
         </View>
       ) : Object.keys(businessCards).length > 0 ? (
-        console.log("business card==>", businessCards),
         <CardComponent
           showEditCardModal={showEditCardModal}
           setShowEditCard={setShowEditCard}

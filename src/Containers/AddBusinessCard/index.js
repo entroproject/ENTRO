@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -161,7 +161,7 @@ const CardUpload = ({
   )
 }
 
-const IndexAddBusinessCardContainer = ({ navigation }) => {
+const IndexAddBusinessCardContainer = ({ navigation, route }) => {
   const { Colors } = useTheme()
   const [logo, setLogo] = useState(null)
   const [cardFront, setCardFront] = useState(null)
@@ -352,6 +352,7 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
       })
     }
   }
+
 
   return (
     <ScrollView style={{ backgroundColor: '#F1F1F1', flex: 1 }}>
@@ -959,42 +960,5 @@ const IndexAddBusinessCardContainer = ({ navigation }) => {
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#184461',
-  },
-  headerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 15,
-  },
-  headerTitle: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    color: '#fff',
-  },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
-  },
-  cardWrap: {
-    width: '100%',
-    overflow: 'hidden',
-    marginTop: -60,
-    width: 300,
-    borderRadius: 10,
-    alignSelf: 'center',
-  },
-  cardContent: {
-    padding: 15,
-    backgroundColor: '#D0F2EC',
-    width: 300,
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
-})
 
 export default IndexAddBusinessCardContainer

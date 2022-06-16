@@ -221,6 +221,7 @@ const TabBottomNavigation = () => {
       {TabArr.map((item, index) => {
         return (
           <Tab.Screen
+            key={index}
             name={item.route}
             component={item.component}
             options={{

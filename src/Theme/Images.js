@@ -37,5 +37,6 @@ export default function () {
     corporateLogo: require('@/Assets/Images/EzxcessLogo.png'),
     defaultUserBgImage: require('@/Assets/Images/Userbgimage.png'),
     newLogoImage: require('@/Assets/Images/EzxcessNewLogo.png'),
+    splashScreenImg: require('@/Assets/Images/HomeBgSplash.png')
   }
 }

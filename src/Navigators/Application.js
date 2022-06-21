@@ -40,10 +40,21 @@ const ApplicationNavigator = () => {
   const isLogged = useSelector(user => user.user.isLoggedIn)
   return (
     <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
-      <NavigationContainer theme={{colors: { background: '#000' }}} ref={navigationRef} >
+      <NavigationContainer
+        theme={{ colors: { background: '#000' } }}
+        ref={navigationRef}
+      >
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Startup" component={StartupContainer} />
+        <Stack.Navigator
+          initialRouteName="Startup"
+          headerMode={'none'}
+          
+        >
+          <Stack.Screen
+            name="Startup"
+            component={StartupContainer}
+            options={{ headerShown: false, animationEnabled: false }}
+          />
           <Stack.Screen
             name="Login"
             component={IndexLoginContainer}
@@ -67,22 +78,19 @@ const ApplicationNavigator = () => {
           />
           {isLogged && (
             <Stack.Group>
-            
-            <Stack.Screen
-            name="MainNav"
-            component={TabBottomNavigation}
-            options={{
-              animationEnabled: false,
-              
-            }}
-          />
+              <Stack.Screen
+                name="MainNav"
+                component={TabBottomNavigation}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
               <Stack.Screen
                 name="MainHome"
-                
                 component={IndexHomeContainer}
                 options={{
                   animationEnabled: false,
-                  cardStyle: { opacity: 1 }
+                  cardStyle: { opacity: 1 },
                 }}
               />
               <Stack.Screen
@@ -191,12 +199,12 @@ const ApplicationNavigator = () => {
                 }}
               />
               <Stack.Screen
-              name="ExampleTest"
-              component={IndexExampleContainer}
-              options={{
-                animationEnabled: false,
-              }}
-            />
+                name="ExampleTest"
+                component={IndexExampleContainer}
+                options={{
+                  animationEnabled: false,
+                }}
+              />
             </Stack.Group>
           )}
         </Stack.Navigator>

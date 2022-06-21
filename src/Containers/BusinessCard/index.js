@@ -493,6 +493,7 @@ const IndexBusinessCardContainer = ({ navigation }) => {
         retrieveCards()
         setDeleteCardID(null)
         setShowEditCard(false)
+        setShowDeleteModal(false)
       }
     } catch (err) {
       console.log(err)

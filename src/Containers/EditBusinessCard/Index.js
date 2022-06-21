@@ -173,8 +173,9 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
   const goGalleryLogo = () => {
     setShowDisplayCamOptionLogo(false);
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 1200, 
+      height: 1500, 
+      compressImageQuality:1,
       cropping: true,
       freeStyleCropEnabled: true,
       includeBase64: true,
@@ -192,10 +193,9 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
     ImagePicker.openCamera({
       path: Platform.OS === 'android',
       mediaType: 'photo',
-      width: 150,
-      height: 150,
-      compressImageMaxHeight: 150,
-      compressImageMaxWidth: 150,
+      width: 1200, 
+      height: 1500, 
+      compressImageQuality:1,
       cropping: true,
       freeStyleCropEnabled: true,
       useFrontCamera: true,
@@ -213,8 +213,9 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
   const goGallery = () => {
     setShowDisplayCamOption(false);
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 1200, 
+      height: 1500, 
+      compressImageQuality:1,
       cropping: true,
       freeStyleCropEnabled: true,
       includeBase64: true,
@@ -234,10 +235,9 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
     ImagePicker.openCamera({
       path: Platform.OS === 'android',
       mediaType: 'photo',
-      width: 150,
-      height: 150,
-      compressImageMaxHeight: 150,
-      compressImageMaxWidth: 150,
+      width: 1200, 
+      height: 1500, 
+      compressImageQuality:1,
       cropping: true,
       freeStyleCropEnabled: true,
       useFrontCamera: true,
@@ -541,7 +541,7 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
-      <View style={{ height: 51, backgroundColor: '#184461' }}>
+      <View style={{ height: 55, backgroundColor: '#184461' }}>
         <View
           style={{
             flexDirection: 'row',
@@ -550,21 +550,14 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
             padding: 10,
           }}
         >
-          <TouchableOpacity
-            onPress={() =>
-              showUploadScreen
-                ? setShowUploadScreen(false)
-                : navigation.goBack()
-            }
-          >
-            <Icon name="arrow-left" type="Feather" size={30} color="#fff" />
-          </TouchableOpacity>
+          
 
           <Text
             style={{
               color: Colors.white,
               fontWeight: '600',
               marginLeft: 15,
+              fontSize: 16,
             }}
           >
             Edit Business Card
@@ -572,9 +565,13 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
           <Icon
             name="x"
             type="Feather"
-            size={30}
+            size={35}
             color="#fff"
-            onPress={() => {}}
+            onPress={() =>
+              showUploadScreen
+                ? setShowUploadScreen(false)
+                : navigation.goBack()
+            }
           />
         </View>
       </View>
@@ -880,17 +877,7 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
                   </Text>
                 </TouchableOpacity>
               </DropShadow>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: '900',
-                  color: '#184461',
-                  marginTop: 5,
-                  marginStart: 3,
-                }}
-              >
-                Images.jpg
-              </Text>
+              
               <View
                 style={{
                   marginTop: 20,
@@ -910,17 +897,17 @@ const IndexEditBusinessCardContainer = ({ navigation, route }) => {
                       }}
                       style={{
                         resizeMode: 'cover',
-                        width: 50,
-                        height: 80,
-                        marginEnd: 2,
+                        width: 80,
+                        height: 50,
+                        marginEnd: 8,
                       }}
                     />
                     <Image
                       source={{ uri: `data:image/jpeg;base64,${cardBack}` }}
                       style={{
                         resizeMode: 'cover',
-                        width: 50,
-                        height: 80,
+                        width: 80,
+                        height: 50,
                       }}
                     />
                   </View>

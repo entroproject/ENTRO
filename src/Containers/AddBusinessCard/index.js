@@ -186,8 +186,9 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
   const goGalleryLogo = () => {
     setShowDisplayCamOptionLogo(false);
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 1200, 
+      height: 1500, 
+      compressImageQuality:1,
       cropping: true,
       freeStyleCropEnabled: true,
       includeBase64: true,
@@ -205,10 +206,9 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
     ImagePicker.openCamera({
       path: Platform.OS === 'android',
       mediaType: 'photo',
-      width: 150,
-      height: 150,
-      compressImageMaxHeight: 150,
-      compressImageMaxWidth: 150,
+      width: 1200, 
+      height: 1500, 
+      compressImageQuality:1,
       cropping: true,
       freeStyleCropEnabled: true,
       useFrontCamera: true,
@@ -226,8 +226,9 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
   const goGallery = () => {
     setShowDisplayCamOption(false);
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 1200, 
+      height: 1500, 
+      compressImageQuality:1,
       cropping: true,
       freeStyleCropEnabled: true,
       includeBase64: true,
@@ -247,10 +248,9 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
     ImagePicker.openCamera({
       path: Platform.OS === 'android',
       mediaType: 'photo',
-      width: 150,
-      height: 150,
-      compressImageMaxHeight: 150,
-      compressImageMaxWidth: 150,
+      width: 1200, 
+      height: 1500, 
+      compressImageQuality:1,
       cropping: true,
       freeStyleCropEnabled: true,
       useFrontCamera: true,

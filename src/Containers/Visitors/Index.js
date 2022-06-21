@@ -1976,7 +1976,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                                 marginVertical: 1,
                               }}
                             >
-                              Suria KLCC
+                            {defaultCardID.BuildingName}
                             </Text>
                             <Text
                               style={{
@@ -1996,7 +1996,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                                 marginVertical: 1,
                               }}
                             >
-                              CA2014
+                            {defaultCardID.VirtualKey}
                             </Text>
                             <Text
                               style={{
@@ -2023,20 +2023,46 @@ const IndexVisitorContainer = ({ navigation }) => {
                       </View>
 
                       <View style={{ flex: 1 }}>
+
+                      {v.VisitorImageLogo === '' ? (
+                        <Image
+                          source={Images.defaultUserBgImage}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
+                            alignSelf: 'flex-end',
+                          }}
+                          resizeMode={'cover'}
+                        />
+                      ) : (
                         <Image
                           source={{
                             uri: `data:image/png;base64,${v.VisitorImageLogo}`,
                           }}
                           style={{
-                            width: 58,
-                            height: 58,
-                            borderRadius: 29,
-                            borderWidth: 2,
-                            borderColor: '#184461',
+                            width: 50,
+                            height: 50,
+                            borderRadius: 25,
                             alignSelf: 'flex-end',
                           }}
-                          resizeMode={'cover'}
+                          resizeMode={'contain'}
                         />
+                      )}
+                        
+
+                        <Image
+                        source={{
+                          uri: `data:image/png;base64,${defaultCardID.BuildingLogo}`,
+                        }}
+                        style={{
+                          width: 80,
+                          height: 48,
+                          alignSelf: 'flex-end',
+                          marginTop: 40,
+                        }}
+                        resizeMode={'contain'}
+                      />
                       </View>
                     </View>
                   </View>

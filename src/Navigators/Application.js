@@ -47,7 +47,10 @@ const ApplicationNavigator = () => {
         <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
         <Stack.Navigator
           initialRouteName="Startup"
-          headerMode={'none'}
+          screenOptions={{
+            headerShown: false,
+          }}
+          //headerMode={'none'}
           
         >
           <Stack.Screen

@@ -62,7 +62,7 @@ const CardComponent = ({
 
   return (
     <View style={{ marginTop: 20 }}>
-    <Modal
+       <Modal
           transparent
           visible={showDisplayNotShare}
           onRequestClose={() => setshowDisplayNotShare(false)}
@@ -594,18 +594,34 @@ const IndexBusinessCardContainer = ({ navigation }) => {
               marginEnd: 8,
             }}
           >
-            <Text
-              style={{
-                fontWeight: '700',
-                fontSize: 23,
-                color: '#fff',
-                flexWrap: 'wrap',
-                textTransform: 'capitalize',
-              }}
-              numberOfLines={1}
-            >
-              Hi, {user.FirstName} {user.LastName}
-            </Text>
+
+          <View style={{flexDirection:'row'}}>
+          <Text
+          style={{
+            fontWeight: '700',
+            fontSize: 23,
+            color: '#fff',
+            flexWrap: 'wrap',
+            textTransform: 'capitalize',
+            flex:2
+          }}
+          numberOfLines={1}
+        >
+          Hi, {user.FirstName} {user.LastName}
+        </Text>
+          
+        <Icon
+        name="x"
+        type="Feather"
+        size={35}
+        color="#fff"
+        style={{marginEnd:5}}
+        onPress={() => {
+          navigation.goBack()
+        }}
+      />
+          </View>
+           
             <Text
               style={{
                 fontWeight: '400',

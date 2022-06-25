@@ -722,12 +722,27 @@ const IndexVisitorContainer = ({ navigation }) => {
           </View>  
                 </View> **/}
 
+                <View style={{alignSelf:'flex-end', marginTop: 5}}>
+                <Icon
+                name="x"
+                type="Feather"
+                size={35}
+                color="#fff"
+                style={{marginEnd:10, }}
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              />
+                
+                </View>
+
+             
+
           <View
             style={{
               flexDirection: 'row',
               alignContent: 'center',
-              marginTop: 30,
-              flex: 1,
+              
             }}
           >
             <View style={{ flex: 3, width: '100%' }}>
@@ -765,6 +780,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                       alignItems: 'center',
                       flexDirection: 'row',
                       marginStart: 20,
+                     
                     }}
                   >
                     <DropShadow
@@ -920,6 +936,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                         alignItems: 'center',
                         flexDirection: 'row',
                         marginStart: 20,
+                        marginTop: 8,
                       }}
                     >
                       <DropShadow
@@ -999,6 +1016,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                         alignItems: 'center',
                         marginStart: 10,
                         marginEnd: 20,
+                        marginTop: 8,
                       }}
                     >
                       <DropShadow
@@ -1045,7 +1063,8 @@ const IndexVisitorContainer = ({ navigation }) => {
                   marginBottom: 17,
                   backgroundColor: '#fff',
                   height: 40,
-                  marginHorizontal: 20,
+                  marginHorizontal: 17,
+                  marginTop: 11,
                   borderRadius: 7,
                   borderWidth: 1,
                   borderColor: '#184461',
@@ -1108,7 +1127,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                   marginBottom: 17,
                   backgroundColor: '#fff',
                   height: 40,
-                  marginHorizontal: 20,
+                  marginHorizontal: 17,
                   borderRadius: 7,
                   borderWidth: 1,
                   borderColor: '#184461',
@@ -1124,6 +1143,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   flexDirection: 'row',
+                  marginTop: 11
                 }}
               >
                 <TextInput

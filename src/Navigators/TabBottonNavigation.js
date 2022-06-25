@@ -208,11 +208,11 @@ const TabBottomNavigation = () => {
         tabBarStyle: {
           display: 'flex',
           backgroundColor: '#ffffff',
-          height: 70,
+          height: 60,
           position: 'absolute',
-          bottom: 12,
-          right: 14,
-          left: 14,
+          bottom: 10,
+          right: 10,
+          left: 10,
           borderRadius: 16,
           borderColor:'#fff'
         },

@@ -19,7 +19,7 @@ const StartupContainer = () => {
   }
 
   useEffect(() => {
-      init()
+    init()
   })
 
   return (
@@ -32,14 +32,11 @@ const StartupContainer = () => {
           alignItems: 'center',
         }}
       >
-       
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
-            <Image source={Images.corporateLogo} />
-          </View>
-         
-  
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <Image source={Images.corporateLogo} />
+        </View>
       </View>
     </LinearGradient>
   )

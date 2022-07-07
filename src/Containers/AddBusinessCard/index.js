@@ -184,7 +184,7 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
   })
 
   const goGalleryLogo = () => {
-    setShowDisplayCamOptionLogo(false);
+    //setShowDisplayCamOptionLogo(false);
     ImagePicker.openPicker({
       width: 1200, 
       height: 1500, 
@@ -202,7 +202,7 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
 
 
   const goCameraLogo = () => {
-    setShowDisplayCamOptionLogo(false);
+    //setShowDisplayCamOptionLogo(false);
     ImagePicker.openCamera({
       path: Platform.OS === 'android',
       mediaType: 'photo',
@@ -224,7 +224,7 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
  
 
   const goGallery = () => {
-    setShowDisplayCamOption(false);
+    //setShowDisplayCamOption(false);
     ImagePicker.openPicker({
       width: 1200, 
       height: 1500, 
@@ -235,8 +235,11 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
     }).then(image => {
       if (location === 'front') {
         setCardFront(image.data)
+        setShowDisplayCamOption(false);
       } else {
         setCardBack(image.data)
+        setShowDisplayCamOption(false);
+
       }
     }).catch(err => {
       console.log(err);
@@ -244,7 +247,7 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
   }
 
   const goCamera = () => {
-    setShowDisplayCamOption(false);
+    //setShowDisplayCamOption(false);
     ImagePicker.openCamera({
       path: Platform.OS === 'android',
       mediaType: 'photo',
@@ -258,8 +261,10 @@ const IndexAddBusinessCardContainer = ({ navigation, route }) => {
     }).then(image => {
       if (location === 'front') {
         setCardFront(image.data)
+        setShowDisplayCamOption(false);
       } else {
         setCardBack(image.data)
+        setShowDisplayCamOption(false);
       }
     }).catch(err => {
       console.log(err);

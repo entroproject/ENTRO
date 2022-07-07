@@ -11,12 +11,14 @@ import {
   Alert,
 } from 'react-native'
 import { useTheme } from '@/Hooks'
+import moment from 'moment'
 import { ButtonGroup } from 'react-native-elements'
 import { deleteVisitor, getVisitors, getVisitorsHistory } from '@/api-utils'
 import { useIsFocused } from '@react-navigation/native'
 import Icon from 'react-native-dynamic-vector-icons'
 import DropShadow from 'react-native-drop-shadow'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import DatePicker from 'react-native-date-picker'
 import { useSelector } from 'react-redux'
 import { showMessage } from 'react-native-flash-message'
 import Share from 'react-native-share'
@@ -33,6 +35,7 @@ const IndexVisitorContainer = ({ navigation }) => {
   const isFocused = useIsFocused()
   const [selectedSortType, setSelectedSortType] = useState(true)
   const [openSearch, setOpenSearch] = useState(false)
+  const [openSearchCalendar, setOpenSearchCalendar] = useState(false)
   const [searchRegisterVisitor, setSearchRegisterVisitor] = useState('')
   const [searchHistoryVisitor, setSearchHistoryVisitor] = useState('')
   const [displayRegisterVisitor, setDisplayRegisterVisitor] = useState(true)
@@ -49,17 +52,44 @@ const IndexVisitorContainer = ({ navigation }) => {
   const [showEdit, setShowEdit] = useState(false)
   const [deleteVisitoroObj, setDeleteVisitoroObj] = useState(null)
   const [editVisitoroObj, setEditVisitoroObj] = useState(null)
+  const [selectDateRegisterVisitor, setSelectDateRegisterVisitor] = useState('Select date register visitor')
+  const [selectDateHistoryVisitor, setSelectDateHistoryVisitor] = useState('Select date history visitor')
+  const [openStartSelectDateRegisterVisit, setOpenStartSelectDateRegisterVisit] = useState(false)
+  const [openStartSelectDateHistoryVisit, setOpenStartSelectDateHistoryVisit] = useState(false)
+  const [startSelectDateRegisterVisit_Picked, setSelectDateRegisterVisit__Picked] = useState(new Date(),)
+  const [startSelectDateHistoryVisit_Picked, setSelectDateHistoryVisit__Picked] = useState(new Date(),)
 
   const resetCalendar = () => {
     if (displayRegisterVisitor) {
+      setSelectDateRegisterVisitor('Select date register visitor')
       setCustomized_visitors(allRegisteredVisitor)
     } else {
+      setSelectDateHistoryVisitor('Select date history visitor')
       setCustomized_visitors_history(allVisitorsHistory)
     }
   }
 
-  const onChange = (event, selectedDate) => {
-    setShow(false)
+  const onchange = (selectedDate, type) => {
+  
+    if (type === 'visitRegisterVisitDate') {
+      const currentDate = selectedDate || startVisitDate
+      setSelectDateRegisterVisit__Picked(currentDate)
+      const formattedDate = `${moment(currentDate).format(
+        'll',
+      )} `
+      setSelectDateRegisterVisitor(formattedDate)
+      
+    }else if(type === 'visitHistoryVisitDate'){
+      const currentDate = selectedDate || startVisitDate
+      setSelectDateHistoryVisit__Picked(currentDate)
+      const formattedDate = `${moment(currentDate).format(
+        'll',
+      )} `
+      setSelectDateHistoryVisitor(formattedDate)
+    }
+
+  
+   
     let data
     if (displayRegisterVisitor) {
       data = allRegisteredVisitor
@@ -82,7 +112,10 @@ const IndexVisitorContainer = ({ navigation }) => {
     } else {
       setCustomized_visitors_history(_filtered_visitors)
     }
+    
   }
+
+  
 
   const resetRegVisitor = () => {
     setCustomized_visitors(allRegisteredVisitor)
@@ -638,6 +671,8 @@ const IndexVisitorContainer = ({ navigation }) => {
             </View>
           </View>
         </Modal>
+
+        
         <View
           style={{
             height: 144,
@@ -745,78 +780,236 @@ const IndexVisitorContainer = ({ navigation }) => {
               
             }}
           >
-            <View style={{ flex: 3, width: '100%' }}>
-              <TouchableOpacity
-                activeOpacity={1.2}
-                onPress={() => setShow(true)}
+
+            {!openSearchCalendar ? (
+ <View style={{ flex: 3, width: '100%' }}>
+ <TouchableOpacity
+   activeOpacity={1.2}
+   onPress={() => setOpenSearchCalendar(true)}
+ >
+   <DropShadow
+     style={{
+       shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+       shadowOffset: {
+         width: 1,
+         height: 2,
+       },
+       shadowOpacity: 1,
+       shadowRadius: 2,
+     }}
+   >
+     <View
+       style={{
+         backgroundColor: '#fff',
+         height: 40,
+         borderRadius: 7,
+         borderWidth: 1,
+         borderColor: '#184461',
+         shadowColor: '#000',
+         shadowRadius: 10,
+         shadowOpacity: 0.6,
+         elevation: 8,
+         shadowOffset: {
+           width: 0,
+           height: 4,
+         },
+         justifyContent: 'center',
+         alignItems: 'center',
+         flexDirection: 'row',
+         marginStart: 20,
+        
+       }}
+     >
+       <DropShadow
+         style={{
+           shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+           shadowOffset: {
+             width: 0,
+             height: 3,
+           },
+           shadowOpacity: 1,
+           shadowRadius: 2,
+         }}
+       >
+         <Icon
+           type="Feathers"
+           name="search"
+           color="#184461"
+           size={27}
+         />
+       </DropShadow>
+
+       <Text
+         style={{
+           color: '#184461',
+           fontWeight: '700',
+           fontSize: 12,
+         }}
+       >
+         Calendar
+       </Text>
+     </View>
+   </DropShadow>
+ </TouchableOpacity>
+</View>
+
+            ): selectedIndex === 0 ?(
+              <DropShadow
+              style={{
+                shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                shadowOffset: {
+                  width: 1,
+                  height: 2,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 2,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: '#fff',
+                  height: 40,
+                  borderRadius: 7,
+                  borderWidth: 1,
+                  borderColor: '#184461',
+                  shadowColor: '#000',
+                  shadowRadius: 10,
+                  shadowOpacity: 0.6,
+                  elevation: 8,
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                 
+                  flexDirection: 'row',
+                  marginStart: 20,
+                 
+                 
+                }}
               >
-                <DropShadow
-                  style={{
-                    shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                    shadowOffset: {
-                      width: 1,
-                      height: 2,
-                    },
-                    shadowOpacity: 1,
-                    shadowRadius: 2,
+             <View style={{width:'74%', justifyContent:'center'}}>
+             <Text
+                onPress={() => {
+                  setOpenStartSelectDateRegisterVisit(true)
+                }}
+                style={[
+                  {
+                    flexWrap: 'wrap',
+                    flexShrink: 1,
+                    fontSize: 12,
+                    padding: 5,
+                    color: '#184461',
+                    fontWeight: '700',
+                    fontSize: 12,
+                    
+               
+                  },
+                ]}
+              >
+              {selectDateRegisterVisitor}
+              </Text>
+
+             </View>
+              <View style={{ flex:1,  alignItems:'flex-end', alignContent:'center', justifyContent:'center'}}>
+
+              <TouchableOpacity
+                  onPress={() => {
+                    setOpenSearchCalendar(false)
                   }}
+                  style={{}}
                 >
-                  <View
-                    style={{
-                      backgroundColor: '#fff',
-                      height: 40,
-                      borderRadius: 7,
-                      borderWidth: 1,
-                      borderColor: '#184461',
-                      shadowColor: '#000',
-                      shadowRadius: 10,
-                      shadowOpacity: 0.6,
-                      elevation: 8,
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      marginStart: 20,
-                     
-                    }}
-                  >
-                    <DropShadow
-                      style={{
-                        shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                        shadowOffset: {
-                          width: 0,
-                          height: 3,
-                        },
-                        shadowOpacity: 1,
-                        shadowRadius: 2,
-                      }}
-                    >
-                      <Icon
-                        type="Feathers"
-                        name="search"
-                        color="#184461"
-                        size={27}
-                      />
-                    </DropShadow>
+                  <Icon
+                    type="Feather"
+                    name="x-circle"
+                    size={25}
+                    color="#184461"
+                  />
+                </TouchableOpacity>
 
-                    <Text
-                      style={{
-                        color: '#184461',
-                        fontWeight: '700',
-                        fontSize: 12,
-                      }}
-                    >
-                      Calendar
-                    </Text>
-                  </View>
-                </DropShadow>
-              </TouchableOpacity>
-            </View>
+              </View>
+              </View>
+            </DropShadow>
+          ):(
 
-            <View style={{ flex: 1 }}>
+            <DropShadow
+              style={{
+                shadowColor: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                shadowOffset: {
+                  width: 1,
+                  height: 2,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 2,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: '#fff',
+                  height: 40,
+                  borderRadius: 7,
+                  borderWidth: 1,
+                  borderColor: '#184461',
+                  shadowColor: '#000',
+                  shadowRadius: 10,
+                  shadowOpacity: 0.6,
+                  elevation: 8,
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                 
+                  flexDirection: 'row',
+                  marginStart: 20,
+                 
+                 
+                }}
+              >
+             <View style={{width:'74%', justifyContent:'center'}}>
+             <Text
+                onPress={() => {
+                  setOpenStartSelectDateHistoryVisit(true)
+                }}
+                style={[
+                  {
+                    flexWrap: 'wrap',
+                    flexShrink: 1,
+                    fontSize: 12,
+                    padding: 5,
+                    color: '#184461',
+                    fontWeight: '700',
+                    fontSize: 12,
+                    
+               
+                  },
+                ]}
+              >
+              {selectDateHistoryVisitor}
+              </Text>
+
+             </View>
+              <View style={{ flex:1,  alignItems:'flex-end', alignContent:'center', justifyContent:'center'}}>
+
+              <TouchableOpacity
+                  onPress={() => {
+                    setOpenSearchCalendar(false)
+                  }}
+                  style={{}}
+                >
+                  <Icon
+                    type="Feather"
+                    name="x-circle"
+                    size={25}
+                    color="#184461"
+                  />
+                </TouchableOpacity>
+
+              </View>
+              </View>
+            </DropShadow>
+          )}
+           
+
+            <View style={{  flex: 1 }}>
               <TouchableOpacity
                 activeOpacity={1.2}
                 onPress={() => {
@@ -839,7 +1032,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                       borderRadius: 7,
                       borderWidth: 1,
                       borderColor: '#184461',
-                      backgroundColor: '#fff',
+                      backgroundColor: '#ffffff',
                       shadowColor: '#000',
                       shadowRadius: 10,
                       shadowOpacity: 0.6,
@@ -853,7 +1046,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       marginStart: 10,
-                      marginEnd: 20,
+                      marginEnd: 10,
                     }}
                   >
                     <DropShadow
@@ -880,7 +1073,7 @@ const IndexVisitorContainer = ({ navigation }) => {
             </View>
           </View>
 
-          {show && (
+          {/* {show && (
             <DateTimePicker
               testID="dateTimePicker"
               value={date}
@@ -888,8 +1081,51 @@ const IndexVisitorContainer = ({ navigation }) => {
               is24Hour={true}
               onChange={onChange}
             />
-          )}
+          )} */}
+
+          <DatePicker
+            modal
+            open={openStartSelectDateRegisterVisit}
+            date={startSelectDateRegisterVisit_Picked}
+            mode={'date'}
+            androidVariant={'iosClone'}
+            title={'Select Date Register Visitor'}
+            confirmText={'Confirm Date'}
+            cancelText={'Cancel'}
+            onConfirm={date => {
+              
+              setSelectDateRegisterVisit__Picked(date)
+              onchange(date, 'visitRegisterVisitDate')
+              setOpenStartSelectDateRegisterVisit(false)
+            }}
+            onCancel={() => {
+              setOpenStartSelectDateRegisterVisit(false)
+            }}
+          />
+
+           <DatePicker
+            modal
+            open={openStartSelectDateHistoryVisit}
+            date={startSelectDateHistoryVisit_Picked}
+            mode={'date'}
+            androidVariant={'iosClone'}
+            title={'Select Date Register Visitor'}
+            confirmText={'Confirm Date'}
+            cancelText={'Cancel'}
+            onConfirm={date => {
+              
+              setSelectDateHistoryVisit__Picked(date)
+              onchange(date, 'visitHistoryVisitDate')
+              setOpenStartSelectDateHistoryVisit(false)
+            }}
+            onCancel={() => {
+              setOpenStartSelectDateHistoryVisit(false)
+            }}
+          />
           {/**search calendar area ends here */}
+
+
+
 
           {/**search bar area starts here */}
           {!openSearch ? (
@@ -1063,7 +1299,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                   marginBottom: 17,
                   backgroundColor: '#fff',
                   height: 40,
-                  marginHorizontal: 17,
+                  marginHorizontal:20,
                   marginTop: 11,
                   borderRadius: 7,
                   borderWidth: 1,
@@ -1080,6 +1316,8 @@ const IndexVisitorContainer = ({ navigation }) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   flexDirection: 'row',
+                  width: '91%'
+                  
                 }}
               >
                 <TextInput
@@ -1127,7 +1365,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                   marginBottom: 17,
                   backgroundColor: '#fff',
                   height: 40,
-                  marginHorizontal: 17,
+                  marginHorizontal:20,
                   borderRadius: 7,
                   borderWidth: 1,
                   borderColor: '#184461',
@@ -1143,7 +1381,8 @@ const IndexVisitorContainer = ({ navigation }) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   flexDirection: 'row',
-                  marginTop: 11
+                  marginTop: 11,
+                  width: '91%'
                 }}
               >
                 <TextInput
@@ -1809,7 +2048,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                         </Text>
 
                         <View style={{ flexDirection: 'row' }}>
-                          <View style={{ width: 80 }}>
+                          <View style={{ width: 90 }}>
                             <Text
                               style={{
                                 fontSize: 11,
@@ -1866,6 +2105,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                                 fontWeight: '400',
                                 color: '#184461',
                                 marginVertical: 1,
+                               
                               }}
                             >
                               Vehicle No
@@ -1882,7 +2122,7 @@ const IndexVisitorContainer = ({ navigation }) => {
                             </Text>
                           </View>
 
-                          <View style={{ marginHorizontal: 10 }}>
+                          <View style={{ marginStart: 10, marginEnd: 5}}>
                             <Text
                               style={{
                                 fontSize: 11,

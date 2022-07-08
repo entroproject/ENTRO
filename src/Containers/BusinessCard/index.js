@@ -23,6 +23,7 @@ import Share from 'react-native-share'
 import DropShadow from 'react-native-drop-shadow'
 import { useDispatch, useSelector } from 'react-redux'
 import { useOrientation } from '../useOrientation'
+import LoadingLottie from '@/Components/Common/LoadingLottie'
 
 const height = Dimensions.get('screen').height
 
@@ -578,7 +579,7 @@ const IndexBusinessCardContainer = ({ navigation }) => {
   }, [isFocused])
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#f1f1f1' }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
       {/* header start */}
       <View>
         <View
@@ -848,14 +849,7 @@ const IndexBusinessCardContainer = ({ navigation }) => {
       {/* Main Content START*/}
 
       {loading ? (
-        <View
-          style={{
-            minHeight: height * 0.6,
-            justifyContent: 'center',
-          }}
-        >
-          <ActivityIndicator size={50} color="#184461" />
-        </View>
+        <LoadingLottie/>
       ) : Object.keys(businessCards).length > 0 ? (
         <CardComponent
           showEditCardModal={showEditCardModal}

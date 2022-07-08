@@ -18,6 +18,7 @@ import DropShadow from 'react-native-drop-shadow'
 import { useDispatch, useSelector } from 'react-redux'
 import { getContacts } from '@/api-utils'
 import Share from 'react-native-share'
+import LoadingLottie from '@/Components/Common/LoadingLottie'
 
 const IndexCommunityContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors } = useTheme()
@@ -36,8 +37,9 @@ const IndexCommunityContainer = ({ navigation }) => {
   const [userCommunityFilter, setUserCommunityFilter] = useState([])
   const [searchCommunity, setSearchCommunity] = useState('')
   const [showDisplayNotShareService, setshowDisplayNotShareService] =
-    useState(false)
-  const [showDisplayNotShareComm, setshowDisplayNotShareComm] = useState(false)
+    useState(false);
+  const [showDisplayNotShareComm, setshowDisplayNotShareComm] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (selectedIndex === 0) {
@@ -58,7 +60,8 @@ const IndexCommunityContainer = ({ navigation }) => {
       setAllEmergency(data.Emergency)
       setUserEmergencyFilter(data.Emergency)
       setAllCommunity(data.Community)
-      setUserCommunityFilter(data.Community)
+      setUserCommunityFilter(data.Community);
+      setLoading(false);
     }
   }
 
@@ -154,7 +157,9 @@ const IndexCommunityContainer = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
+    loading
+    ?<LoadingLottie/>
+    :<View style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
       <Modal
         transparent
         visible={showDisplayNotShareService}

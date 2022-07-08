@@ -22,6 +22,7 @@ import DatePicker from 'react-native-date-picker'
 import { useSelector } from 'react-redux'
 import { showMessage } from 'react-native-flash-message'
 import Share from 'react-native-share'
+import LoadingLottie from '@/Components/Common/LoadingLottie'
 
 const IndexVisitorContainer = ({ navigation }) => {
   const { Fonts, Gutters, Layout, Images, Colors, MetricsSizes } = useTheme()
@@ -1471,31 +1472,7 @@ const IndexVisitorContainer = ({ navigation }) => {
 
       <View>
         {loading ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              height: 500,
-            }}
-          >
-            <ActivityIndicator
-              size={50}
-              color={'#184461'}
-              style={{
-                alignSelf: 'center',
-              }}
-            />
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#000',
-                fontSize: 16,
-                marginTop: 10,
-              }}
-            >
-              Please wait...
-            </Text>
-          </View>
+          <LoadingLottie/>
         ) : typeof defaultCardID.BuildingLogo === 'undefined' ? (
           <View
             style={{

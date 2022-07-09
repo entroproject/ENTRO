@@ -17,15 +17,17 @@ const LoadingLottie = () => {
             autoPlay={true}
             speed={1.5}
             style={{
-                width: 150,
-                height: 150
+                width: 200,
+                height: 250
             }}
         />
         <Text style={{
             fontSize: 16,
             fontWeight: "600",
             textAlign: "center",
-            color: "#000"
+            color: "#000",
+            marginTop: -70
+
         }}>Please wait</Text>
     </View>
   )

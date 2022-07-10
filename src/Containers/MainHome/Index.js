@@ -19,6 +19,7 @@ import { addAnnouncement } from '@/Features/announcements';
 import LottieView from 'lottie-react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { addCard } from '@/Features/virtualCards';
+import LoadingLottie from '@/Components/Common/LoadingLottie'
 
 
 const IndexHomeContainer = ({ navigation }) => {
@@ -58,6 +59,7 @@ const IndexHomeContainer = ({ navigation }) => {
   
   return  (
 
+    
     <ScrollView style={{ flex: 1, backgroundColor: '#F1F1F1' }}>
 
     <View style={{ backgroundColor: '#184461', height: 144 }}></View>

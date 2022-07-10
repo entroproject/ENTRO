@@ -18,7 +18,7 @@ function IndexUsersFaqContainer({navigation}) {
       faq: [
         {
           id: 1,
-          desc: '• How to download and install Ezxcess app?',
+          desc: '•	How to download and install Ezxcess app?',
           subCatergory: [
             {
               id: 1,
